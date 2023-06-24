@@ -5,12 +5,12 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 ## Feature
 
 ### Main Features
-- [x] Main menu
+- [ ] Main menu
 - [ ] Option menu
 - [ ] Settings 
-- [x] About page
+- [ ] About page
 - [ ] Themes
-  - [x] Light theme
+  - [ ] Light theme
   - [ ] Dark theme
 - [ ] Code highlight
   - [ ] Hash table
@@ -18,7 +18,10 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] AVL tree
   - [ ] 2-3 tree
   - [ ] 2-3-4 tree
-  - [ ]
+  - [ ] Min Heap
+  - [ ] Max Heap
+  - [ ] Trie
+  - [ ] Graph
 
 ### Data structures
 
