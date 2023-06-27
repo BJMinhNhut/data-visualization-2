@@ -1,28 +1,18 @@
 //
-// Created by MINH NHUT on 6/24/2023.
+// Created by MINH NHUT on 6/8/2023.
 //
+#include <iostream>
 
-#include <SFML/Graphics.hpp>
+#include "Template/Application.hpp"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+	try {
+		Application application;
+		application.run();
+	} catch (std::exception& e) {
+		std::cout << "\nEXCEPTION: " << e.what() << std::endl;
+	}
 
-    while (window.isOpen())
-    {
-        sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                window.close();
-        }
-
-        window.clear();
-        window.draw(shape);
-        window.display();
-    }
-
-    return 0;
+	return 0;
 }

@@ -8,7 +8,7 @@ FetchContent_Declare(SFML
 FetchContent_MakeAvailable(SFML)
 
 include_directories(src)
-add_executable(DataVisualization2 src/Main.cpp)
+add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/Template/SceneNode.cpp src/Template/State.cpp src/Template/StateStack.cpp src/States/MenuState.cpp src/States/MenuState.hpp src/Template/States.hpp src/Template/Utility.cpp src/Template/Utility.hpp src/Template/Constants.hpp)
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
 target_compile_features(DataVisualization2 PRIVATE cxx_std_17)
