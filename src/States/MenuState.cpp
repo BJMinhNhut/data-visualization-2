@@ -14,7 +14,7 @@
 
 MenuState::MenuState(StateStack& stack, Context context)
         : State(stack, context),
-//          mGUIContainer(),
+          mGUIContainer(),
           mBackgroundSprite(context.textures->get(Textures::Background)),
           mTitle(context.textures->get(Textures::Title)) {
 

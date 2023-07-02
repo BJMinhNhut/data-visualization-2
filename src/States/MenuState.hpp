@@ -6,6 +6,7 @@
 #define DATAVISUALIZATION2_MENUSTATE_HPP
 
 #include "Template/State.hpp"
+#include "GUI/Container.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -22,6 +23,7 @@ public:
 private:
     sf::Sprite mBackgroundSprite;
     sf::Sprite mTitle;
+    GUI::Container mGUIContainer;
 };
 
 
