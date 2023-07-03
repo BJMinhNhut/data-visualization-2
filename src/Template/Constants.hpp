@@ -47,8 +47,37 @@ namespace Constants {
 
     // Resource links
     std::vector<std::string> const imageNames = {
-            "title.png",
             "background.png",
+            "title.png",
+            "checkbox-normal.png",
+            "checkbox-selected.png",
+            "checkbox-activated.png",
+            "home-normal.png",
+            "home-selected.png",
+            "back-normal.png",
+            "back-selected.png",
+            "title-bar.png",
+            "command-normal.png",
+            "command-selected.png",
+            "command-activated.png",
+            "play-normal.png",
+            "play-selected.png",
+            "pause-normal.png",
+            "pause-selected.png",
+            "replay-normal.png",
+            "replay-selected.png",
+            "small-arrow-normal.png",
+            "small-arrow-selected.png",
+            "arrow-normal.png",
+            "arrow-selected.png",
+            "double-arrow-normal.png",
+            "double-arrow-selected.png",
+            "input-normal.png",
+            "input-selected.png",
+            "button-small-normal.png",
+            "button-small-selected.png",
+            "button-big-normal.png",
+            "button-big-selected.png",
     };
 }  // namespace Constants
 

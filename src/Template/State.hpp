@@ -6,47 +6,54 @@
 #define NATUREOFCODE_STATE_HPP
 
 #include "ResourceIdentifiers.hpp"
+#include "ColorHolder.hpp"
 #include "StateIdentifiers.hpp"
 
 #include "SFML/System/Time.hpp"
 #include "SFML/Window/Event.hpp"
 
 namespace sf {
-class RenderWindow;
+    class RenderWindow;
 }
 
 class StateStack;
 
 class State {
-   public:
-	typedef std::unique_ptr<State> Ptr;
+public:
+    typedef std::unique_ptr<State> Ptr;
 
-	struct Context {
-		Context(sf::RenderWindow& window, TextureHolder& textures, FontHolder& fonts);
+    struct Context {
+        Context(sf::RenderWindow &window, TextureHolder &textures, FontHolder &fonts, ColorHolder &colors);
 
-		sf::RenderWindow* window;
-		TextureHolder* textures;
-		FontHolder* fonts;
-	};
+        sf::RenderWindow *window;
+        TextureHolder *textures;
+        FontHolder *fonts;
+        ColorHolder *colors;
+    };
 
-   public:
-	State(StateStack& stack, Context context);
-	virtual ~State();
+public:
+    State(StateStack &stack, Context context);
 
-	virtual void draw() = 0;
-	virtual bool update(sf::Time dt) = 0;
-	virtual bool handleEvent(const sf::Event& event) = 0;
+    virtual ~State();
 
-   protected:
-	void requestStackPush(States::ID stateID);
-	void requestStackPop();
-	void requestStateClear();
+    virtual void draw() = 0;
 
-	Context getContext() const;
+    virtual bool update(sf::Time dt) = 0;
 
-   private:
-	StateStack* mStack;
-	Context mContext;
+    virtual bool handleEvent(const sf::Event &event) = 0;
+
+protected:
+    void requestStackPush(States::ID stateID);
+
+    void requestStackPop();
+
+    void requestStateClear();
+
+    Context getContext() const;
+
+private:
+    StateStack *mStack;
+    Context mContext;
 };
 
 #endif  //NATUREOFCODE_STATE_HPP

@@ -4,7 +4,7 @@
 
 #include "MenuState.hpp"
 
-//#include "GUI/Button.hpp"
+#include "GUI/Button.hpp"
 #include "Template/ResourceHolder.hpp"
 #include "MenuState.hpp"
 #include "Template/Utility.hpp"
@@ -55,15 +55,15 @@ MenuState::MenuState(StateStack& stack, Context context)
 //        requestStackPush(States::About);
 //    });
 //
-//    auto exitButton = std::make_shared<GUI::Button>(
-//            GUI::Button::Big, *context.fonts, *context.textures,
-//            *context.colors);
-//    exitButton->setPosition(bounds.x / 2u, bounds.y / 2u + 210u);
-//    exitButton->setText("Exit");
-//    exitButton->setCallback([this]() { requestStackPop(); });
+    auto exitButton = std::make_shared<GUI::Button>(
+            GUI::Button::Big, *context.fonts, *context.textures,
+            *context.colors);
+    exitButton->setPosition(bounds.x / 2u, bounds.y / 2u + 210u);
+    exitButton->setText("Exit");
+    exitButton->setCallback([this]() { requestStackPop(); });
 //
 //    mGUIContainer.pack(startButton);
-//    mGUIContainer.pack(exitButton);
+    mGUIContainer.pack(exitButton);
 //    mGUIContainer.pack(aboutButton);
 //    mGUIContainer.pack(settingsButton);
 }
@@ -74,7 +74,7 @@ void MenuState::draw() {
 
     window.draw(mBackgroundSprite);
     window.draw(mTitle);
-//    window.draw(mGUIContainer);
+    window.draw(mGUIContainer);
 }
 
 bool MenuState::update(sf::Time dt) {
@@ -82,7 +82,7 @@ bool MenuState::update(sf::Time dt) {
 }
 
 bool MenuState::handleEvent(const sf::Event& event) {
-//    mGUIContainer.handleEvent(event);
+    mGUIContainer.handleEvent(event);
     return false;
 }
 

@@ -43,7 +43,7 @@ namespace GUI {
         }
     }
 
-    void Container::handleEvent(const sf::Event& event) {
+    void Container::handleEvent(const sf::Event &event) {
         // If we have selected a child then give it events
         if (hasActivation()) {
             mChildren[mActivatedChild]->handleEvent(event);
@@ -60,11 +60,11 @@ namespace GUI {
         }
     }
 
-    void Container::draw(sf::RenderTarget& target,
+    void Container::draw(sf::RenderTarget &target,
                          sf::RenderStates states) const {
         states.transform *= getTransform();
 
-        for (const Component::Ptr& child : mChildren)
+        for (const Component::Ptr &child: mChildren)
             target.draw(*child, states);
     }
 

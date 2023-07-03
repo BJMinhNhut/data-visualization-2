@@ -3,7 +3,7 @@
 //
 
 #include "Application.hpp"
-#include "States.hpp"
+#include "States/States.hpp"
 #include "State.hpp"
 #include "Constants.hpp"
 
@@ -18,7 +18,7 @@ const std::string Application::dataPrefix = "";
 #endif
 
 Application::Application()
-        : mWindow(sf::VideoMode(1600, 900), "Nature of Code", sf::Style::Close,
+        : mWindow(sf::VideoMode(1600, 900), "Data Visualization 2", sf::Style::Close,
                   sf::ContextSettings(0, 0, 4)),
 #ifdef SFML_DEBUG
           mStatisticsText(),
@@ -27,12 +27,22 @@ Application::Application()
 #endif
           mTextures(),
           mFonts(),
-          mStateStack(State::Context(mWindow, mTextures, mFonts)) {
+          mColors(),
+          mStateStack(State::Context(mWindow, mTextures, mFonts, mColors)) {
 
     mFonts.load(Fonts::Main, dataPrefix + "resources/fonts/DMSans-Regular.ttf");
+    mFonts.load(Fonts::Bold, dataPrefix + "resources/fonts/DMSans-Bold.ttf");
+    mFonts.load(Fonts::Mono, dataPrefix + "resources/fonts/UbuntuMono-Regular.ttf");
 
     loadIcon();
     loadImages();
+    mColors.load(Colors::Text, Constants::mBlack);
+    mColors.load(Colors::UIPrimary, Constants::WhiteUI);
+    mColors.load(Colors::UISecondary, Constants::WhiteDisplay);
+    mColors.load(Colors::UIBorder, Constants::GrayBorder);
+    mColors.load(Colors::Highlight, Constants::YellowLight);
+    mColors.load(Colors::Red, Constants::RedDark);
+    mColors.load(Colors::Blue, Constants::BlueDark);
 
 #ifdef SFML_DEBUG
     mStatisticsText.setFont(mFonts.get(Fonts::Main));
@@ -123,6 +133,7 @@ void Application::loadIcon() {
 void Application::loadImages() {
     for (int id = 0; id < Textures::NumTextures; ++id) {
         std::string imagePaths = dataPrefix + "resources/images/" + Constants::imageNames[id];
+        std::cerr << "Loaded: " << imagePaths << '\n';
         mTextures.load(static_cast<Textures::ID>(id), imagePaths);
     }
 }

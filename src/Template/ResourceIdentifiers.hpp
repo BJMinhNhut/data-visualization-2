@@ -6,24 +6,62 @@
 #define NATUREOFCODE_RESOURCEIDENTIFIERS_HPP
 
 namespace sf {
-class Texture;
-class Font;
+    class Texture;
+
+    class Font;
 }  // namespace sf
 
 namespace Textures {
-enum ID {
-	Title,
-    Background,
-    NumTextures,
-};
+    enum ID {
+        Background,
+        Title,
+
+        CheckBoxNormal,
+        CheckBoxSelected,
+        CheckBoxActivated,
+
+        HomeNormal,
+        HomeSelected,
+        BackNormal,
+        BackSelected,
+        TitleBar,
+
+        CommandNormal,
+        CommandSelected,
+        CommandActivated,
+
+        PlayNormal,
+        PlaySelected,
+        PauseNormal,
+        PauseSelected,
+        ReplayNormal,
+        ReplaySelected,
+
+        ArrowDownNormal,
+        ArrowDownSelected,
+        ArrowNormal,
+        ArrowSelected,
+        DoubleArrowNormal,
+        DoubleArrowSelected,
+
+        InputNormal,
+        InputSelected,
+
+        SmallButtonNormal,
+        SmallButtonSelected,
+        BigButtonNormal,
+        BigButtonSelected,
+
+        NumTextures,
+    };
 }
 
 namespace Fonts {
-enum ID {
-	Main,
-    Bold,
-    Mono,
-};
+    enum ID {
+        Main,
+        Bold,
+        Mono,
+    };
 }
 
 template<typename Resource, typename Identifier>

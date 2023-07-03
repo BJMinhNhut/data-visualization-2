@@ -5,6 +5,6 @@
 #ifndef DATAVISUALIZATION2_STATES_HPP
 #define DATAVISUALIZATION2_STATES_HPP
 
-#include "States/MenuState.hpp"
+#include "MenuState.hpp"
 
 #endif //DATAVISUALIZATION2_STATES_HPP

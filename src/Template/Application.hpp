@@ -6,6 +6,7 @@
 #define NATUREOFCODE_APPLICATION_HPP
 
 #include "ResourceHolder.hpp"
+#include "ColorHolder.hpp"
 #include "ResourceIdentifiers.hpp"
 #include "StateStack.hpp"
 
@@ -43,6 +44,7 @@ private:
     sf::RenderWindow mWindow;
     TextureHolder mTextures;
     FontHolder mFonts;
+    ColorHolder mColors;
 
     StateStack mStateStack;
 
