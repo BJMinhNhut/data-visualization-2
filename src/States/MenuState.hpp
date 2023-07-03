@@ -18,7 +18,6 @@ public:
     virtual void draw();
     virtual bool update(sf::Time dt);
     virtual bool handleEvent(const sf::Event& event);
-    virtual bool handleRealtime(const sf::Vector2i mousePosition);
 
 private:
     sf::Sprite mBackgroundSprite;

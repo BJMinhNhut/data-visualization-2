@@ -57,6 +57,8 @@ namespace GUI {
                     mSelectedChild = -1;
                 }
             }
+        } else if (event.type == sf::Event::MouseMoved) {
+            updateSelect(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
         }
     }
 

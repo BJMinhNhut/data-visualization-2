@@ -85,9 +85,3 @@ bool MenuState::handleEvent(const sf::Event& event) {
     mGUIContainer.handleEvent(event);
     return false;
 }
-
-bool MenuState::handleRealtime(const sf::Vector2i mousePosition) {
-    // real-time mouse input
-//    mGUIContainer.updateSelect(mousePosition);
-    return false;
-}
