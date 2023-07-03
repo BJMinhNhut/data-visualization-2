@@ -36,6 +36,7 @@ private:
     void registerStates();
     void loadIcon();
     void loadImages();
+    void loadColors();
 
 private:
     static const sf::Time TimePerFrame;

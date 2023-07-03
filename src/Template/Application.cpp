@@ -36,13 +36,7 @@ Application::Application()
 
     loadIcon();
     loadImages();
-    mColors.load(Colors::Text, Constants::mBlack);
-    mColors.load(Colors::UIPrimary, Constants::WhiteUI);
-    mColors.load(Colors::UISecondary, Constants::WhiteDisplay);
-    mColors.load(Colors::UIBorder, Constants::GrayBorder);
-    mColors.load(Colors::Highlight, Constants::YellowLight);
-    mColors.load(Colors::Red, Constants::RedDark);
-    mColors.load(Colors::Blue, Constants::BlueDark);
+    loadColors();
 
 #ifdef SFML_DEBUG
     mStatisticsText.setFont(mFonts.get(Fonts::Main));
@@ -136,4 +130,14 @@ void Application::loadImages() {
         std::cerr << "Loaded: " << imagePaths << '\n';
         mTextures.load(static_cast<Textures::ID>(id), imagePaths);
     }
+}
+
+void Application::loadColors() {
+    mColors.load(Colors::Text, Constants::mBlack);
+    mColors.load(Colors::UIPrimary, Constants::WhiteUI);
+    mColors.load(Colors::UISecondary, Constants::WhiteDisplay);
+    mColors.load(Colors::UIBorder, Constants::GrayBorder);
+    mColors.load(Colors::Highlight, Constants::YellowLight);
+    mColors.load(Colors::Red, Constants::RedDark);
+    mColors.load(Colors::Blue, Constants::BlueDark);
 }
