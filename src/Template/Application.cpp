@@ -66,8 +66,9 @@ void Application::run() {
             if (mStateStack.isEmpty())
                 mWindow.close();
         }
-
+#ifdef SFML_DEBUG
         updateStatistics(dt);
+#endif
         render();
     }
 }
