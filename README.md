@@ -5,7 +5,7 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 ## Feature
 
 ### Main Features
-- [ ] Main menu
+- [x] Main menu
 - [ ] Option menu
 - [ ] Settings 
 - [ ] About page
