@@ -114,6 +114,7 @@ void Application::updateStatistics(sf::Time dt) {
 
 void Application::registerStates() {
     mStateStack.registerState<MenuState>(States::Menu);
+    mStateStack.registerState<AboutState>(States::About);
 }
 
 void Application::loadIcon() {
