@@ -79,6 +79,12 @@ namespace Constants {
             "button-big-normal.png",
             "button-big-selected.png",
     };
+
+#ifdef SFML_DEBUG
+    const std::string dataPrefix = "../";
+#else
+    const std::string dataPrefix = "";
+#endif
 }  // namespace Constants
 
 #endif //DATAVISUALIZATION2_CONSTANTS_HPP

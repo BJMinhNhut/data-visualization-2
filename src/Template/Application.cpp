@@ -6,16 +6,12 @@
 #include "States/States.hpp"
 #include "State.hpp"
 #include "Constants.hpp"
+#include "Settings.hpp"
+#include "Utility.hpp"
 
 #include <iostream>
 
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
-
-#ifdef SFML_DEBUG
-const std::string Application::dataPrefix = "../";
-#else
-const std::string Application::dataPrefix = "";
-#endif
 
 Application::Application()
         : mWindow(sf::VideoMode(1600, 900), "Data Visualization 2", sf::Style::Close,
@@ -30,13 +26,16 @@ Application::Application()
           mColors(),
           mStateStack(State::Context(mWindow, mTextures, mFonts, mColors)) {
 
-    mFonts.load(Fonts::Main, dataPrefix + "resources/fonts/Supreme-Regular.otf");
-    mFonts.load(Fonts::Bold, dataPrefix + "resources/fonts/Supreme-Bold.otf");
-    mFonts.load(Fonts::Mono, dataPrefix + "resources/fonts/UbuntuMono-Regular.ttf");
+    mFonts.load(Fonts::Main, Constants::dataPrefix + "resources/fonts/Supreme-Regular.otf");
+    mFonts.load(Fonts::Bold, Constants::dataPrefix + "resources/fonts/Supreme-Bold.otf");
+    mFonts.load(Fonts::Mono, Constants::dataPrefix + "resources/fonts/UbuntuMono-Regular.ttf");
 
     loadIcon();
-    loadImages();
-    loadColors();
+
+    if (getSettings().theme == Settings::Themes::Light)
+        Utility::loadLightTheme(mTextures, mColors);
+    else
+        Utility::loadDarkTheme(mTextures, mColors);
 
 #ifdef SFML_DEBUG
     mStatisticsText.setFont(mFonts.get(Fonts::Main));
@@ -119,27 +118,9 @@ void Application::registerStates() {
 
 void Application::loadIcon() {
     sf::Image image;
-    if (!image.loadFromFile(dataPrefix + "resources/images/icon.png")) {
+    if (!image.loadFromFile(Constants::dataPrefix + "resources/images/icon.png")) {
         throw std::runtime_error("Icon load unsucessfully!");
     }
     mWindow.setIcon(image.getSize().x, image.getSize().y,
                     image.getPixelsPtr());
-}
-
-void Application::loadImages() {
-    for (int id = 0; id < Textures::NumTextures; ++id) {
-        std::string imagePaths = dataPrefix + "resources/images/" + Constants::imageNames[id];
-        std::cerr << "Loaded: " << imagePaths << '\n';
-        mTextures.load(static_cast<Textures::ID>(id), imagePaths);
-    }
-}
-
-void Application::loadColors() {
-    mColors.load(Colors::Text, Constants::mBlack);
-    mColors.load(Colors::UIPrimary, Constants::WhiteUI);
-    mColors.load(Colors::UISecondary, Constants::WhiteDisplay);
-    mColors.load(Colors::UIBorder, Constants::GrayBorder);
-    mColors.load(Colors::Highlight, Constants::YellowLight);
-    mColors.load(Colors::Red, Constants::RedDark);
-    mColors.load(Colors::Blue, Constants::BlueDark);
 }

@@ -4,6 +4,7 @@
 
 #include "Utility.hpp"
 #include "Constants.hpp"
+#include "ResourceHolder.hpp"
 
 #include <cmath>
 #include <fstream>
@@ -81,4 +82,38 @@ namespace Utility {
         mFile.close();
         return mArray;
     }
+
+    void loadImages(TextureHolder &textures, const std::string &prefix) {
+        for (int id = 0; id < Textures::NumTextures; ++id) {
+            std::string imagePaths = Constants::dataPrefix + "resources/images/" + (prefix + Constants::imageNames[id]);
+            std::cerr << "Loaded: " << imagePaths << '\n';
+            textures.load(static_cast<Textures::ID>(id), imagePaths);
+        }
+    }
+
+    void loadLightTheme(TextureHolder &textures, ColorHolder &colors) {
+        loadImages(textures, "");
+
+        colors.load(Colors::Text, Constants::mBlack);
+        colors.load(Colors::UIPrimary, Constants::WhiteUI);
+        colors.load(Colors::UISecondary, Constants::WhiteDisplay);
+        colors.load(Colors::UIBorder, Constants::GrayBorder);
+        colors.load(Colors::Highlight, Constants::YellowLight);
+        colors.load(Colors::Red, Constants::RedDark);
+        colors.load(Colors::Blue, Constants::BlueDark);
+    }
+
+    void loadDarkTheme(TextureHolder &textures, ColorHolder &colors) {
+        loadImages(textures, "dark/");
+
+        colors.load(Colors::Text, sf::Color::White);
+        colors.load(Colors::UIPrimary, Constants::BlackUI);
+        colors.load(Colors::UISecondary, Constants::BlackDisplay);
+        colors.load(Colors::UIBorder, Constants::BlueGrayBorder);
+        colors.load(Colors::Highlight, Constants::TealDark);
+        colors.load(Colors::Red, Constants::RedLight);
+        colors.load(Colors::Blue, Constants::BlueLight);
+    }
 }
+
+
