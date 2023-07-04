@@ -30,8 +30,8 @@ Application::Application()
           mColors(),
           mStateStack(State::Context(mWindow, mTextures, mFonts, mColors)) {
 
-    mFonts.load(Fonts::Main, dataPrefix + "resources/fonts/DMSans-Regular.ttf");
-    mFonts.load(Fonts::Bold, dataPrefix + "resources/fonts/DMSans-Bold.ttf");
+    mFonts.load(Fonts::Main, dataPrefix + "resources/fonts/Supreme-Regular.otf");
+    mFonts.load(Fonts::Bold, dataPrefix + "resources/fonts/Supreme-Bold.otf");
     mFonts.load(Fonts::Mono, dataPrefix + "resources/fonts/UbuntuMono-Regular.ttf");
 
     loadIcon();
@@ -74,7 +74,7 @@ void Application::run() {
 }
 
 void Application::processInput() {
-    sf::Event event;
+    sf::Event event{};
     while (mWindow.pollEvent(event)) {
         mStateStack.handleEvent(event);
 
