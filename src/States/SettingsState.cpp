@@ -11,7 +11,6 @@
 #include "Template/Utility.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Graphics/View.hpp>
 
 SettingsState::SettingsState(StateStack &stack, Context context)
         : State(stack, context),
@@ -58,12 +57,12 @@ SettingsState::SettingsState(StateStack &stack, Context context)
             GUI::Button::Big, *context.fonts, *context.textures,
             *context.colors);
     applyButton->setText("Apply");
-    applyButton->setCallback([this, &context]() {
+    applyButton->setCallback([&]() {
         if (getSettings() != mSettings) {
             if (mSettings.theme == Settings::Themes::Light)
-                Utility::loadLightTheme(*context.textures, *context.colors);
+                Utility::loadLightTheme(*getContext().textures, *getContext().colors);
             else
-                Utility::loadDarkTheme(*context.textures, *context.colors);
+                Utility::loadDarkTheme(*getContext().textures, *getContext().colors);
             updateSettings(mSettings);
             requestStackPop();
             requestStackPush(States::Settings);
