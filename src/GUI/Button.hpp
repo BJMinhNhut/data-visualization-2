@@ -76,11 +76,11 @@ namespace GUI {
         virtual void draw(sf::RenderTarget &target,
                           sf::RenderStates states) const;
 
-        Textures::ID getNormalTextureID(Type type) const;
+        static Textures::ID getNormalTextureID(Type type) ;
 
-        Textures::ID getSelectedTextureID(Type type) const;
+        static Textures::ID getSelectedTextureID(Type type) ;
 
-        Textures::ID getPressedTextureID(Type type) const;
+        static Textures::ID getPressedTextureID(Type type) ;
 
         void setFont(Type type, const FontHolder &fonts,
                      const ColorHolder &colors);

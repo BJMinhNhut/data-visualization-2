@@ -28,7 +28,7 @@ namespace GUI {
         Utility::centerOrigin(mSprite);
     }
 
-    Textures::ID Button::getNormalTextureID(Type type) const {
+    Textures::ID Button::getNormalTextureID(Type type) {
         switch (type) {
             case Small:
                 return Textures::SmallButtonNormal;
@@ -59,7 +59,7 @@ namespace GUI {
         }
     }
 
-    Textures::ID Button::getSelectedTextureID(Type type) const {
+    Textures::ID Button::getSelectedTextureID(Type type) {
         switch (type) {
             case Small:
                 return Textures::SmallButtonSelected;
@@ -90,7 +90,7 @@ namespace GUI {
         }
     }
 
-    Textures::ID Button::getPressedTextureID(Type type) const {
+    Textures::ID Button::getPressedTextureID(Type type) {
         switch (type) {
             case Small:
                 return Textures::SmallButtonSelected;
