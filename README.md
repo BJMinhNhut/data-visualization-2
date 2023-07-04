@@ -7,11 +7,11 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 ### Main Features
 - [x] Main menu
 - [ ] Option menu
-- [ ] Settings 
+- [x] Settings 
 - [x] About page
-- [ ] Themes
-  - [ ] Light theme
-  - [ ] Dark theme
+- [x] Themes
+  - [x] Light theme
+  - [x] Dark theme
 - [ ] Code highlight
   - [ ] Hash table
   - [ ] Binary tree
