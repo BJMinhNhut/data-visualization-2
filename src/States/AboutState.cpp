@@ -36,9 +36,9 @@ AboutState::AboutState(StateStack &stack, Context context)
     mGUIContainer.pack(titleLabel);
 
     auto panel = std::make_shared<GUI::Panel>(
-            600.f, 460.f, context.colors->get(Colors::UISecondary),
+            650.f, 460.f, context.colors->get(Colors::UISecondary),
             context.colors->get(Colors::UIBorder));
-    panel->setPosition(800.f - 300.f, 450.f - 235.f);
+    panel->setPosition(800.f - 325.f, 450.f - 235.f);
     mGUIContainer.pack(panel);
 
     auto contentLabel =

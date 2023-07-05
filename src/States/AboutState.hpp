@@ -19,8 +19,8 @@ namespace About {
             "and understanding advanced data structures such as trees and\n"
             "graphs.\n"
             "\n"
-            "The app uses SFML library for graphic display and \n"
-            "portable-file-dialogs library for file dialog calling.\n"
+            "The app uses SFML library for graphic display and portable-file-\n"
+            "dialogs library for file dialog calling.\n"
             "\n"
             "The development for this app is from Jun 24, 2023."};
 }

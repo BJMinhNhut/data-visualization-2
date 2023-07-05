@@ -73,7 +73,7 @@ SettingsState::SettingsState(StateStack &stack, Context context)
 
     auto lightLabel = std::make_shared<GUI::Label>(
             GUI::Label::Main, "Light", *context.fonts, *context.colors);
-    lightLabel->setPosition(710.f, 410.f);
+    lightLabel->setPosition(700.f, 405.f);
     themeContainer.pack(lightLabel);
 
     auto lightButton = std::make_shared<GUI::Button>(
@@ -87,7 +87,7 @@ SettingsState::SettingsState(StateStack &stack, Context context)
 
     auto darkLabel = std::make_shared<GUI::Label>(
             GUI::Label::Main, "Dark", *context.fonts, *context.colors);
-    darkLabel->setPosition(820.f, 410.f);
+    darkLabel->setPosition(810.f, 405.f);
     themeContainer.pack(darkLabel);
 
     auto darkButton = std::make_shared<GUI::Button>(

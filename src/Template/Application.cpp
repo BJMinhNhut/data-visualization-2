@@ -26,9 +26,9 @@ Application::Application()
           mColors(),
           mStateStack(State::Context(mWindow, mTextures, mFonts, mColors)) {
 
-    mFonts.load(Fonts::Main, Constants::dataPrefix + "resources/fonts/Supreme-Regular.otf");
-    mFonts.load(Fonts::Bold, Constants::dataPrefix + "resources/fonts/Supreme-Bold.otf");
-    mFonts.load(Fonts::Mono, Constants::dataPrefix + "resources/fonts/UbuntuMono-Regular.ttf");
+    mFonts.load(Fonts::Main, Constants::dataPrefix + "resources/fonts/SpaceGrotesk-Regular.ttf");
+    mFonts.load(Fonts::Bold, Constants::dataPrefix + "resources/fonts/SpaceGrotesk-Bold.ttf");
+    mFonts.load(Fonts::Mono, Constants::dataPrefix + "resources/fonts/intelone-mono-font-family-regular.ttf");
 
     loadIcon();
 
