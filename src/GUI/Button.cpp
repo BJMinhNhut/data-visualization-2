@@ -132,7 +132,7 @@ namespace GUI {
 
             case Big:
                 mText.setFont(fonts.get(Fonts::Bold));
-                mText.setCharacterSize(20u);
+                mText.setCharacterSize(18u);
                 mText.setFillColor(sf::Color::White);
                 break;
 
