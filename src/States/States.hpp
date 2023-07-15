@@ -8,5 +8,6 @@
 #include "MenuState.hpp"
 #include "AboutState.hpp"
 #include "SettingsState.hpp"
+#include "DataState.hpp"
 
 #endif //DATAVISUALIZATION2_STATES_HPP
