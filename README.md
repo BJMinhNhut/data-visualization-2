@@ -14,9 +14,7 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Dark theme
 - [ ] Code highlight
   - [ ] Hash table
-  - [ ] Binary tree
   - [ ] AVL tree
-  - [ ] 2-3 tree
   - [ ] 2-3-4 tree
   - [ ] Min Heap
   - [ ] Max Heap
@@ -30,19 +28,7 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] Insert
   - [ ] Delete 
   - [ ] Search
-- [ ] Binary tree
-  - [ ] Create
-  - [ ] Insert
-  - [ ] Update
-  - [ ] Delete
-  - [ ] Search
 - [ ] AVL tree
-  - [ ] Create
-  - [ ] Insert
-  - [ ] Update
-  - [ ] Delete
-  - [ ] Search 
-- [ ] 2-3 tree
   - [ ] Create
   - [ ] Insert
   - [ ] Update
@@ -55,15 +41,13 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] Delete
   - [ ] Search
 - [ ] Min Heap
-    - [ ] Create
-    - [ ] Insert
-    - [ ] Update
-    - [ ] Delete
-    - [ ] Search
+  - [ ] Create
+  - [ ] Insert
+  - [ ] Delete
+  - [ ] Search
 - [ ] Max Heap
   - [ ] Create
   - [ ] Insert
-  - [ ] Update
   - [ ] Delete
   - [ ] Search
 - [ ] Trie
