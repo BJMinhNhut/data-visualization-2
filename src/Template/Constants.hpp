@@ -78,6 +78,8 @@ namespace Constants {
             "button-small-selected.png",
             "button-big-normal.png",
             "button-big-selected.png",
+            "menu-avl-normal.png",
+            "menu-avl-selected.png",
     };
 
 #ifdef SFML_DEBUG

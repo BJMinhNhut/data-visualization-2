@@ -52,6 +52,19 @@ namespace Textures {
         BigButtonNormal,
         BigButtonSelected,
 
+//        MenuHashNormal,
+//        MenuHashSelected,
+        MenuAVLNormal,
+        MenuAVLSelected,
+//        Menu234Normal,
+//        Menu234Selected,
+//        MenuHeapNormal,
+//        MenuHeapSelected,
+//        MenuTrieNormal,
+//        MenuTrieSelected,
+//        MenuGraphNormal,
+//        MenuGraphSelected,
+
         NumTextures,
     };
 }
