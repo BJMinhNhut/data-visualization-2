@@ -21,8 +21,9 @@ public:
     virtual bool handleEvent(const sf::Event &event);
 
 private:
-    GUI::Container mGUIContainer;
     sf::Sprite mBackgroundSprite;
+    sf::Sprite mTitle;
+    GUI::Container mGUIContainer;
 };
 
 

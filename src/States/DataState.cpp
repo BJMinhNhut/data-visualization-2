@@ -6,7 +6,7 @@
 #include "GUI/Button.hpp"
 #include "GUI/Label.hpp"
 #include "GUI/Sprite.hpp"
-#include "Template/ResourceHolder.hpp"
+#include "Template/Utility.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -15,7 +15,12 @@
 DataState::DataState(StateStack &stack, Context context)
         : State(stack, context),
           mGUIContainer(),
-          mBackgroundSprite(context.textures->get(Textures::Background)) {
+          mBackgroundSprite(context.textures->get(Textures::Background)),
+          mTitle(context.textures->get(Textures::Title)) {
+
+    Utility::centerOrigin(mTitle);
+    mTitle.setPosition(context.window->getSize().x / 2.f,
+                       context.window->getSize().y / 4.f);
 
     auto backButton = std::make_shared<GUI::Button>(
             GUI::Button::Back, *getContext().fonts,
@@ -121,6 +126,7 @@ void DataState::draw() {
     window.setView(window.getDefaultView());
 
     window.draw(mBackgroundSprite);
+    window.draw(mTitle);
     window.draw(mGUIContainer);
 }
 
