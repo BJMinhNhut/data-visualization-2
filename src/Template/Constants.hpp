@@ -38,7 +38,7 @@ namespace Constants {
     sf::Color const RedLight(229, 115, 115);
     sf::Color const BlueLight(100, 181, 246);
     sf::Color const TealDark(0, 105, 92);
-    sf::Color const BlueGrayBorder(96, 125, 139);
+    sf::Color const BlueGrayBorder(81, 105, 117);
 
 // Input
     int const INPUT_MAX_LENGTH = 34;
