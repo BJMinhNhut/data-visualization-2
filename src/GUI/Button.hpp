@@ -35,6 +35,7 @@ namespace GUI {
             DoubleArrow,
             Small,
             Big,
+            MenuHash,
             MenuAVL,
         };
 

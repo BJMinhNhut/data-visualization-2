@@ -78,6 +78,8 @@ namespace Constants {
             "button-small-selected.png",
             "button-big-normal.png",
             "button-big-selected.png",
+            "menu-hash-normal.png",
+            "menu-hash-selected.png",
             "menu-avl-normal.png",
             "menu-avl-selected.png",
     };

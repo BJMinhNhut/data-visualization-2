@@ -54,6 +54,8 @@ namespace GUI {
                 return Textures::ArrowNormal;
             case DoubleArrow:
                 return Textures::DoubleArrowNormal;
+            case MenuHash:
+                return Textures::MenuHashNormal;
             case MenuAVL:
                 return Textures::MenuAVLNormal;
             default:
@@ -87,6 +89,8 @@ namespace GUI {
                 return Textures::ArrowSelected;
             case DoubleArrow:
                 return Textures::DoubleArrowSelected;
+            case MenuHash:
+                return Textures::MenuHashSelected;
             case MenuAVL:
                 return Textures::MenuAVLSelected;
             default:

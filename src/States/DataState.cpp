@@ -44,6 +44,17 @@ DataState::DataState(StateStack &stack, Context context)
     titleLabel->alignCenter();
     mGUIContainer.pack(titleLabel);
 
+    auto HashButton = std::make_shared<GUI::Button>(
+            GUI::Button::MenuHash, *context.fonts, *context.textures,
+            *context.colors);
+    HashButton->setPosition(
+            context.window->getSize().x / 2.f - 275.f, 450.f);
+    HashButton->setCallback([this]() {
+//        requestStackPop();
+//        requestStackPush(States::VisualDynamicArray);
+    });
+    mGUIContainer.pack(HashButton);
+
     auto AVLButton = std::make_shared<GUI::Button>(
             GUI::Button::MenuAVL, *context.fonts, *context.textures,
             *context.colors);
@@ -54,17 +65,6 @@ DataState::DataState(StateStack &stack, Context context)
 //        requestStackPush(States::VisualStaticArray);
     });
     mGUIContainer.pack(AVLButton);
-//
-//    auto DynamicButton = std::make_shared<GUI::Button>(
-//            GUI::Button::MenuDynamic, *context.fonts, *context.textures,
-//            *context.colors);
-//    DynamicButton->setPosition(
-//            context.window->getSize().x / 2.f + 140.f, 410.f);
-//    DynamicButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::VisualDynamicArray);
-//    });
-//    mGUIContainer.pack(DynamicButton);
 //
 //    auto SLLButton = std::make_shared<GUI::Button>(
 //            GUI::Button::MenuSLL, *context.fonts, *context.textures,
