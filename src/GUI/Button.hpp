@@ -35,13 +35,7 @@ namespace GUI {
             DoubleArrow,
             Small,
             Big,
-            MenuSLL,
-            MenuDLL,
-            MenuCLL,
-            MenuStack,
-            MenuQueue,
-            MenuStatic,
-            MenuDynamic,
+            MenuAVL,
         };
 
     public:

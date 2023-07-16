@@ -44,16 +44,16 @@ DataState::DataState(StateStack &stack, Context context)
     titleLabel->alignCenter();
     mGUIContainer.pack(titleLabel);
 
-//    auto StaticButton = std::make_shared<GUI::Button>(
-//            GUI::Button::MenuStatic, *context.fonts, *context.textures,
-//            *context.colors);
-//    StaticButton->setPosition(
-//            context.window->getSize().x / 2.f - 140.f, 410.f);
-//    StaticButton->setCallback([this]() {
+    auto AVLButton = std::make_shared<GUI::Button>(
+            GUI::Button::MenuAVL, *context.fonts, *context.textures,
+            *context.colors);
+    AVLButton->setPosition(
+            context.window->getSize().x / 2.f, 450.f);
+    AVLButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualStaticArray);
-//    });
-//    mGUIContainer.pack(StaticButton);
+    });
+    mGUIContainer.pack(AVLButton);
 //
 //    auto DynamicButton = std::make_shared<GUI::Button>(
 //            GUI::Button::MenuDynamic, *context.fonts, *context.textures,
