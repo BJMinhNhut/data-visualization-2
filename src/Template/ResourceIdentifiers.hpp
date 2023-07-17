@@ -60,8 +60,8 @@ namespace Textures {
         Menu234Selected,
 //        MenuHeapNormal,
 //        MenuHeapSelected,
-//        MenuTrieNormal,
-//        MenuTrieSelected,
+        MenuTrieNormal,
+        MenuTrieSelected,
         MenuGraphNormal,
         MenuGraphSelected,
 

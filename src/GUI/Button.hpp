@@ -38,6 +38,7 @@ namespace GUI {
             MenuHash,
             MenuAVL,
             Menu234,
+            MenuTrie,
             MenuGraph,
         };
 

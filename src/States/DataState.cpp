@@ -97,23 +97,23 @@ DataState::DataState(StateStack &stack, Context context)
 //        requestStackPush(States::VisualCLL);
 //    });
 //    mGUIContainer.pack(CLLButton);
-//
-//    auto StackButton = std::make_shared<GUI::Button>(
-//            GUI::Button::MenuStack, *context.fonts, *context.textures,
-//            *context.colors);
-//    StackButton->setPosition(
-//            context.window->getSize().x / 2.f - 140.f, 750.f);
-//    StackButton->setCallback([this]() {
+
+    auto TrieButton = std::make_shared<GUI::Button>(
+            GUI::Button::MenuTrie, *context.fonts, *context.textures,
+            *context.colors);
+    TrieButton->setPosition(
+            context.window->getSize().x / 2.f + 150.f, 630.f);
+    TrieButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualStack);
-//    });
-//    mGUIContainer.pack(StackButton);
+    });
+    mGUIContainer.pack(TrieButton);
 //
     auto GraphButton = std::make_shared<GUI::Button>(
             GUI::Button::MenuGraph, *context.fonts, *context.textures,
             *context.colors);
     GraphButton->setPosition(
-            context.window->getSize().x / 2.f + 375.f, 630.f);
+            context.window->getSize().x / 2.f + 425.f, 630.f);
     GraphButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualQueue);
