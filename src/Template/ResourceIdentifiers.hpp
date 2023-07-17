@@ -62,8 +62,8 @@ namespace Textures {
 //        MenuHeapSelected,
 //        MenuTrieNormal,
 //        MenuTrieSelected,
-//        MenuGraphNormal,
-//        MenuGraphSelected,
+        MenuGraphNormal,
+        MenuGraphSelected,
 
         NumTextures,
     };

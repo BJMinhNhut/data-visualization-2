@@ -60,6 +60,8 @@ namespace GUI {
                 return Textures::MenuAVLNormal;
             case Menu234:
                 return Textures::Menu234Normal;
+            case MenuGraph:
+                return Textures::MenuGraphNormal;
             default:
                 return Textures::SmallButtonNormal;
         }
@@ -97,6 +99,8 @@ namespace GUI {
                 return Textures::MenuAVLSelected;
             case Menu234:
                 return Textures::Menu234Selected;
+            case MenuGraph:
+                return Textures::MenuGraphSelected;
             default:
                 return Textures::SmallButtonSelected;
         }

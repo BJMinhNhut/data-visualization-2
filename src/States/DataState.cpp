@@ -109,16 +109,16 @@ DataState::DataState(StateStack &stack, Context context)
 //    });
 //    mGUIContainer.pack(StackButton);
 //
-//    auto QueueButton = std::make_shared<GUI::Button>(
-//            GUI::Button::MenuQueue, *context.fonts, *context.textures,
-//            *context.colors);
-//    QueueButton->setPosition(
-//            context.window->getSize().x / 2.f + 140.f, 750.f);
-//    QueueButton->setCallback([this]() {
+    auto GraphButton = std::make_shared<GUI::Button>(
+            GUI::Button::MenuGraph, *context.fonts, *context.textures,
+            *context.colors);
+    GraphButton->setPosition(
+            context.window->getSize().x / 2.f + 375.f, 630.f);
+    GraphButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualQueue);
-//    });
-//    mGUIContainer.pack(QueueButton);
+    });
+    mGUIContainer.pack(GraphButton);
 }
 
 void DataState::draw() {
