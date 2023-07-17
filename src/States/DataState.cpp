@@ -66,16 +66,16 @@ DataState::DataState(StateStack &stack, Context context)
     });
     mGUIContainer.pack(AVLButton);
 //
-//    auto SLLButton = std::make_shared<GUI::Button>(
-//            GUI::Button::MenuSLL, *context.fonts, *context.textures,
-//            *context.colors);
-//    SLLButton->setPosition(context.window->getSize().x / 2.f - 280.f,
-//                           580.f);
-//    SLLButton->setCallback([this]() {
+    auto Tree234Button = std::make_shared<GUI::Button>(
+            GUI::Button::Menu234, *context.fonts, *context.textures,
+            *context.colors);
+    Tree234Button->setPosition(context.window->getSize().x / 2.f + 275.f,
+                           450.f);
+    Tree234Button->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualSLL);
-//    });
-//    mGUIContainer.pack(SLLButton);
+    });
+    mGUIContainer.pack(Tree234Button);
 //
 //    auto DLLButton = std::make_shared<GUI::Button>(
 //            GUI::Button::MenuDLL, *context.fonts, *context.textures,

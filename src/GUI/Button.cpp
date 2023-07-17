@@ -58,6 +58,8 @@ namespace GUI {
                 return Textures::MenuHashNormal;
             case MenuAVL:
                 return Textures::MenuAVLNormal;
+            case Menu234:
+                return Textures::Menu234Normal;
             default:
                 return Textures::SmallButtonNormal;
         }
@@ -93,6 +95,8 @@ namespace GUI {
                 return Textures::MenuHashSelected;
             case MenuAVL:
                 return Textures::MenuAVLSelected;
+            case Menu234:
+                return Textures::Menu234Selected;
             default:
                 return Textures::SmallButtonSelected;
         }

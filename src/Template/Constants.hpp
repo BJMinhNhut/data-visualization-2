@@ -82,6 +82,8 @@ namespace Constants {
             "menu-hash-selected.png",
             "menu-avl-normal.png",
             "menu-avl-selected.png",
+            "menu-234-normal.png",
+            "menu-234-selected.png",
     };
 
 #ifdef SFML_DEBUG
