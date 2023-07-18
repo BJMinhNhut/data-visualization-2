@@ -60,6 +60,10 @@ namespace GUI {
                 return Textures::MenuAVLNormal;
             case Menu234:
                 return Textures::Menu234Normal;
+            case MenuMinHeap:
+                return Textures::MenuMinHeapNormal;
+            case MenuMaxHeap:
+                return Textures::MenuMaxHeapNormal;
             case MenuTrie:
                 return Textures::MenuTrieNormal;
             case MenuGraph:
@@ -101,6 +105,10 @@ namespace GUI {
                 return Textures::MenuAVLSelected;
             case Menu234:
                 return Textures::Menu234Selected;
+            case MenuMinHeap:
+                return Textures::MenuMinHeapSelected;
+            case MenuMaxHeap:
+                return Textures::MenuMaxHeapSelected;
             case MenuTrie:
                 return Textures::MenuTrieSelected;
             case MenuGraph:

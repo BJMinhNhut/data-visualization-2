@@ -48,7 +48,7 @@ DataState::DataState(StateStack &stack, Context context)
             GUI::Button::MenuHash, *context.fonts, *context.textures,
             *context.colors);
     HashButton->setPosition(
-            context.window->getSize().x / 2.f - 275.f, 450.f);
+            context.window->getSize().x / 2.f - 275.f, 460.f);
     HashButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualDynamicArray);
@@ -59,7 +59,7 @@ DataState::DataState(StateStack &stack, Context context)
             GUI::Button::MenuAVL, *context.fonts, *context.textures,
             *context.colors);
     AVLButton->setPosition(
-            context.window->getSize().x / 2.f, 450.f);
+            context.window->getSize().x / 2.f, 460.f);
     AVLButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualStaticArray);
@@ -70,39 +70,39 @@ DataState::DataState(StateStack &stack, Context context)
             GUI::Button::Menu234, *context.fonts, *context.textures,
             *context.colors);
     Tree234Button->setPosition(context.window->getSize().x / 2.f + 275.f,
-                           450.f);
+                           460.f);
     Tree234Button->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualSLL);
     });
     mGUIContainer.pack(Tree234Button);
-//
-//    auto DLLButton = std::make_shared<GUI::Button>(
-//            GUI::Button::MenuDLL, *context.fonts, *context.textures,
-//            *context.colors);
-//    DLLButton->setPosition(context.window->getSize().x / 2.f, 580.f);
-//    DLLButton->setCallback([this]() {
+
+    auto MinHeapButton = std::make_shared<GUI::Button>(
+            GUI::Button::MenuMinHeap, *context.fonts, *context.textures,
+            *context.colors);
+    MinHeapButton->setPosition(context.window->getSize().x / 2.f - 413, 640.f);
+    MinHeapButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualDLL);
-//    });
-//    mGUIContainer.pack(DLLButton);
-//
-//    auto CLLButton = std::make_shared<GUI::Button>(
-//            GUI::Button::MenuCLL, *context.fonts, *context.textures,
-//            *context.colors);
-//    CLLButton->setPosition(context.window->getSize().x / 2.f + 280.f,
-//                           580.f);
-//    CLLButton->setCallback([this]() {
+    });
+    mGUIContainer.pack(MinHeapButton);
+
+    auto MaxHeapButton = std::make_shared<GUI::Button>(
+            GUI::Button::MenuMaxHeap, *context.fonts, *context.textures,
+            *context.colors);
+    MaxHeapButton->setPosition(context.window->getSize().x / 2.f - 138.f,
+                           640.f);
+    MaxHeapButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualCLL);
-//    });
-//    mGUIContainer.pack(CLLButton);
+    });
+    mGUIContainer.pack(MaxHeapButton);
 
     auto TrieButton = std::make_shared<GUI::Button>(
             GUI::Button::MenuTrie, *context.fonts, *context.textures,
             *context.colors);
     TrieButton->setPosition(
-            context.window->getSize().x / 2.f + 150.f, 630.f);
+            context.window->getSize().x / 2.f + 138.f, 640.f);
     TrieButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualStack);
@@ -113,7 +113,7 @@ DataState::DataState(StateStack &stack, Context context)
             GUI::Button::MenuGraph, *context.fonts, *context.textures,
             *context.colors);
     GraphButton->setPosition(
-            context.window->getSize().x / 2.f + 425.f, 630.f);
+            context.window->getSize().x / 2.f + 413.f, 640.f);
     GraphButton->setCallback([this]() {
 //        requestStackPop();
 //        requestStackPush(States::VisualQueue);
