@@ -6,6 +6,9 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 - [SFML](https://github.com/SFML/SFML) library for graphic display.
 - [portable-file-dialogs](https://github.com/samhocevar/portable-file-dialogs) by samhocevar for file dialogs calling.
 
+## Screenshots
+![Option Menu](demo.png)
+
 ## Features
 
 ### Main Features
