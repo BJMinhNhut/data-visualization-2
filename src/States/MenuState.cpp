@@ -23,25 +23,25 @@ MenuState::MenuState(StateStack &stack, Context context)
     sf::Font &font = context.fonts->get(Fonts::Main);
     sf::Vector2u bounds = context.window->getSize();
 
-//    auto startButton = std::make_shared<GUI::Button>(
-//            GUI::Button::Big, *context.fonts, *context.textures,
-//            *context.colors);
-//    startButton->setPosition(bounds.x / 2u, bounds.y / 2u);
-//    startButton->setText("Start");
-//    startButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::MenuData);
-//    });
-//
-//    auto settingsButton = std::make_shared<GUI::Button>(
-//            GUI::Button::Big, *context.fonts, *context.textures,
-//            *context.colors);
-//    settingsButton->setPosition(bounds.x / 2u, bounds.y / 2u + 70u);
-//    settingsButton->setText("Settings");
-//    settingsButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::Settings);
-//    });
+    auto startButton = std::make_shared<GUI::Button>(
+            GUI::Button::Big, *context.fonts, *context.textures,
+            *context.colors);
+    startButton->setPosition(bounds.x / 2u, bounds.y / 2u);
+    startButton->setText("Start");
+    startButton->setCallback([this]() {
+        requestStackPop();
+        requestStackPush(States::DataMenu);
+    });
+
+    auto settingsButton = std::make_shared<GUI::Button>(
+            GUI::Button::Big, *context.fonts, *context.textures,
+            *context.colors);
+    settingsButton->setPosition(bounds.x / 2.f, bounds.y / 2.f + 70.f);
+    settingsButton->setText("Settings");
+    settingsButton->setCallback([this]() {
+        requestStackPop();
+        requestStackPush(States::Settings);
+    });
 
     auto aboutButton = std::make_shared<GUI::Button>(
             GUI::Button::Big, *context.fonts, *context.textures,
@@ -59,11 +59,11 @@ MenuState::MenuState(StateStack &stack, Context context)
     exitButton->setPosition(bounds.x / 2.f, bounds.y / 2.f + 210.f);
     exitButton->setText("Exit");
     exitButton->setCallback([this]() { requestStackPop(); });
-//
-//    mGUIContainer.pack(startButton);
+
+    mGUIContainer.pack(startButton);
     mGUIContainer.pack(exitButton);
     mGUIContainer.pack(aboutButton);
-//    mGUIContainer.pack(settingsButton);
+    mGUIContainer.pack(settingsButton);
 }
 
 void MenuState::draw() {

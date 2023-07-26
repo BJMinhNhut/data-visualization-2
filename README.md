@@ -2,21 +2,26 @@
 This is my solo project for the course CS163 of HCMUS's APCS. The application can visualize hash table, binary tree, 
 AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 
-## Feature
+## External Libraries
+- [SFML](https://github.com/SFML/SFML) library for graphic display.
+- [portable-file-dialogs](https://github.com/samhocevar/portable-file-dialogs) by samhocevar for file dialogs calling.
+
+## Screenshots
+![Option Menu](demo.png)
+
+## Features
 
 ### Main Features
 - [x] Main menu
-- [ ] Option menu
-- [ ] Settings 
+- [x] Option menu
+- [x] Settings 
 - [x] About page
-- [ ] Themes
-  - [ ] Light theme
-  - [ ] Dark theme
+- [x] Themes
+  - [x] Light theme
+  - [x] Dark theme
 - [ ] Code highlight
   - [ ] Hash table
-  - [ ] Binary tree
   - [ ] AVL tree
-  - [ ] 2-3 tree
   - [ ] 2-3-4 tree
   - [ ] Min Heap
   - [ ] Max Heap
@@ -30,19 +35,7 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] Insert
   - [ ] Delete 
   - [ ] Search
-- [ ] Binary tree
-  - [ ] Create
-  - [ ] Insert
-  - [ ] Update
-  - [ ] Delete
-  - [ ] Search
 - [ ] AVL tree
-  - [ ] Create
-  - [ ] Insert
-  - [ ] Update
-  - [ ] Delete
-  - [ ] Search 
-- [ ] 2-3 tree
   - [ ] Create
   - [ ] Insert
   - [ ] Update
@@ -55,15 +48,13 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] Delete
   - [ ] Search
 - [ ] Min Heap
-    - [ ] Create
-    - [ ] Insert
-    - [ ] Update
-    - [ ] Delete
-    - [ ] Search
+  - [ ] Create
+  - [ ] Insert
+  - [ ] Delete
+  - [ ] Search
 - [ ] Max Heap
   - [ ] Create
   - [ ] Insert
-  - [ ] Update
   - [ ] Delete
   - [ ] Search
 - [ ] Trie

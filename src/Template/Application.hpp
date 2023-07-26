@@ -34,13 +34,11 @@ private:
 #endif
 
     void registerStates();
+
     void loadIcon();
-    void loadImages();
-    void loadColors();
 
 private:
     static const sf::Time TimePerFrame;
-    static const std::string dataPrefix;
 
     sf::RenderWindow mWindow;
     TextureHolder mTextures;

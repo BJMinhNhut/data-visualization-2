@@ -5,10 +5,13 @@
 #ifndef DATAVISUALIZATION2_UTILITY_HPP
 #define DATAVISUALIZATION2_UTILITY_HPP
 
-#include "SFML/Graphics/ConvexShape.hpp"
-#include "SFML/Graphics/RectangleShape.hpp"
-#include "SFML/Graphics/Sprite.hpp"
-#include "SFML/Graphics/Text.hpp"
+#include "ResourceIdentifiers.hpp"
+#include "ColorHolder.hpp"
+
+#include <SFML/Graphics/ConvexShape.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Sprite.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 namespace sf {
     class Sprite;
@@ -29,6 +32,12 @@ namespace Utility {
     std::vector<int> loadArrayFromString(std::string text);
 
     std::vector<int> loadArrayFromFile(const std::string &filename);
+
+    void loadImages(TextureHolder &textures, const std::string &prefix);
+
+    void loadLightTheme(TextureHolder &textures, ColorHolder &colors);
+
+    void loadDarkTheme(TextureHolder &textures, ColorHolder &colors);
 }
 
 #endif //DATAVISUALIZATION2_UTILITY_HPP

@@ -38,7 +38,7 @@ namespace Constants {
     sf::Color const RedLight(229, 115, 115);
     sf::Color const BlueLight(100, 181, 246);
     sf::Color const TealDark(0, 105, 92);
-    sf::Color const BlueGrayBorder(96, 125, 139);
+    sf::Color const BlueGrayBorder(81, 105, 117);
 
 // Input
     int const INPUT_MAX_LENGTH = 34;
@@ -78,7 +78,27 @@ namespace Constants {
             "button-small-selected.png",
             "button-big-normal.png",
             "button-big-selected.png",
+            "menu-hash-normal.png",
+            "menu-hash-selected.png",
+            "menu-avl-normal.png",
+            "menu-avl-selected.png",
+            "menu-234-normal.png",
+            "menu-234-selected.png",
+            "menu-minheap-normal.png",
+            "menu-minheap-selected.png",
+            "menu-maxheap-normal.png",
+            "menu-maxheap-selected.png",
+            "menu-trie-normal.png",
+            "menu-trie-selected.png",
+            "menu-graph-normal.png",
+            "menu-graph-selected.png",
     };
+
+#ifdef SFML_DEBUG
+    const std::string dataPrefix = "../";
+#else
+    const std::string dataPrefix = "";
+#endif
 }  // namespace Constants
 
 #endif //DATAVISUALIZATION2_CONSTANTS_HPP

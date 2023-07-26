@@ -35,13 +35,13 @@ namespace GUI {
             DoubleArrow,
             Small,
             Big,
-            MenuSLL,
-            MenuDLL,
-            MenuCLL,
-            MenuStack,
-            MenuQueue,
-            MenuStatic,
-            MenuDynamic,
+            MenuHash,
+            MenuAVL,
+            Menu234,
+            MenuMinHeap,
+            MenuMaxHeap,
+            MenuTrie,
+            MenuGraph,
         };
 
     public:
@@ -76,11 +76,11 @@ namespace GUI {
         virtual void draw(sf::RenderTarget &target,
                           sf::RenderStates states) const;
 
-        static Textures::ID getNormalTextureID(Type type) ;
+        static Textures::ID getNormalTextureID(Type type);
 
-        static Textures::ID getSelectedTextureID(Type type) ;
+        static Textures::ID getSelectedTextureID(Type type);
 
-        static Textures::ID getPressedTextureID(Type type) ;
+        static Textures::ID getPressedTextureID(Type type);
 
         void setFont(Type type, const FontHolder &fonts,
                      const ColorHolder &colors);

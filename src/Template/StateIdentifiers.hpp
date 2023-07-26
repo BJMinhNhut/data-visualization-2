@@ -6,13 +6,14 @@
 #define NATUREOFCODE_STATEIDENTIFIERS_HPP
 
 namespace States {
-enum ID {
-	None,
-	Menu,
-	Settings,
-    About,
-    DataMenu
-};
+    enum ID {
+        None,
+        Menu,
+        Settings,
+        About,
+        DataMenu,
+        VisualTemplate,
+    };
 }
 
 #endif  //NATUREOFCODE_STATEIDENTIFIERS_HPP

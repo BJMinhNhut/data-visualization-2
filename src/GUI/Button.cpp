@@ -54,6 +54,20 @@ namespace GUI {
                 return Textures::ArrowNormal;
             case DoubleArrow:
                 return Textures::DoubleArrowNormal;
+            case MenuHash:
+                return Textures::MenuHashNormal;
+            case MenuAVL:
+                return Textures::MenuAVLNormal;
+            case Menu234:
+                return Textures::Menu234Normal;
+            case MenuMinHeap:
+                return Textures::MenuMinHeapNormal;
+            case MenuMaxHeap:
+                return Textures::MenuMaxHeapNormal;
+            case MenuTrie:
+                return Textures::MenuTrieNormal;
+            case MenuGraph:
+                return Textures::MenuGraphNormal;
             default:
                 return Textures::SmallButtonNormal;
         }
@@ -85,6 +99,20 @@ namespace GUI {
                 return Textures::ArrowSelected;
             case DoubleArrow:
                 return Textures::DoubleArrowSelected;
+            case MenuHash:
+                return Textures::MenuHashSelected;
+            case MenuAVL:
+                return Textures::MenuAVLSelected;
+            case Menu234:
+                return Textures::Menu234Selected;
+            case MenuMinHeap:
+                return Textures::MenuMinHeapSelected;
+            case MenuMaxHeap:
+                return Textures::MenuMaxHeapSelected;
+            case MenuTrie:
+                return Textures::MenuTrieSelected;
+            case MenuGraph:
+                return Textures::MenuGraphSelected;
             default:
                 return Textures::SmallButtonSelected;
         }
@@ -92,32 +120,12 @@ namespace GUI {
 
     Textures::ID Button::getPressedTextureID(Type type) {
         switch (type) {
-            case Small:
-                return Textures::SmallButtonSelected;
-            case Big:
-                return Textures::BigButtonSelected;
             case Command:
                 return Textures::CommandActivated;
-            case Home:
-                return Textures::HomeSelected;
             case Checkbox:
                 return Textures::CheckBoxActivated;
-            case Back:
-                return Textures::BackSelected;
-            case Play:
-                return Textures::PlaySelected;
-            case Pause:
-                return Textures::PauseSelected;
-            case Replay:
-                return Textures::ReplaySelected;
-            case SmallArrow:
-                return Textures::ArrowDownSelected;
-            case Arrow:
-                return Textures::ArrowSelected;
-            case DoubleArrow:
-                return Textures::DoubleArrowSelected;
             default:
-                return Textures::SmallButtonSelected;
+                return getSelectedTextureID(type);
         }
     }
 
@@ -132,7 +140,7 @@ namespace GUI {
 
             case Big:
                 mText.setFont(fonts.get(Fonts::Bold));
-                mText.setCharacterSize(20u);
+                mText.setCharacterSize(18u);
                 mText.setFillColor(sf::Color::White);
                 break;
 
