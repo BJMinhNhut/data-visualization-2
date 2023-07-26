@@ -116,6 +116,7 @@ void Application::registerStates() {
     mStateStack.registerState<AboutState>(States::About);
     mStateStack.registerState<SettingsState>(States::Settings);
     mStateStack.registerState<DataState>(States::DataMenu);
+    mStateStack.registerState<VisualState>(States::VisualTemplate);
 }
 
 void Application::loadIcon() {

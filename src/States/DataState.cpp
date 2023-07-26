@@ -50,8 +50,8 @@ DataState::DataState(StateStack &stack, Context context)
     HashButton->setPosition(
             context.window->getSize().x / 2.f - 275.f, 460.f);
     HashButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::VisualDynamicArray);
+        requestStackPop();
+        requestStackPush(States::VisualTemplate);
     });
     mGUIContainer.pack(HashButton);
 
@@ -61,8 +61,8 @@ DataState::DataState(StateStack &stack, Context context)
     AVLButton->setPosition(
             context.window->getSize().x / 2.f, 460.f);
     AVLButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::VisualStaticArray);
+        requestStackPop();
+        requestStackPush(States::VisualTemplate);
     });
     mGUIContainer.pack(AVLButton);
 //
@@ -70,10 +70,10 @@ DataState::DataState(StateStack &stack, Context context)
             GUI::Button::Menu234, *context.fonts, *context.textures,
             *context.colors);
     Tree234Button->setPosition(context.window->getSize().x / 2.f + 275.f,
-                           460.f);
+                               460.f);
     Tree234Button->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::VisualSLL);
+        requestStackPop();
+        requestStackPush(States::VisualTemplate);
     });
     mGUIContainer.pack(Tree234Button);
 
@@ -82,8 +82,8 @@ DataState::DataState(StateStack &stack, Context context)
             *context.colors);
     MinHeapButton->setPosition(context.window->getSize().x / 2.f - 413, 640.f);
     MinHeapButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::VisualDLL);
+        requestStackPop();
+        requestStackPush(States::VisualTemplate);
     });
     mGUIContainer.pack(MinHeapButton);
 
@@ -91,10 +91,10 @@ DataState::DataState(StateStack &stack, Context context)
             GUI::Button::MenuMaxHeap, *context.fonts, *context.textures,
             *context.colors);
     MaxHeapButton->setPosition(context.window->getSize().x / 2.f - 138.f,
-                           640.f);
+                               640.f);
     MaxHeapButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::VisualCLL);
+        requestStackPop();
+        requestStackPush(States::VisualTemplate);
     });
     mGUIContainer.pack(MaxHeapButton);
 
@@ -104,8 +104,8 @@ DataState::DataState(StateStack &stack, Context context)
     TrieButton->setPosition(
             context.window->getSize().x / 2.f + 138.f, 640.f);
     TrieButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::VisualStack);
+        requestStackPop();
+        requestStackPush(States::VisualTemplate);
     });
     mGUIContainer.pack(TrieButton);
 //
@@ -115,8 +115,8 @@ DataState::DataState(StateStack &stack, Context context)
     GraphButton->setPosition(
             context.window->getSize().x / 2.f + 413.f, 640.f);
     GraphButton->setCallback([this]() {
-//        requestStackPop();
-//        requestStackPush(States::VisualQueue);
+        requestStackPop();
+        requestStackPush(States::VisualTemplate);
     });
     mGUIContainer.pack(GraphButton);
 }

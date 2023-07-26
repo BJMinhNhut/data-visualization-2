@@ -87,7 +87,7 @@ void VisualState::initGUIButtons() {
     mGUIContainer.pack(backButton);
 
     auto homeButton = std::make_shared<GUI::Button>(
-            GUI::Button::Back, *getContext().fonts, *getContext().textures,
+            GUI::Button::Home, *getContext().fonts, *getContext().textures,
             *getContext().colors);
     homeButton->setPosition(990u, 30u);
     homeButton->setCallback([this]() {

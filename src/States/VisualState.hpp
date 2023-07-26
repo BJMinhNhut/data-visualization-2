@@ -44,10 +44,6 @@ protected:
 
     void clearCode();
 
-    virtual void validateCommand() = 0;
-
-    virtual void resetDataStructure() = 0;
-
 /*    std::shared_ptr<GUI::Button> createNewGUIButton(
             GUI::Button::Type type, sf::Vector2f position,
             std::string label, GUI::Button::Callback callback,
