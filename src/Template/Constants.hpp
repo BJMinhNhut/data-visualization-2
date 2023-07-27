@@ -27,7 +27,7 @@ namespace Constants {
 // Color
     sf::Color const mBlack(66, 66, 66);
     sf::Color const BlueDark(13, 71, 161);
-    sf::Color const WhiteDisplay(sf::Color::White);
+    sf::Color const WhiteDisplay(0, 0, 0);
     sf::Color const WhiteUI(245, 245, 245);
     sf::Color const GrayBorder(189, 189, 189);
     sf::Color const YellowLight(255, 245, 157);

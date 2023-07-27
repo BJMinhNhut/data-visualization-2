@@ -14,7 +14,7 @@ AnimationList::AnimationList()
           mList() {}
 
 bool AnimationList::isFinished() const {
-    return mList.size() > 0 && currentAnimation == mList.size();
+    return !mList.empty() && currentAnimation == mList.size();
 }
 
 unsigned int AnimationList::getProgress() const {
@@ -67,7 +67,7 @@ void AnimationList::playNext() {
         return;
     mList[currentAnimation].play();
     currentAnimation++;
-    resetCooldown();
+    resetCoolDown();
 }
 
 void AnimationList::playPrevious() {
@@ -80,22 +80,22 @@ void AnimationList::playPrevious() {
         mList[currentAnimation - 1].reverse();
         mList[currentAnimation - 1].play();
     }
-    resetCooldown();
+    resetCoolDown();
 }
 
 void AnimationList::goToFront() {
     while (currentAnimation > 0)
         playPrevious();
-    resetCooldown();
+    resetCoolDown();
 }
 
 void AnimationList::goToBack() {
     while (currentAnimation < mList.size())
         playNext();
-    resetCooldown();
+    resetCoolDown();
 }
 
-void AnimationList::resetCooldown() {
+void AnimationList::resetCoolDown() {
     mCooldown = sf::seconds(0.f);
 }
 

@@ -13,7 +13,7 @@
 
 class Animation {
 public:
-    Animation(const std::function<void()> &forward);
+    explicit Animation(const std::function<void()> &forward);
 
     Animation(const std::function<void()> &forward,
               const std::function<void()> &backward);

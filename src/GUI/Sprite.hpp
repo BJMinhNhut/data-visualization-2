@@ -19,7 +19,7 @@ namespace GUI {
         typedef std::shared_ptr<Sprite> Ptr;
 
     public:
-        Sprite(const sf::Texture &texture);
+        explicit Sprite(const sf::Texture &texture);
 
         virtual bool isSelectable() const;
 

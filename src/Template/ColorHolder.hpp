@@ -28,7 +28,7 @@ class ColorHolder {
 public:
     void load(Colors::ID id, const sf::Color &color);
 
-    const sf::Color &get(Colors::ID id) const;
+    [[nodiscard]] const sf::Color &get(Colors::ID id) const;
 
 private:
     void insertColor(Colors::ID id, std::unique_ptr<sf::Color> color);

@@ -23,7 +23,7 @@ struct Settings {
     bool operator!=(const Settings &settings) const;
 };
 
-const Settings getSettings();
+Settings getSettings();
 
 void updateSettings(const Settings &settings);
 

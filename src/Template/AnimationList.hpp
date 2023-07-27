@@ -44,7 +44,7 @@ public:
 
     void goToBack();
 
-    void resetCooldown();
+    void resetCoolDown();
 
     void setSpeed(const float &speed);
 
