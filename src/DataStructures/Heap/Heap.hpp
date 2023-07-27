@@ -8,6 +8,12 @@
 #include "Template/SceneNode.hpp"
 #include "../PolyNode.hpp"
 
+/*
+ * TODO: Heap features
+ *  - [] Binary Tree style nodes alignment
+ *  - [] Comparison definition
+ */
+
 class Heap : public SceneNode {
 public:
     Heap(const FontHolder &, const ColorHolder &);
