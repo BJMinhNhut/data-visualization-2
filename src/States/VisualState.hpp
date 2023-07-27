@@ -9,7 +9,7 @@
 //#include "GUI/CodeBlock.hpp"
 //#include "GUI/Console.hpp"
 #include "GUI/Container.hpp"
-#include "States.hpp"
+#include "Template/State.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 

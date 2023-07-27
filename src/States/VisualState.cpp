@@ -87,7 +87,6 @@ void VisualState::draw() {
 
 bool VisualState::update(sf::Time dt) {
     mGUIContainer.update(dt);
-
     return true;
 }
 
