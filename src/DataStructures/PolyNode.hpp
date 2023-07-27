@@ -2,8 +2,8 @@
 // Created by MINH NHUT on 7/27/2023.
 //
 
-#ifndef DATAVISUALIZATION2_CIRCLENODE_HPP
-#define DATAVISUALIZATION2_CIRCLENODE_HPP
+#ifndef DATAVISUALIZATION2_POLYNODE_HPP
+#define DATAVISUALIZATION2_POLYNODE_HPP
 
 #include "Template/SceneNode.hpp"
 #include "Template/ColorHolder.hpp"
@@ -19,16 +19,18 @@
  *  - [] When object moves, update the corresponding edge
  */
 
-class CircleNode : public SceneNode {
+class PolyNode : public SceneNode {
 public:
-    explicit CircleNode(const FontHolder &fonts,
-                        const ColorHolder &colors);
+    explicit PolyNode(const FontHolder &fonts,
+                      const ColorHolder &colors);
 
-    [[nodiscard]] int getValue() const;
+    [[nodiscard]] std::string getData() const;
 
-    void setValue(const int &value);
+    [[nodiscard]] int getIntData() const;
 
-    void setCircle(const sf::CircleShape &circle);
+    void setData(const std::string &);
+
+    void setPoint(const int &);
 
 private:
     virtual void updateCurrent(sf::Time dt);
@@ -37,10 +39,9 @@ private:
                              sf::RenderStates states) const;
 
 private:
-    int mValue;
     sf::Text mText;
-    sf::CircleShape mCircle;
+    sf::CircleShape mPolygon;
 };
 
 
-#endif //DATAVISUALIZATION2_CIRCLENODE_HPP
+#endif //DATAVISUALIZATION2_POLYNODE_HPP
