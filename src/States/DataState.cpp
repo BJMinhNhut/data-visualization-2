@@ -94,7 +94,7 @@ DataState::DataState(StateStack &stack, Context context)
                                640.f);
     MaxHeapButton->setCallback([this]() {
         requestStackPop();
-        requestStackPush(States::VisualTemplate);
+        requestStackPush(States::VisualMaxHeap);
     });
     mGUIContainer.pack(MaxHeapButton);
 

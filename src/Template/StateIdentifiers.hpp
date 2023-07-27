@@ -13,6 +13,7 @@ namespace States {
         About,
         DataMenu,
         VisualTemplate,
+        VisualMaxHeap,
     };
 }
 

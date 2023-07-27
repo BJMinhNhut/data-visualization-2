@@ -3,7 +3,7 @@
 //
 
 #include "Application.hpp"
-#include "States/States.hpp"
+#include "States/StatesList.hpp"
 #include "State.hpp"
 #include "Constants.hpp"
 #include "Settings.hpp"
@@ -117,6 +117,7 @@ void Application::registerStates() {
     mStateStack.registerState<SettingsState>(States::Settings);
     mStateStack.registerState<DataState>(States::DataMenu);
     mStateStack.registerState<VisualState>(States::VisualTemplate);
+    mStateStack.registerState<MaxHeapState>(States::VisualMaxHeap);
 }
 
 void Application::loadIcon() {
