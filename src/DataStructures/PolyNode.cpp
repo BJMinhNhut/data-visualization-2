@@ -10,14 +10,14 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 
 PolyNode::PolyNode(const FontHolder &fonts, const ColorHolder &colors)
-        : mText("", fonts.get(Fonts::Main), 20u),
-          mPolygon(30.f) {
+        : mText("", fonts.get(Fonts::Mono), 18u),
+          mPolygon(22.f) {
     mText.setFillColor(colors.get(Colors::Text));
     Utility::centerOrigin(mText);
 
     mPolygon.setFillColor(colors.get(Colors::UIPrimary));
     mPolygon.setOutlineColor(colors.get(Colors::UIBorder));
-    mPolygon.setOutlineThickness(1.f);
+    mPolygon.setOutlineThickness(2.f);
     Utility::centerOrigin(mPolygon);
 }
 
