@@ -19,11 +19,11 @@ public:
     VisualState(StateStack &stack, Context context,
                 const std::string &title = "");
 
-    virtual void draw();
+    void draw() override;
 
-    virtual bool update(sf::Time dt);
+    bool update(sf::Time dt) override;
 
-    virtual bool handleEvent(const sf::Event &event);
+    bool handleEvent(const sf::Event &event) override;
 
 protected:
     void callError(const std::string &text);
@@ -51,10 +51,6 @@ protected:
 
 private:
     void initGUIButtons();
-
-    void initGUIPanels();
-
-    void initConsole();
 
 private:
     GUI::Container mGUIContainer;
