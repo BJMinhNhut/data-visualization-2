@@ -5,10 +5,14 @@
 #include "MaxHeapState.hpp"
 
 MaxHeapState::MaxHeapState(StateStack &stack, State::Context context) :
-        VisualState(stack, context, "Max Heap") {}
+        VisualState(stack, context, "Max Heap"),
+        mHeap(*context.fonts, *context.colors) {
+    mHeap.setPosition(context.window->getSize().x / 2.f, context.window->getSize().y / 2.f);
+}
 
 void MaxHeapState::draw() {
     VisualState::draw();
+    getContext().window->draw(mHeap);
 }
 
 bool MaxHeapState::update(sf::Time dt) {

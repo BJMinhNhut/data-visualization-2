@@ -33,10 +33,10 @@ public:
     void setPoint(const int &);
 
 private:
-    virtual void updateCurrent(sf::Time dt);
+    void updateCurrent(sf::Time dt) override;
 
-    virtual void drawCurrent(sf::RenderTarget &target,
-                             sf::RenderStates states) const;
+    void drawCurrent(sf::RenderTarget &target,
+                     sf::RenderStates states) const override;
 
 private:
     sf::Text mText;

@@ -6,6 +6,7 @@
 #define DATAVISUALIZATION2_MAXHEAPSTATE_HPP
 
 #include "VisualState.hpp"
+#include "DataStructures/Heap/Heap.hpp"
 
 
 class MaxHeapState : public VisualState {
@@ -19,6 +20,7 @@ public:
     bool handleEvent(const sf::Event &event) override;
 
 private:
+    Heap mHeap;
 };
 
 
