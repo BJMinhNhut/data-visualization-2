@@ -41,4 +41,22 @@ void Heap::insert(const int &value) {
     mNodes.push_back(newNode);
     height.push_back(0);
     alignBinaryTree();
+
+    heapifyUp((int) mNodes.size() - 1);
+}
+
+void Heap::heapifyUp(int index) {
+    assert(index < mNodes.size());
+    while (index > 0) {
+        int parent = index / 2;
+        int curValue = mNodes[index]->getIntData();
+        int parValue = mNodes[parent]->getIntData();
+        if (curValue > parValue) {
+            int temp = curValue;
+            mNodes[index]->setData(parValue);
+            mNodes[parent]->setData(temp);
+            index = parent;
+        } else
+            break;
+    }
 }

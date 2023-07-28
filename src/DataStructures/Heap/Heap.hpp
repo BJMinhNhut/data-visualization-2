@@ -25,7 +25,7 @@ private:
 
     void alignBinaryTree();
 
-    void heapifyUp();
+    void heapifyUp(int index);
 
     void heapifyDown();
 
