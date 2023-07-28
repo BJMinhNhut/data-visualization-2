@@ -28,9 +28,11 @@ public:
 
     [[nodiscard]] int getIntData() const;
 
-    void setData(const std::string &);
+    void setData(const std::string &data);
 
-    void setPoint(const int &);
+    void setData(const int &data);
+
+    void setPoint(const int &points);
 
 private:
     void updateCurrent(sf::Time dt) override;

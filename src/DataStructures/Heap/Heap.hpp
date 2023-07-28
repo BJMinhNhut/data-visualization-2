@@ -8,6 +8,8 @@
 #include "Template/SceneNode.hpp"
 #include "../PolyNode.hpp"
 
+#include <vector>
+
 /*
  * TODO: Heap features
  *  - [] Binary Tree style nodes alignment
@@ -19,7 +21,20 @@ public:
     Heap(const FontHolder &, const ColorHolder &);
 
 private:
-    PolyNode *mNode;
+    void insert(const int &value);
+
+    void alignBinaryTree();
+
+    void heapifyUp();
+
+    void heapifyDown();
+
+private:
+    static const sf::Vector2f treeOffSet;
+    const ColorHolder &mColors;
+    const FontHolder &mFonts;
+    std::vector<PolyNode *> mNodes;
+    std::vector<unsigned int> height;
 };
 
 

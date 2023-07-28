@@ -44,6 +44,11 @@ void PolyNode::setData(const std::string &data) {
     Utility::centerOrigin(mText);
 }
 
+void PolyNode::setData(const int &data) {
+    mText.setString(std::to_string(data));
+    Utility::centerOrigin(mText);
+}
+
 void PolyNode::setPoint(const int &points) {
     mPolygon.setPointCount(points);
 }
