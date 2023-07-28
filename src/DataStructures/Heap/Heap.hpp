@@ -12,8 +12,10 @@
 
 /*
  * TODO: Heap features
- *  - [] Binary Tree style nodes alignment
+ *  - [x] Binary Tree style nodes alignment
  *  - [] Comparison definition
+ *  - [] Randomize data
+ *  - [] AnimationList generation
  */
 
 class Heap : public SceneNode {
