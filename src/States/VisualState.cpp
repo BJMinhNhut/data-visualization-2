@@ -12,6 +12,7 @@
 #include "Template/Utility.hpp"
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <Template/portable-file-dialogs.h>
 
 #include <iostream>
 
@@ -33,6 +34,20 @@ VisualState::VisualState(StateStack &stack, Context context,
     mGUIContainer.pack(titleLabel);
 
     initGUIButtons();
+}
+
+std::string VisualState::selectedTextFile() {
+    // File open dialog
+    auto dialog = pfd::open_file("Select a text file", pfd::path::home(), {
+            "Text Files (.txt)", "*.txt"
+    });
+
+// Do something while waiting for user input
+    while (!dialog.ready(1000))
+        std::cout << "Waited 1 second for user input...\n";
+
+    std::cout << "Selected file: " << dialog.result()[0] << '\n';
+    return dialog.result()[0];
 }
 
 void VisualState::initGUIButtons() {

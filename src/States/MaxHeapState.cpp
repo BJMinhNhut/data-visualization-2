@@ -27,6 +27,9 @@ bool MaxHeapState::handleEvent(const sf::Event &event) {
     if (event.type == sf::Event::KeyReleased) {
         if (event.key.code == sf::Keyboard::C)
             mHeap.randomize();
+        else if (event.key.code == sf::Keyboard::F) {
+            std::string tmp = selectedTextFile();
+        }
     }
     return false;
 }

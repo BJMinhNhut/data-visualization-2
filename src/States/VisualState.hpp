@@ -26,6 +26,8 @@ public:
     bool handleEvent(const sf::Event &event) override;
 
 protected:
+    [[nodiscard]] static std::string selectedTextFile();
+
     void callError(const std::string &text);
 
     void callInfo(const std::string &text);
