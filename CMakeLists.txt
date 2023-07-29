@@ -14,7 +14,8 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/DataStructures/Heap/Heap.cpp
         src/DataStructures/Heap/Heap.hpp
         src/Template/Random.cpp
-        src/Template/Random.hpp)
+        src/Template/Random.hpp
+        src/Template/portable-file-dialogs.h)
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
 target_compile_features(DataVisualization2 PRIVATE cxx_std_17)
