@@ -119,6 +119,6 @@ bool VisualState::handleEvent(const sf::Event &event) {
  *  - [] Animation include Console Log text and Highlight lines.
  *  - [] When running AnimationList, it loads Log text and HighlightLines to corresponding pointer.
  *  - [] Main Data Structure return AnimationList to load into GUI:Controller
- *  - [] File dialog call, return user's file name
+ *  - [x] File dialog call, return user's file name
  */
 

@@ -14,7 +14,7 @@
  * TODO: Heap features
  *  - [x] Binary Tree style nodes alignment
  *  - [] Comparison definition
- *  - [] Randomize data
+ *  - [x] Randomize data
  *  - [] AnimationList generation
  */
 
