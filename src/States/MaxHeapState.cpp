@@ -23,5 +23,10 @@ bool MaxHeapState::update(sf::Time dt) {
 
 bool MaxHeapState::handleEvent(const sf::Event &event) {
     VisualState::handleEvent(event);
+
+    if (event.type == sf::Event::KeyReleased) {
+        if (event.key.code == sf::Keyboard::C)
+            mHeap.randomize();
+    }
     return false;
 }

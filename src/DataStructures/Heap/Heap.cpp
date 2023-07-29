@@ -18,8 +18,26 @@ Heap::Heap(const FontHolder &fonts, const ColorHolder &colors) :
 }
 
 void Heap::randomize() {
+    clear();
     std::vector<int> elements(Random::getArray(1, 15, 0, 99));
     for (int &v: elements) insert(v);
+}
+
+void Heap::clear(const int &root) {
+    if (mNodes.empty()) return;
+    int leftNode = root * 2 + 1, rightNode = root * 2 + 2;
+    if (leftNode < mNodes.size()) {
+        clear(leftNode);
+        mNodes[root]->detachChild(*mNodes[leftNode]);
+    }
+    if (rightNode < mNodes.size()) {
+        clear(rightNode);
+        mNodes[root]->detachChild(*mNodes[rightNode]);
+    }
+    if (root == 0) {
+        detachChild(*mNodes[0]);
+        std::vector<PolyNode *>().swap(mNodes);
+    }
 }
 
 void Heap::alignBinaryTree() {

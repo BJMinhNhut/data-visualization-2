@@ -25,6 +25,8 @@ public:
     void randomize();
 
 private:
+    void clear(const int &root = 0);
+
     void insert(const int &value);
 
     void alignBinaryTree();
