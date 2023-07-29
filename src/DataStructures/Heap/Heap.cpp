@@ -3,6 +3,7 @@
 //
 
 #include "Heap.hpp"
+#include "Template/Random.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -13,9 +14,12 @@ const sf::Vector2f Heap::treeOffSet(60.f, 90.f);
 
 Heap::Heap(const FontHolder &fonts, const ColorHolder &colors) :
         mNodes(), mFonts(fonts), mColors(colors), height() {
-    for (int val = 0; val < 15; ++val) {
-        insert(val);
-    }
+    randomize();
+}
+
+void Heap::randomize() {
+    std::vector<int> elements(Random::getArray(1, 15, 0, 99));
+    for (int &v: elements) insert(v);
 }
 
 void Heap::alignBinaryTree() {

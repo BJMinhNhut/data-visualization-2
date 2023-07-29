@@ -22,6 +22,8 @@ class Heap : public SceneNode {
 public:
     Heap(const FontHolder &, const ColorHolder &);
 
+    void randomize();
+
 private:
     void insert(const int &value);
 
