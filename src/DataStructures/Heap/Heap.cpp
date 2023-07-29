@@ -9,6 +9,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 
 #include <queue>
+#include <fstream>
 
 const sf::Vector2f Heap::treeOffSet(60.f, 90.f);
 
@@ -18,9 +19,24 @@ Heap::Heap(const FontHolder &fonts, const ColorHolder &colors) :
 }
 
 void Heap::randomize() {
-    clear();
     std::vector<int> elements(Random::getArray(1, 15, 0, 99));
-    for (int &v: elements) insert(v);
+    loadArray(elements);
+}
+
+void Heap::loadFromFile(const std::string &fileDir) {
+    std::ifstream fileStream(fileDir);
+    std::vector<int> elements;
+    while (!fileStream.eof()) {
+        int value;
+        fileStream >> value;
+        elements.push_back(value);
+    }
+    loadArray(elements);
+}
+
+void Heap::loadArray(const std::vector<int> &array) {
+    clear();
+    for (int v: array) insert(v);
 }
 
 void Heap::clear(const int &root) {
