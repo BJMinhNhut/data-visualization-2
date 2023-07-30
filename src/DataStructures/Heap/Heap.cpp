@@ -61,7 +61,7 @@ void Heap::clear(const int &root) {
 
 void Heap::alignBinaryTree() {
     for (int id = (int) mNodes.size() - 1; id > 0; --id) {
-        height[(id - 1) / 2] = height[id] + 1;
+        height[parent(id)] = height[id] + 1;
         float xOffset;
         if (id % 2 == 0)
             xOffset = float(1 << height[id]) * TREE_OFF_SET.x;
@@ -82,7 +82,7 @@ void Heap::push(const int &value) {
 
     if (mNodes.empty())
         attachChild(PolyNode::Ptr(newNode));
-    else mNodes[(mNodes.size() - 1) / 2]->attachChild(PolyNode::Ptr(newNode));
+    else mNodes[parent(mNodes.size())]->attachChild(PolyNode::Ptr(newNode));
 
     mNodes.push_back(newNode);
     height.push_back(0);
@@ -108,7 +108,7 @@ void Heap::pop() {
     mNodes[0]->setData(mNodes.back()->getData());
 
     if (mNodes.size() > 1)
-        mNodes[(mNodes.size() - 2) / 2]->detachChild(*mNodes[mNodes.size() - 1]);
+        mNodes[parent(mNodes.size() - 1)]->detachChild(*mNodes[mNodes.size() - 1]);
     else detachChild(*mNodes[mNodes.size() - 1]);
 
     mNodes.pop_back();
@@ -121,14 +121,13 @@ void Heap::pop() {
 void Heap::heapifyUp(int index) {
     assert(index < mNodes.size());
     while (index > 0) {
-        int parent = index / 2;
         int curValue = mNodes[index]->getIntData();
-        int parValue = mNodes[parent]->getIntData();
+        int parValue = mNodes[parent(index)]->getIntData();
         if (curValue > parValue) {
             int temp = curValue;
             mNodes[index]->setData(parValue);
-            mNodes[parent]->setData(temp);
-            index = parent;
+            mNodes[parent(index)]->setData(temp);
+            index = parent(index);
         } else
             break;
     }
@@ -153,4 +152,8 @@ void Heap::heapifyDown() {
         } else
             break;
     }
+}
+
+int Heap::parent(const int &index) {
+    return (index - 1) / 2;
 }

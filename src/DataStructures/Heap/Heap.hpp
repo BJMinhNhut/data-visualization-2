@@ -39,6 +39,8 @@ private:
 
     void clear(const int &root = 0);
 
+    [[nodiscard]] static inline int parent(const int &index);
+
     void alignBinaryTree();
 
     void heapifyUp(int index);
