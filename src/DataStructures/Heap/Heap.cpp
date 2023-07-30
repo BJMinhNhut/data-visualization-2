@@ -60,6 +60,7 @@ void Heap::clear(const int &root) {
 }
 
 void Heap::alignBinaryTree() {
+    fill(height.begin(), height.end(), 0);
     for (int id = (int) mNodes.size() - 1; id > 0; --id) {
         height[parent(id)] = height[id] + 1;
         float xOffset;
