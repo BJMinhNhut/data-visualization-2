@@ -78,9 +78,9 @@ void Heap::push(const int &value) {
 
     mNodes.push_back(newNode);
     height.push_back(0);
-    alignBinaryTree();
-
     heapifyUp((int) mNodes.size() - 1);
+
+    alignBinaryTree();
 }
 
 void Heap::heapifyUp(int index) {
