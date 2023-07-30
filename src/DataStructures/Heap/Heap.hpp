@@ -20,6 +20,8 @@
 
 class Heap : public SceneNode {
 public:
+    static const unsigned int MAX_SIZE;
+public:
     Heap(const FontHolder &, const ColorHolder &);
 
     void randomize();
@@ -40,7 +42,7 @@ private:
     void heapifyDown();
 
 private:
-    static const sf::Vector2f treeOffSet;
+    static const sf::Vector2f TREE_OFF_SET;
     const ColorHolder &mColors;
     const FontHolder &mFonts;
     std::vector<PolyNode *> mNodes;

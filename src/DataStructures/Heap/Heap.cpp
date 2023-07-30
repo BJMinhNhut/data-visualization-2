@@ -11,7 +11,8 @@
 #include <queue>
 #include <fstream>
 
-const sf::Vector2f Heap::treeOffSet(60.f, 90.f);
+const sf::Vector2f Heap::TREE_OFF_SET(60.f, 90.f);
+const unsigned int Heap::MAX_SIZE(15);
 
 Heap::Heap(const FontHolder &fonts, const ColorHolder &colors) :
         mNodes(), mFonts(fonts), mColors(colors), height() {
@@ -62,10 +63,10 @@ void Heap::alignBinaryTree() {
         height[(id - 1) / 2] = height[id] + 1;
         float xOffset;
         if (id % 2 == 0)
-            xOffset = float(1 << height[id]) * treeOffSet.x;
+            xOffset = float(1 << height[id]) * TREE_OFF_SET.x;
         else
-            xOffset = -float(1 << height[id]) * treeOffSet.x;
-        mNodes[id]->setPosition(xOffset, treeOffSet.y);
+            xOffset = -float(1 << height[id]) * TREE_OFF_SET.x;
+        mNodes[id]->setPosition(xOffset, TREE_OFF_SET.y);
     }
 }
 
