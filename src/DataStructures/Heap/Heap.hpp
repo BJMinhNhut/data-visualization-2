@@ -30,6 +30,10 @@ public:
 
     void push(const int &value);
 
+    [[nodiscard]] int top() const;
+
+    void pop();
+
 private:
     void loadArray(const std::vector<int> &array);
 

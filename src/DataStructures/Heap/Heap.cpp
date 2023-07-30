@@ -91,6 +91,33 @@ void Heap::push(const int &value) {
     alignBinaryTree();
 }
 
+int Heap::top() const {
+    if (mNodes.empty()) {
+        std::cerr << "Heap is empty!\n";
+        return -1;
+    }
+
+    return mNodes[0]->getIntData();
+}
+
+void Heap::pop() {
+    if (mNodes.empty()) {
+        std::cerr << "Heap is empty!\n";
+        return;
+    }
+    mNodes[0]->setData(mNodes.back()->getData());
+
+    if (mNodes.size() > 1)
+        mNodes[(mNodes.size() - 2) / 2]->detachChild(*mNodes[mNodes.size() - 1]);
+    else detachChild(*mNodes[mNodes.size() - 1]);
+
+    mNodes.pop_back();
+    height.pop_back();
+    heapifyDown();
+
+    alignBinaryTree();
+}
+
 void Heap::heapifyUp(int index) {
     assert(index < mNodes.size());
     while (index > 0) {
@@ -102,6 +129,27 @@ void Heap::heapifyUp(int index) {
             mNodes[index]->setData(parValue);
             mNodes[parent]->setData(temp);
             index = parent;
+        } else
+            break;
+    }
+}
+
+void Heap::heapifyDown() {
+    int index = 0;
+    while (index < mNodes.size()) {
+        int leftChild = index * 2 + 1;
+        int rightChild = index * 2 + 2;
+        int largest = index;
+
+        if (leftChild < mNodes.size() && mNodes[largest]->getIntData() < mNodes[leftChild]->getIntData())
+            largest = leftChild;
+        if (rightChild < mNodes.size() && mNodes[largest]->getIntData() < mNodes[rightChild]->getIntData())
+            largest = rightChild;
+        if (largest != index) {
+            std::string temp = mNodes[index]->getData();
+            mNodes[index]->setData(mNodes[largest]->getData());
+            mNodes[largest]->setData(temp);
+            index = largest;
         } else
             break;
     }
