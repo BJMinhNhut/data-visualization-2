@@ -10,6 +10,7 @@
 
 #include <queue>
 #include <fstream>
+#include <iostream>
 
 const sf::Vector2f Heap::TREE_OFF_SET(60.f, 90.f);
 const unsigned int Heap::MAX_SIZE(15);
@@ -71,6 +72,11 @@ void Heap::alignBinaryTree() {
 }
 
 void Heap::push(const int &value) {
+    if (mNodes.size() == MAX_SIZE) {
+        std::cerr << "Heap maximum size reached!\n";
+        return;
+    }
+
     auto *newNode = new PolyNode(mFonts, mColors);
     newNode->setData(value);
 
