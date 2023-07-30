@@ -53,6 +53,7 @@ void Heap::clear(const int &root) {
     if (root == 0) {
         detachChild(*mNodes[0]);
         std::vector<PolyNode *>().swap(mNodes);
+        std::vector<unsigned int>().swap(height);
     }
 }
 
