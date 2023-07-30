@@ -26,12 +26,12 @@ public:
 
     void loadFromFile(const std::string &fileDir);
 
+    void push(const int &value);
+
 private:
     void loadArray(const std::vector<int> &array);
 
     void clear(const int &root = 0);
-
-    void insert(const int &value);
 
     void alignBinaryTree();
 

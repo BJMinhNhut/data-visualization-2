@@ -36,7 +36,7 @@ void Heap::loadFromFile(const std::string &fileDir) {
 
 void Heap::loadArray(const std::vector<int> &array) {
     clear();
-    for (int v: array) insert(v);
+    for (int v: array) push(v);
 }
 
 void Heap::clear(const int &root) {
@@ -68,7 +68,7 @@ void Heap::alignBinaryTree() {
     }
 }
 
-void Heap::insert(const int &value) {
+void Heap::push(const int &value) {
     auto *newNode = new PolyNode(mFonts, mColors);
     newNode->setData(value);
 

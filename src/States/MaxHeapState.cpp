@@ -3,6 +3,7 @@
 //
 
 #include "MaxHeapState.hpp"
+#include "Template/Random.hpp"
 
 MaxHeapState::MaxHeapState(StateStack &stack, State::Context context) :
         VisualState(stack, context, "Max Heap"),
@@ -29,6 +30,8 @@ bool MaxHeapState::handleEvent(const sf::Event &event) {
             mHeap.randomize();
         else if (event.key.code == sf::Keyboard::F) {
             mHeap.loadFromFile(selectedTextFile());
+        } else if (event.key.code == sf::Keyboard::I) {
+            mHeap.push(Random::getInt(1, 99));
         }
     }
     return false;
