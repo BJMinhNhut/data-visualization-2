@@ -18,7 +18,7 @@
  * TODO: Circle Node implementation
  *  - [x] Value display, with circle
  *  - [x] Adjacent list, pointer to edges
- *  - [] When object moves, update the corresponding edge
+ *  - [x] When object moves, update the corresponding edge
  */
 
 class PolyNode : public SceneNode {
@@ -43,6 +43,8 @@ public:
     void removeEdgeOut(PolyNode *to);
 
     void removeEdgeIn(Edge *edge);
+
+    void setPosition(float x, float y);
 
 private:
     void updateCurrent(sf::Time dt) override;

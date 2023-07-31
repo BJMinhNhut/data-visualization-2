@@ -54,10 +54,6 @@ void PolyNode::setPoint(const int &points) {
     mPolygon.setPointCount(points);
 }
 
-void PolyNode::addEdgeIn(Edge *edge) {
-    inEdges.push_back(edge);
-}
-
 void PolyNode::addEdgeOut(PolyNode *to, const sf::Color &color) {
     Edge *edge = new Edge(this, to, Edge::EdgeType::Undirected, color);
     attachChild(Edge::Ptr(edge));
@@ -65,13 +61,8 @@ void PolyNode::addEdgeOut(PolyNode *to, const sf::Color &color) {
     to->addEdgeIn(edge);
 }
 
-void PolyNode::removeEdgeIn(Edge *edge) {
-    for (auto itr = inEdges.begin(); itr != inEdges.end(); ++itr) {
-        if (*itr == edge) {
-            inEdges.erase(itr);
-            return;
-        }
-    }
+void PolyNode::addEdgeIn(Edge *edge) {
+    inEdges.push_back(edge);
 }
 
 void PolyNode::removeEdgeOut(PolyNode *to) {
@@ -83,4 +74,19 @@ void PolyNode::removeEdgeOut(PolyNode *to) {
             return;
         }
     }
+}
+
+void PolyNode::removeEdgeIn(Edge *edge) {
+    for (auto itr = inEdges.begin(); itr != inEdges.end(); ++itr) {
+        if (*itr == edge) {
+            inEdges.erase(itr);
+            return;
+        }
+    }
+}
+
+void PolyNode::setPosition(float x, float y) {
+    SceneNode::setPosition(x, y);
+    for (auto edge: inEdges) edge->callUpdate();
+    for (auto edge: outEdges) edge->callUpdate();
 }

@@ -28,9 +28,6 @@ void Edge::updateCurrent(sf::Time dt) {
 
 void Edge::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
     if (mType == EdgeType::Undirected) {
-//        std::cout << "draw edge " << mFrom->getWorldPosition().x << ' ' << mFrom->getWorldPosition().y <<
-//                  mTo->getWorldPosition().x << ' ' << mTo->getWorldPosition().y << '\n';
-//        std::cout << mLine.getSize().x << ' ' << mLine.getSize().y << '\n';
         target.draw(mLine, states);
     }
 }
