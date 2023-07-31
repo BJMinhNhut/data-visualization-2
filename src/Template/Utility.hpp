@@ -29,9 +29,7 @@ namespace Utility {
     sf::RectangleShape getLineShape(sf::Vector2f line,
                                     float thickness = 1.f);
 
-    std::vector<int> loadArrayFromString(std::string text);
-
-    std::vector<int> loadArrayFromFile(const std::string &filename);
+    bool isInt(const std::string &data);
 
     void loadImages(TextureHolder &textures, const std::string &prefix);
 

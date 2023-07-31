@@ -35,7 +35,6 @@ std::string PolyNode::getData() const {
 
 int PolyNode::getIntData() const {
     std::string data(mText.getString());
-    assert(std::all_of(data.begin(), data.end(), ::isdigit) && data.length() < 32);
     return stoi(data);
 }
 

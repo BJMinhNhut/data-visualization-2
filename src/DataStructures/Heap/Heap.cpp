@@ -4,6 +4,7 @@
 
 #include "Heap.hpp"
 #include "Template/Random.hpp"
+#include "Template/Utility.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -28,11 +29,18 @@ void Heap::randomize() {
 void Heap::loadFromFile(const std::string &fileDir) {
     std::ifstream fileStream(fileDir);
     std::vector<int> elements;
-    while (!fileStream.eof()) {
-        int value;
-        fileStream >> value;
-        elements.push_back(value);
+    std::string token;
+    int value;
+    while (fileStream >> token && elements.size() < MAX_SIZE) {
+        try {
+            value = std::stoi(token);
+            std::cout << "Token [" << token << "] read\n";
+            elements.push_back(value);
+        } catch (std::exception &e) {
+            std::cerr << "Token [" << token << "] is not convertible\n";
+        }
     }
+    fileStream.close();
     loadArray(elements);
 }
 
@@ -77,6 +85,8 @@ void Heap::push(const int &value) {
         std::cerr << "Heap maximum size reached!\n";
         return;
     }
+
+    std::cout << "Heap push: " << value << '\n';
 
     auto *newNode = new PolyNode(mFonts, mColors);
     newNode->setData(value);
