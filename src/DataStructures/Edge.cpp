@@ -14,19 +14,19 @@
 
 const float Edge::THICKNESS = 2.f;
 
-Edge::Edge(PolyNode *from, PolyNode *to, EdgeType type, const sf::Color &color) :
-        mFrom(from), mTo(to), mType(type), mUpdate(true) {
-    mLine.setFillColor(color);
+Edge::Edge(PolyNode *from, PolyNode *to, EdgeType type, const ColorHolder &colors) :
+        mFrom(from), mTo(to), mType(type), mUpdate(true), mColors(colors) {
 }
 
-void Edge::updateCurrent(sf::Time dt) {
+void Edge::update(sf::Time dt) {
     if (mUpdate) {
         mLine = getLineShape(mTo->getWorldPosition() - mFrom->getWorldPosition());
+        mLine.setFillColor(mColors.get(Colors::UIBorder));
         mUpdate = false;
     }
 }
 
-void Edge::drawCurrent(sf::RenderTarget &target, sf::RenderStates states) const {
+void Edge::draw(sf::RenderTarget &target, sf::RenderStates states) const {
     if (mType == EdgeType::Undirected) {
         target.draw(mLine, states);
     }

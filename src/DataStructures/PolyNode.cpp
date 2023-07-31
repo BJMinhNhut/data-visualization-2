@@ -13,7 +13,7 @@
 
 PolyNode::PolyNode(const FontHolder &fonts, const ColorHolder &colors)
         : mText("", fonts.get(Fonts::Mono), 18u),
-          mPolygon(22.f) {
+          mPolygon(22.f), mColors(colors) {
     mText.setFillColor(colors.get(Colors::Text));
     Utility::centerOrigin(mText);
 
@@ -23,10 +23,17 @@ PolyNode::PolyNode(const FontHolder &fonts, const ColorHolder &colors)
     Utility::centerOrigin(mPolygon);
 }
 
-void PolyNode::updateCurrent(sf::Time dt) {}
+void PolyNode::updateCurrent(sf::Time dt) {
+    for (auto &edge: outEdges)
+        edge->update(dt);
+    for (auto &edge: inEdges)
+        edge->update(dt);
+}
 
 void PolyNode::drawCurrent(sf::RenderTarget &target,
                            sf::RenderStates states) const {
+    for (auto &edge: outEdges)
+        target.draw(*edge, states);
     target.draw(mPolygon, states);
     target.draw(mText, states);
 }
@@ -54,10 +61,9 @@ void PolyNode::setPoint(const int &points) {
     mPolygon.setPointCount(points);
 }
 
-void PolyNode::addEdgeOut(PolyNode *to, const sf::Color &color) {
-    Edge *edge = new Edge(this, to, Edge::EdgeType::Undirected, color);
-    attachChild(Edge::Ptr(edge));
-    outEdges.push_back(edge);
+void PolyNode::addEdgeOut(PolyNode *to) {
+    Edge *edge = new Edge(this, to, Edge::EdgeType::Undirected, mColors);
+    outEdges.push_back(std::unique_ptr<Edge>(edge));
     to->addEdgeIn(edge);
 }
 
@@ -68,8 +74,7 @@ void PolyNode::addEdgeIn(Edge *edge) {
 void PolyNode::removeEdgeOut(PolyNode *to) {
     for (auto itr = outEdges.begin(); itr != outEdges.end(); ++itr) {
         if ((*itr)->getTo() == to) {
-            to->removeEdgeIn(*itr);
-            detachChild(*(*itr));
+            to->removeEdgeIn((*itr).get());
             outEdges.erase(itr);
             return;
         }
@@ -88,5 +93,5 @@ void PolyNode::removeEdgeIn(Edge *edge) {
 void PolyNode::setPosition(float x, float y) {
     SceneNode::setPosition(x, y);
     for (auto edge: inEdges) edge->callUpdate();
-    for (auto edge: outEdges) edge->callUpdate();
+    for (std::unique_ptr<Edge> &edge: outEdges) edge->callUpdate();
 }

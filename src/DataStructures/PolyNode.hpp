@@ -36,7 +36,7 @@ public:
 
     void setPoint(const int &points);
 
-    void addEdgeOut(PolyNode *to, const sf::Color &color);
+    void addEdgeOut(PolyNode *to);
 
     void addEdgeIn(Edge *edge);
 
@@ -55,7 +55,9 @@ private:
 private:
     sf::Text mText;
     sf::CircleShape mPolygon;
-    std::vector<Edge *> inEdges, outEdges;
+    std::vector<Edge *> inEdges;
+    std::vector<std::unique_ptr<Edge>> outEdges;
+    const ColorHolder &mColors;
 };
 
 

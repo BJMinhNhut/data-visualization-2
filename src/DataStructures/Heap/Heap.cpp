@@ -95,8 +95,8 @@ void Heap::push(const int &value) {
         attachChild(PolyNode::Ptr(newNode));
     else {
         int nodeParent = parent((int) mNodes.size());
+        mNodes[nodeParent]->addEdgeOut(newNode);
         mNodes[nodeParent]->attachChild(PolyNode::Ptr(newNode));
-        mNodes[nodeParent]->addEdgeOut(newNode, mColors.get(Colors::UIPrimary));
     }
 
     mNodes.push_back(newNode);

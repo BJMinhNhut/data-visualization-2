@@ -6,12 +6,16 @@
 #define DATAVISUALIZATION2_EDGE_HPP
 
 #include "Template/SceneNode.hpp"
+#include "Template/ColorHolder.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Transformable.hpp>
+#include <SFML/Graphics/Drawable.hpp>
+#include "SFML/System/NonCopyable.hpp"
 
 class PolyNode;
 
-class Edge : public SceneNode {
+class Edge : public sf::Transformable, public sf::Drawable, private sf::NonCopyable {
 public:
     enum EdgeType {
         Hidden,
@@ -20,7 +24,7 @@ public:
     };
 
 public:
-    Edge(PolyNode *from, PolyNode *to, EdgeType type, const sf::Color &color);
+    Edge(PolyNode *from, PolyNode *to, EdgeType type, const ColorHolder &colors);
 
     void callUpdate();
 
@@ -28,16 +32,17 @@ public:
 
     [[nodiscard]] PolyNode *getFrom() const;
 
-private:
-    void updateCurrent(sf::Time dt) override;
+    void update(sf::Time dt);
 
-    void drawCurrent(sf::RenderTarget &target,
-                     sf::RenderStates states) const override;
+private:
+
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     static sf::RectangleShape getLineShape(sf::Vector2f line);
 
 private:
     static const float THICKNESS;
+    const ColorHolder &mColors;
     PolyNode *mFrom, *mTo;
     sf::RectangleShape mLine;
     EdgeType mType;
