@@ -26,9 +26,6 @@ namespace Utility {
 
     void centerOrigin(sf::Shape &rect);
 
-    sf::RectangleShape getLineShape(sf::Vector2f line,
-                                    float thickness = 1.f);
-
     bool isInt(const std::string &data);
 
     void loadImages(TextureHolder &textures, const std::string &prefix);

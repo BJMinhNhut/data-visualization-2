@@ -9,6 +9,8 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <iostream>
+
 PolyNode::PolyNode(const FontHolder &fonts, const ColorHolder &colors)
         : mText("", fonts.get(Fonts::Mono), 18u),
           mPolygon(22.f) {
@@ -50,4 +52,35 @@ void PolyNode::setData(const int &data) {
 
 void PolyNode::setPoint(const int &points) {
     mPolygon.setPointCount(points);
+}
+
+void PolyNode::addEdgeIn(Edge *edge) {
+    inEdges.push_back(edge);
+}
+
+void PolyNode::addEdgeOut(PolyNode *to, const sf::Color &color) {
+    Edge *edge = new Edge(this, to, Edge::EdgeType::Undirected, color);
+    attachChild(Edge::Ptr(edge));
+    outEdges.push_back(edge);
+    to->addEdgeIn(edge);
+}
+
+void PolyNode::removeEdgeIn(Edge *edge) {
+    for (auto itr = inEdges.begin(); itr != inEdges.end(); ++itr) {
+        if (*itr == edge) {
+            inEdges.erase(itr);
+            return;
+        }
+    }
+}
+
+void PolyNode::removeEdgeOut(PolyNode *to) {
+    for (auto itr = outEdges.begin(); itr != outEdges.end(); ++itr) {
+        if ((*itr)->getTo() == to) {
+            to->removeEdgeIn(*itr);
+            detachChild(*(*itr));
+            outEdges.erase(itr);
+            return;
+        }
+    }
 }

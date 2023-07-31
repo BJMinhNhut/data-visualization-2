@@ -93,7 +93,11 @@ void Heap::push(const int &value) {
 
     if (mNodes.empty())
         attachChild(PolyNode::Ptr(newNode));
-    else mNodes[parent(mNodes.size())]->attachChild(PolyNode::Ptr(newNode));
+    else {
+        int nodeParent = parent((int) mNodes.size());
+        mNodes[nodeParent]->attachChild(PolyNode::Ptr(newNode));
+        mNodes[nodeParent]->addEdgeOut(newNode, mColors.get(Colors::UIPrimary));
+    }
 
     mNodes.push_back(newNode);
     height.push_back(0);
@@ -118,9 +122,11 @@ void Heap::pop() {
     }
     mNodes[0]->setData(mNodes.back()->getData());
 
-    if (mNodes.size() > 1)
-        mNodes[parent(mNodes.size() - 1)]->detachChild(*mNodes[mNodes.size() - 1]);
-    else detachChild(*mNodes[mNodes.size() - 1]);
+    if (mNodes.size() > 1) {
+        int nodeParent = parent(mNodes.size() - 1);
+        mNodes[nodeParent]->removeEdgeOut(mNodes[mNodes.size() - 1]);
+        mNodes[nodeParent]->detachChild(*mNodes[mNodes.size() - 1]);
+    } else detachChild(*mNodes[mNodes.size() - 1]);
 
     mNodes.pop_back();
     height.pop_back();

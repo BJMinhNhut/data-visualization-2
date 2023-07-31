@@ -28,17 +28,6 @@ namespace Utility {
                         std::floor(bounds.top + bounds.height / 2.f));
     }
 
-    sf::RectangleShape getLineShape(sf::Vector2f line, float thickness) {
-        float lineLength = sqrt(line.x * line.x + line.y * line.y);
-        sf::RectangleShape rect(sf::Vector2f(lineLength, thickness));
-        sf::FloatRect bounds = rect.getLocalBounds();
-        rect.setOrigin(0, std::floor(bounds.top + bounds.height / 2.f));
-
-        float angle = atan2(line.y, line.x) / Constants::PI * 180.f;
-        rect.rotate(angle);
-        return rect;
-    }
-
     void loadImages(TextureHolder &textures, const std::string &prefix) {
         for (int id = 0; id < Textures::NumTextures; ++id) {
             std::string imagePaths = Constants::dataPrefix + "resources/images/" + (prefix + Constants::imageNames[id]);
