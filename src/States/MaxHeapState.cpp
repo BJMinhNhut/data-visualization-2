@@ -21,6 +21,7 @@ void MaxHeapState::draw() {
 bool MaxHeapState::update(sf::Time dt) {
     bool result = true;
     result |= VisualState::update(dt);
+    mHeap.update(dt);
     return result;
 }
 
