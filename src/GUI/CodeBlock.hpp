@@ -29,13 +29,13 @@ namespace GUI {
 
         void setHighlight(const std::vector<int> &lineID);
 
-        virtual bool isSelectable() const;
+        bool isSelectable() const override;
 
-        virtual void handleEvent(const sf::Event &event);
+        void handleEvent(const sf::Event &event) override;
 
     private:
-        virtual void draw(sf::RenderTarget &target,
-                          sf::RenderStates states) const;
+        void draw(sf::RenderTarget &target,
+                  sf::RenderStates states) const override;
 
         void getLinePosition();
 
