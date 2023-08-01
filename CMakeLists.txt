@@ -17,7 +17,9 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/Template/Random.hpp
         src/Template/portable-file-dialogs.h
         src/DataStructures/Edge.cpp
-        src/DataStructures/Edge.hpp)
+        src/DataStructures/Edge.hpp
+        src/GUI/CodeBlock.cpp
+        src/GUI/CodeBlock.hpp)
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
 target_compile_features(DataVisualization2 PRIVATE cxx_std_17)
