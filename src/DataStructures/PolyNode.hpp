@@ -14,13 +14,6 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-/*
- * TODO: Circle Node implementation
- *  - [x] Value display, with circle
- *  - [x] Adjacent list, pointer to edges
- *  - [x] When object moves, update the corresponding edge
- */
-
 class PolyNode : public SceneNode {
 public:
     explicit PolyNode(const FontHolder &fonts,
