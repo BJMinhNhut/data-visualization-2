@@ -26,8 +26,6 @@ namespace GUI {
         if (code == mText.getString())
             return;
         mText.setString(code);
-        std::vector<sf::Vector2f>().swap(mLinePositions);
-        std::vector<sf::RectangleShape>().swap(mHighlight);
         getLinePosition();
         getHighLightRectangle();
     }
@@ -56,6 +54,7 @@ namespace GUI {
     }
 
     void CodeBlock::getLinePosition() {
+        std::vector<sf::Vector2f>().swap(mLinePositions);
         std::string text = mText.getString();
         for (int i = 0; i < text.size(); ++i)
             if (i == 0 || text[i - 1] == '\n') {
@@ -64,6 +63,7 @@ namespace GUI {
     }
 
     void CodeBlock::getHighLightRectangle() {
+        std::vector<sf::RectangleShape>().swap(mHighlight);
         for (int id = 0; id < mLinePositions.size(); ++id) {
             mHighlight[id] =
                     sf::RectangleShape(sf::Vector2f(500.f, 25.f));
