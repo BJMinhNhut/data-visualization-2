@@ -19,7 +19,8 @@
 VisualState::VisualState(StateStack &stack, Context context,
                          const std::string &title)
         : State(stack, context),
-          mGUIContainer() {
+          mGUIContainer(),
+          mActionsHub(*context.textures, *context.fonts, *context.colors) {
     initGUIBase();
 
     auto titleBar = std::make_shared<GUI::Sprite>(
@@ -49,7 +50,8 @@ std::string VisualState::selectedTextFile() {
 }
 
 void VisualState::initGUIBase() {
-    auto background = std::make_shared<GUI::Sprite>(getContext().textures->get(Textures::Background));
+    auto background = std::make_shared<GUI::Sprite>(
+            getContext().textures->get(Textures::Background));
     background->setPosition(getContext().window->getSize().x / 2.f, getContext().window->getSize().y / 2.f);
     mGUIContainer.pack(background);
 
@@ -72,26 +74,8 @@ void VisualState::initGUIBase() {
         requestStackPush(States::Menu);
     });
     mGUIContainer.pack(homeButton);
-}
 
-void VisualState::callError(const std::string &text) {
-//    GUIConsole->log(GUI::Console::Error, text);
-}
-
-void VisualState::callInfo(const std::string &text) {
-//    GUIConsole->log(GUI::Console::Info, text);
-}
-
-void VisualState::cleanLog() {
-//    GUIConsole->clean();
-}
-
-void VisualState::loadCode(const std::string &code) {
-//    GUICodeBlock->loadCode(code);
-}
-
-void VisualState::clearCode() {
-//    GUICodeBlock->loadCode("");
+    mActionsHub.setPosition(0.f, 100.f);
 }
 
 void VisualState::draw() {
@@ -99,15 +83,18 @@ void VisualState::draw() {
     window.setView(window.getDefaultView());
 
     window.draw(mGUIContainer);
+    window.draw(mActionsHub);
 }
 
 bool VisualState::update(sf::Time dt) {
     mGUIContainer.update(dt);
+    mActionsHub.update(dt);
     return true;
 }
 
 bool VisualState::handleEvent(const sf::Event &event) {
     mGUIContainer.handleEvent(event);
+    mActionsHub.handleEvent(event);
     return false;
 }
 

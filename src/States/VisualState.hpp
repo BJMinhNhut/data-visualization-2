@@ -10,6 +10,8 @@
 //#include "GUI/Console.hpp"
 #include "GUI/Container.hpp"
 #include "Template/State.hpp"
+#include "GUI/Button.hpp"
+#include "Visualizer/ActionsHub.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
 
@@ -28,37 +30,15 @@ public:
 protected:
     [[nodiscard]] static std::string selectedTextFile();
 
-    void callError(const std::string &text);
-
-    void callInfo(const std::string &text);
-
-    void cleanLog();
-
-    void addAnimation(
-            const std::string &description,
-            const std::vector<int> &highlightLineID,
-            const std::function<void()> &forward = []() {},
-            const std::function<void()> &backward = []() {});
-
-    void clearAnimation();
-
-    void loadCode(const std::string &code);
-
-    void clearCode();
-
-/*    std::shared_ptr<GUI::Button> createNewGUIButton(
-            GUI::Button::Type type, sf::Vector2f position,
-            std::string label, GUI::Button::Callback callback,
-            bool toggle = false);*/
-
 private:
     void initGUIBase();
 
+protected:
+    ActionsHub mActionsHub;
+
 private:
     GUI::Container mGUIContainer;
-//    GUI::Console::Ptr GUIConsole;
-//    GUI::ProgressBar::Ptr GUIProgressBar;
-//    GUI::CodeBlock::Ptr GUICodeBlock;
+
 };
 
 
