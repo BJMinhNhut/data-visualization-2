@@ -52,16 +52,13 @@ protected:
             bool toggle = false);*/
 
 private:
-    void initGUIButtons();
+    void initGUIBase();
 
 private:
     GUI::Container mGUIContainer;
 //    GUI::Console::Ptr GUIConsole;
 //    GUI::ProgressBar::Ptr GUIProgressBar;
 //    GUI::CodeBlock::Ptr GUICodeBlock;
-
-    // Graphics
-    sf::Sprite mBackgroundSprite;
 };
 
 

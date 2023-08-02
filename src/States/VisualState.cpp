@@ -19,8 +19,8 @@
 VisualState::VisualState(StateStack &stack, Context context,
                          const std::string &title)
         : State(stack, context),
-          mGUIContainer(),
-          mBackgroundSprite(context.textures->get(Textures::Background)) {
+          mGUIContainer() {
+    initGUIBase();
 
     auto titleBar = std::make_shared<GUI::Sprite>(
             context.textures->get(Textures::TitleBar));
@@ -32,8 +32,6 @@ VisualState::VisualState(StateStack &stack, Context context,
     titleLabel->setPosition(titleBar->getPosition());
     titleLabel->alignCenter();
     mGUIContainer.pack(titleLabel);
-
-    initGUIButtons();
 }
 
 std::string VisualState::selectedTextFile() {
@@ -50,7 +48,11 @@ std::string VisualState::selectedTextFile() {
     return dialog.result()[0];
 }
 
-void VisualState::initGUIButtons() {
+void VisualState::initGUIBase() {
+    auto background = std::make_shared<GUI::Sprite>(getContext().textures->get(Textures::Background));
+    background->setPosition(getContext().window->getSize().x / 2.f, getContext().window->getSize().y / 2.f);
+    mGUIContainer.pack(background);
+
     auto backButton = std::make_shared<GUI::Button>(
             GUI::Button::Back, *getContext().fonts, *getContext().textures,
             *getContext().colors);
@@ -96,7 +98,6 @@ void VisualState::draw() {
     sf::RenderWindow &window = *getContext().window;
     window.setView(window.getDefaultView());
 
-    window.draw(mBackgroundSprite);
     window.draw(mGUIContainer);
 }
 
