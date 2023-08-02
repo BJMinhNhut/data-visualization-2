@@ -6,49 +6,69 @@
 #include "GUI/Label.hpp"
 #include "GUI/Panel.hpp"
 
-#include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
 
 const int ActionsHub::MAX_ACTIONS = 5;
 
-ActionsHub::ActionsHub(const TextureHolder &textures, const FontHolder &fonts, const ColorHolder &colors) :
-        mCurrentOption(0), mGUIContainer(), mGUICommands(1),
-        mTextures(textures), mFonts(fonts), mColors(colors) {
+ActionsHub::ActionsHub(const TextureHolder& textures, const FontHolder& fonts,
+                       const ColorHolder& colors)
+    : mCurrentOption(0),
+      mGUIContainer(),
+      mGUICommands(MAX_ACTIONS),
+      mTextures(textures),
+      mFonts(fonts),
+      mColors(colors) {
 
-    auto optionPanel = std::make_shared<GUI::Panel>(
-            150.f, 250, colors.get(Colors::UIPrimary),
-            colors.get(Colors::UIBorder));
-    optionPanel->setPosition(0, 50.f);
-    mGUIContainer.pack(optionPanel);
+	auto optionPanel = std::make_shared<GUI::Panel>(150.f, 250, colors.get(Colors::UIPrimary),
+	                                                colors.get(Colors::UIBorder));
+	optionPanel->setPosition(0, 50.f);
+	mGUIContainer.pack(optionPanel);
 
-    auto detailPanel = std::make_shared<GUI::Panel>(
-            200.f, 250.f, colors.get(Colors::UISecondary),
-            colors.get(Colors::UIBorder));
-    detailPanel->setPosition(
-            150, 50.f);
-    mGUIContainer.pack(detailPanel);
+	auto detailPanel = std::make_shared<GUI::Panel>(200.f, 250.f, colors.get(Colors::UISecondary),
+	                                                colors.get(Colors::UIBorder));
+	detailPanel->setPosition(150, 50.f);
+	mGUIContainer.pack(detailPanel);
 
-    auto titlePanel = std::make_shared<GUI::Panel>(
-            350.f, 50.f, colors.get(Colors::UIPrimary), colors.get(Colors::UIBorder));
-    mGUIContainer.pack(titlePanel);
+	auto titlePanel = std::make_shared<GUI::Panel>(350.f, 50.f, colors.get(Colors::UIPrimary),
+	                                               colors.get(Colors::UIBorder));
+	mGUIContainer.pack(titlePanel);
 
-    auto title = std::make_shared<GUI::Label>(GUI::Label::Bold, "Actions",
-                                              fonts, colors);
-    title->setPosition(175.f, 25.f);
-    title->alignCenter();
-    mGUIContainer.pack(title);
+	auto title = std::make_shared<GUI::Label>(GUI::Label::Bold, "Actions", fonts, colors);
+	title->setPosition(175.f, 25.f);
+	title->alignCenter();
+	mGUIContainer.pack(title);
 }
 
-void ActionsHub::draw(sf::RenderTarget &target, sf::RenderStates states) const {
-    states.transform *= getTransform();
-    target.draw(mGUIContainer, states);
-    target.draw(mGUICommands[mCurrentOption], states);
+void ActionsHub::addOption(int option, const std::string& title,
+                           const GUI::Button::Callback& callback) {
+	auto button = std::make_shared<GUI::Button>(GUI::Button::Command, mFonts, mTextures, mColors);
+	button->setToggle(true);
+	button->setCallback(callback);
+	button->setPosition(75.f, 25.f + 50.f * (float)option);
+	button->setText(title);
+	mGUIContainer.pack(button);
+}
+
+void ActionsHub::setCurrentOption(int option) {
+	mCurrentOption = option;
+	mGUICommands[option].reset();
+}
+
+void ActionsHub::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+	states.transform *= getTransform();
+	target.draw(mGUIContainer, states);
+	target.draw(mGUICommands[mCurrentOption], states);
 }
 
 bool ActionsHub::update(sf::Time dt) {
-    return true;
+	return true;
 }
 
-bool ActionsHub::handleEvent(const sf::Event &event) {
-    return false;
+bool ActionsHub::handleEvent(const sf::Event& event) {
+	return false;
+}
+
+unsigned int ActionsHub::getCurrentOption() const {
+	return mCurrentOption;
 }

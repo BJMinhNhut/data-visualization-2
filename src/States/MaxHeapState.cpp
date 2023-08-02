@@ -11,6 +11,15 @@ MaxHeapState::MaxHeapState(StateStack &stack, State::Context context) :
         VisualState(stack, context, "Max Heap"),
         mHeap(*context.fonts, *context.colors) {
     mHeap.setPosition(context.window->getSize().x / 2.f, 200.f);
+	initOptions();
+}
+
+void MaxHeapState::initOptions() {
+	mActionsHub.addOption(Create, "Create", [&]() { mActionsHub.setCurrentOption(Create); });
+	mActionsHub.addOption(Push, "Push", [&]() { mActionsHub.setCurrentOption(Push); });
+	mActionsHub.addOption(Pop, "Pop", [&]() { mActionsHub.setCurrentOption(Pop); });
+	mActionsHub.addOption(Top, "Top", [&]() { mActionsHub.setCurrentOption(Top); });
+	mActionsHub.addOption(Size, "Size", [&]() { mActionsHub.setCurrentOption(Size); });
 }
 
 void MaxHeapState::draw() {
