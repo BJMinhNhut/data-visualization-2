@@ -21,6 +21,9 @@
 class Heap : public SceneNode {
 public:
     static const unsigned int MAX_SIZE;
+ static const sf::Vector2f TREE_OFF_SET;
+ enum NodeSide { Right, Left };
+
 public:
     Heap(const FontHolder &, const ColorHolder &);
 
@@ -48,11 +51,20 @@ private:
     void heapifyDown();
 
 private:
-    static const sf::Vector2f TREE_OFF_SET;
     const ColorHolder &mColors;
     const FontHolder &mFonts;
     std::vector<PolyNode *> mNodes;
-    std::vector<unsigned int> height;
+
+	struct Height {
+		int left, right;
+
+		Height(int left, int right);
+
+		void updateLeft(const Height& child);
+		void updateRight(const Height& child);
+	};
+
+	std::vector<Height> height;
 };
 
 
