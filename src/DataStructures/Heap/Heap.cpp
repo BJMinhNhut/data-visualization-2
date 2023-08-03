@@ -13,8 +13,8 @@
 #include <fstream>
 #include <iostream>
 
-const sf::Vector2f Heap::TREE_OFF_SET(60.f, 90.f);
-const unsigned int Heap::MAX_SIZE(15);
+const sf::Vector2f Heap::TREE_OFF_SET(35.f, 100.f);
+const unsigned int Heap::MAX_SIZE(31);
 
 Heap::Heap(const FontHolder &fonts, const ColorHolder &colors) :
         mNodes(), mFonts(fonts), mColors(colors), height() {
@@ -22,8 +22,8 @@ Heap::Heap(const FontHolder &fonts, const ColorHolder &colors) :
 }
 
 void Heap::randomize() {
-    std::vector<int> elements(Random::getArray(1, 15, 0, 99));
-    loadArray(elements);
+	std::vector<int> elements(Random::getArray(1, Heap::MAX_SIZE, 0, 99));
+	loadArray(elements);
 }
 
 void Heap::loadFromFile(const std::string &fileDir) {
