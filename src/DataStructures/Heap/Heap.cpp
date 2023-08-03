@@ -15,6 +15,8 @@
 
 const sf::Vector2f Heap::TREE_OFF_SET(35.f, 100.f);
 const unsigned int Heap::MAX_SIZE(31);
+const int Heap::MAX_VALUE(999);
+const int Heap::MIN_VALUE(0);
 
 Heap::Height::Height(int left, int right) : left(left), right(right) {}
 
@@ -32,7 +34,7 @@ Heap::Heap(const FontHolder& fonts, const ColorHolder& colors)
 }
 
 void Heap::randomize() {
-	std::vector<int> elements(Random::getArray(1, Heap::MAX_SIZE, 0, 99));
+	std::vector<int> elements(Random::getArray(1, Heap::MAX_SIZE, MIN_VALUE, MAX_VALUE));
 	loadArray(elements);
 }
 
@@ -44,6 +46,8 @@ void Heap::loadFromFile(const std::string& fileDir) {
 	while (fileStream >> token && elements.size() < MAX_SIZE) {
 		try {
 			value = std::stoi(token);
+			if (value < MIN_VALUE || value > MAX_VALUE)
+				throw std::exception();
 			std::cout << "Token [" << token << "] read\n";
 			elements.push_back(value);
 		} catch (std::exception& e) {

@@ -8,7 +8,9 @@
 #include <iostream>
 
 MaxHeapState::MaxHeapState(StateStack& stack, State::Context context)
-    : VisualState(stack, context, "Max Heap"), mHeap(*context.fonts, *context.colors) {
+    : VisualState(stack, context, "Max Heap"),
+      mHeap(*context.fonts, *context.colors),
+      Inputs(NumOptions, nullptr) {
 	mHeap.setPosition(context.window->getSize().x / 2.f + 200.f, 200.f);
 	initOptions();
 	initDetails();
@@ -16,10 +18,9 @@ MaxHeapState::MaxHeapState(StateStack& stack, State::Context context)
 
 void MaxHeapState::initOptions() {
 	mActionsHub.addOption(Create, "Create", true, [&]() { mActionsHub.setCurrentOption(Create); });
-	mActionsHub.addOption(Push, "Push", false, [&]() {
+	mActionsHub.addOption(Push, "Push", true, [&]() {
 		mActionsHub.setCurrentOption(Push);
-		int value = Random::getInt(0, 99);
-		mHeap.push(value);
+		Inputs[Push]->randomizeValue();
 	});
 	mActionsHub.addOption(Pop, "Pop", false, [&]() {
 		mActionsHub.setCurrentOption(Pop);
@@ -48,6 +49,13 @@ void MaxHeapState::initDetails() {
 	fileButton->setPosition(250.f, 275.f);
 	fileButton->setText("Load file");
 	mActionsHub.packOptionGUI(Create, fileButton);
+
+	// Push
+	Inputs[Push] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
+	                                            *getContext().colors);
+	Inputs[Push]->setPosition(250.f, 250.f);
+	Inputs[Push]->setRange(Heap::MIN_VALUE, Heap::MAX_VALUE);
+	mActionsHub.packOptionGUI(Push, Inputs[Push]);
 }
 
 void MaxHeapState::draw() {

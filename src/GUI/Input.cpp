@@ -14,9 +14,9 @@
 #include <iostream>
 
 namespace GUI {
-const sf::Time Input::CURSOR_LIFE = sf::milliseconds(100);
+const sf::Time Input::CURSOR_LIFE = sf::milliseconds(400);
 const int Input::MAX_LENGTH = 1000;
-const int Input::DISPLAY_LENGTH = 10;
+const int Input::DISPLAY_LENGTH = 9;
 
 Input::Input(const FontHolder& fonts, const TextureHolder& textures, const ColorHolder& colors)
     : mNormalTexture(textures.get(Textures::InputNormal)),
@@ -37,13 +37,15 @@ Input::Input(const FontHolder& fonts, const TextureHolder& textures, const Color
 	Utility::centerOrigin(mSprite);
 
 	mCursor.setFillColor(colors.get(Colors::Text));
-	mCursor.setOrigin(-4.f, 0.f);
+	mCursor.setOrigin(-2.f, 0.f);
 }
 
 void Input::setValue(const int& value) {
 	assert(value >= mMinValue && value <= mMaxValue);
 	mValue = value;
-	mText.setString(std::to_string(mValue));
+	buffer = std::to_string(mValue);
+	mText.setString(buffer);
+	alignText();
 }
 
 void Input::setRange(const int& minValue, const int& maxValue) {
@@ -195,9 +197,9 @@ void Input::alignText() {
 	unsigned int lastIndex = mText.getString().getSize();
 
 	if (mText.getString().isEmpty())
-		mCursor.setPosition(0.f, -12.f);
+		mCursor.setPosition(0.f, -9.f);
 	else
-		mCursor.setPosition(mText.findCharacterPos((int)lastIndex - 1) + sf::Vector2f(10.f, 0.f));
+		mCursor.setPosition(mText.findCharacterPos((int)lastIndex - 1) + sf::Vector2f(10.f, 4.f));
 }
 
 }  // namespace GUI
