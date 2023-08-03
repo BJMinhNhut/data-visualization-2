@@ -74,8 +74,6 @@ void VisualState::initGUIBase() {
         requestStackPush(States::Menu);
     });
     mGUIContainer.pack(homeButton);
-
-    mActionsHub.setPosition(0.f, 100.f);
 }
 
 void VisualState::draw() {
