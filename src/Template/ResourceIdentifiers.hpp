@@ -6,80 +6,81 @@
 #define NATUREOFCODE_RESOURCEIDENTIFIERS_HPP
 
 namespace sf {
-    class Texture;
+class Texture;
 
-    class Font;
+class Font;
 }  // namespace sf
 
 namespace Textures {
-    enum ID {
-        Background,
-        Title,
+enum ID {
+	Background,
+	Title,
 
-        CheckBoxNormal,
-        CheckBoxSelected,
-        CheckBoxActivated,
+	CheckBoxNormal,
+	CheckBoxSelected,
+	CheckBoxActivated,
 
-        HomeNormal,
-        HomeSelected,
-        BackNormal,
-        BackSelected,
-        TitleBar,
+	HomeNormal,
+	HomeSelected,
+	BackNormal,
+	BackSelected,
+	TitleBar,
 
-        CommandNormal,
-        CommandSelected,
-        CommandActivated,
+	CommandNormal,
+	CommandSelected,
+	CommandActivated,
 
-        PlayNormal,
-        PlaySelected,
-        PauseNormal,
-        PauseSelected,
-        ReplayNormal,
-        ReplaySelected,
+	PlayNormal,
+	PlaySelected,
+	PauseNormal,
+	PauseSelected,
+	ReplayNormal,
+	ReplaySelected,
 
-        ArrowDownNormal,
-        ArrowDownSelected,
-        ArrowNormal,
-        ArrowSelected,
-        DoubleArrowNormal,
-        DoubleArrowSelected,
+	ArrowDownNormal,
+	ArrowDownSelected,
+	ArrowNormal,
+	ArrowSelected,
+	DoubleArrowNormal,
+	DoubleArrowSelected,
 
-        InputNormal,
-        InputSelected,
+	InputNormal,
+	InputSelected,
+	InputActivated,
 
-        SmallButtonNormal,
-        SmallButtonSelected,
-        BigButtonNormal,
-        BigButtonSelected,
+	SmallButtonNormal,
+	SmallButtonSelected,
+	BigButtonNormal,
+	BigButtonSelected,
 
-        MenuHashNormal,
-        MenuHashSelected,
-        MenuAVLNormal,
-        MenuAVLSelected,
-        Menu234Normal,
-        Menu234Selected,
-        MenuMinHeapNormal,
-        MenuMinHeapSelected,
-        MenuMaxHeapNormal,
-        MenuMaxHeapSelected,
-        MenuTrieNormal,
-        MenuTrieSelected,
-        MenuGraphNormal,
-        MenuGraphSelected,
+	MenuHashNormal,
+	MenuHashSelected,
+	MenuAVLNormal,
+	MenuAVLSelected,
+	Menu234Normal,
+	Menu234Selected,
+	MenuMinHeapNormal,
+	MenuMinHeapSelected,
+	MenuMaxHeapNormal,
+	MenuMaxHeapSelected,
+	MenuTrieNormal,
+	MenuTrieSelected,
+	MenuGraphNormal,
+	MenuGraphSelected,
 
-        NumTextures,
-    };
+	NumTextures,
+};
 }
 
 namespace Fonts {
-    enum ID {
-        Main,
-        Bold,
-        Mono,
-    };
+enum ID {
+	Main,
+	Bold,
+	Mono,
+};
 }
 
-template<typename Resource, typename Identifier>
+template <typename Resource, typename Identifier>
 class ResourceHolder;
 
 typedef ResourceHolder<sf::Texture, Textures::ID> TextureHolder;
