@@ -8,7 +8,7 @@
 
 #include "Animation.hpp"
 
-#include <SFML/System/NonCopyable.hpp>
+#include "SFML/System/NonCopyable.hpp"
 
 #include <vector>
 

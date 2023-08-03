@@ -5,9 +5,8 @@
 #ifndef DATAVISUALIZATION2_ANIMATION_HPP
 #define DATAVISUALIZATION2_ANIMATION_HPP
 
-
-#include <SFML/Graphics.hpp>
-#include <SFML/System/Time.hpp>
+#include "SFML/Graphics.hpp"
+#include "SFML/System/Time.hpp"
 
 #include <functional>
 

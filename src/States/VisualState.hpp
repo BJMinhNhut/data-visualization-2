@@ -5,7 +5,7 @@
 #ifndef DATAVISUALIZATION2_VISUALSTATE_HPP
 #define DATAVISUALIZATION2_VISUALSTATE_HPP
 
-#include "Template/AnimationList.hpp"
+#include "Visualizer/AnimationList.hpp"
 //#include "GUI/CodeBlock.hpp"
 //#include "GUI/Console.hpp"
 #include "GUI/Container.hpp"
