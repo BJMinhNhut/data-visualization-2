@@ -145,9 +145,9 @@ namespace GUI {
                 break;
 
             default:
-                mText.setFont(fonts.get(Fonts::Bold));
-                mText.setCharacterSize(18u);
-                mText.setFillColor(colors.get(Colors::Text));
+			    mText.setFont(fonts.get(Fonts::Main));
+			    mText.setCharacterSize(17u);
+			    mText.setFillColor(colors.get(Colors::Text));
                 break;
         }
     }
