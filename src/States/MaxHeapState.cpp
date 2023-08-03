@@ -37,6 +37,17 @@ void MaxHeapState::initDetails() {
 	randomButton->setPosition(250.f, 200.f);
 	randomButton->setText("Random");
 	mActionsHub.packOptionGUI(Create, randomButton);
+
+	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
+	                                                *getContext().textures, *getContext().colors);
+	fileButton->setCallback([&]() {
+		std::string fileDir;
+		if (selectedTextFile(fileDir))
+			mHeap.loadFromFile(fileDir);
+	});
+	fileButton->setPosition(250.f, 275.f);
+	fileButton->setText("Load file");
+	mActionsHub.packOptionGUI(Create, fileButton);
 }
 
 void MaxHeapState::draw() {
@@ -53,18 +64,5 @@ bool MaxHeapState::update(sf::Time dt) {
 
 bool MaxHeapState::handleEvent(const sf::Event& event) {
 	VisualState::handleEvent(event);
-
-	if (event.type == sf::Event::KeyReleased) {
-		if (event.key.code == sf::Keyboard::C)
-			mHeap.randomize();
-		else if (event.key.code == sf::Keyboard::F)
-			mHeap.loadFromFile(selectedTextFile());
-		else if (event.key.code == sf::Keyboard::I)
-			mHeap.push(Random::getInt(1, 99));
-		else if (event.key.code == sf::Keyboard::P) {
-			std::cout << "Heap top: " << mHeap.top() << '\n';
-			mHeap.pop();
-		}
-	}
 	return false;
 }

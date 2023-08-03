@@ -28,9 +28,9 @@ public:
     bool handleEvent(const sf::Event &event) override;
 
 protected:
-    [[nodiscard]] static std::string selectedTextFile();
+	[[nodiscard]] static bool selectedTextFile(std::string& dir);
 
-private:
+   private:
     void initGUIBase();
 
 protected:
