@@ -8,6 +8,7 @@
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <utility>
 
 const int ActionsHub::MAX_ACTIONS = 5;
 
@@ -51,6 +52,10 @@ void ActionsHub::addOption(int option, const std::string& title,
 	mGUIContainer.pack(button);
 }
 
+void ActionsHub::packOptionGUI(int option, GUI::Component::Ptr component) {
+	mGUICommands[option].pack(std::move(component));
+}
+
 void ActionsHub::setCurrentOption(int option) {
 	mCurrentOption = option;
 	mGUICommands[option].reset();
@@ -64,11 +69,13 @@ void ActionsHub::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 bool ActionsHub::update(sf::Time dt) {
 	mGUIContainer.update(dt);
+	mGUICommands[mCurrentOption].update(dt);
 	return true;
 }
 
 bool ActionsHub::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
+	mGUICommands[mCurrentOption].handleEvent(event);
 	return false;
 }
 
