@@ -15,17 +15,17 @@ ActionsHub::ActionsHub(const TextureHolder& textures, const FontHolder& fonts,
                        const ColorHolder& colors)
     : mCurrentOption(0),
       mGUIContainer(),
-      mGUICommands(MAX_ACTIONS),
+      mGUICommands(MAX_ACTIONS + 1),
       mTextures(textures),
       mFonts(fonts),
       mColors(colors) {
 
-	auto detailPanel = std::make_shared<GUI::Panel>(200.f, 250.f, colors.get(Colors::UISecondary),
+	auto detailPanel = std::make_shared<GUI::Panel>(200.f, 251.f, colors.get(Colors::UISecondary),
 	                                                colors.get(Colors::UIBorder));
 	detailPanel->setPosition(150, 150.f);
 	mGUIContainer.pack(detailPanel);
 
-	auto optionPanel = std::make_shared<GUI::Panel>(150.f, 250, colors.get(Colors::UIPrimary),
+	auto optionPanel = std::make_shared<GUI::Panel>(150.f, 251.f, colors.get(Colors::UIPrimary),
 	                                                colors.get(Colors::UIBorder));
 	optionPanel->setPosition(0, 150.f);
 	mGUIContainer.pack(optionPanel);
@@ -46,7 +46,7 @@ void ActionsHub::addOption(int option, const std::string& title,
 	auto button = std::make_shared<GUI::Button>(GUI::Button::Command, mFonts, mTextures, mColors);
 	button->setToggle(true);
 	button->setCallback(callback);
-	button->setPosition(75.f, 125.f + 50.f * (float)option);
+	button->setPosition(75.f, 126.f + 50.f * (float)option);
 	button->setText(title);
 	mGUIContainer.pack(button);
 }
