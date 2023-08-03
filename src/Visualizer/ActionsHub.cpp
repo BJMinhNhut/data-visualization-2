@@ -8,7 +8,7 @@
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
-#include <utility>
+#include <SFML/Window/Event.hpp>
 
 const int ActionsHub::MAX_ACTIONS = 5;
 
@@ -17,6 +17,7 @@ ActionsHub::ActionsHub(const TextureHolder& textures, const FontHolder& fonts,
     : mCurrentOption(0),
       mGUIContainer(),
       mGUICommands(MAX_ACTIONS + 1),
+      mActions(MAX_ACTIONS + 1, []() {}),
       mTextures(textures),
       mFonts(fonts),
       mColors(colors) {
@@ -61,6 +62,14 @@ void ActionsHub::setCurrentOption(int option) {
 	mGUICommands[option].reset();
 }
 
+unsigned int ActionsHub::getCurrentOption() const {
+	return mCurrentOption;
+}
+
+void ActionsHub::setOptionAction(int option, const std::function<void()>& action) {
+	mActions[option] = action;
+}
+
 void ActionsHub::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	target.draw(mGUIContainer, states);
@@ -76,9 +85,12 @@ bool ActionsHub::update(sf::Time dt) {
 bool ActionsHub::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
 	mGUICommands[mCurrentOption].handleEvent(event);
-	return false;
-}
 
-unsigned int ActionsHub::getCurrentOption() const {
-	return mCurrentOption;
+	if (event.type == sf::Event::KeyReleased) {
+		if (event.key.code == sf::Keyboard::Enter) {
+			mActions[mCurrentOption]();
+		}
+	}
+
+	return false;
 }

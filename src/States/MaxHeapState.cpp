@@ -14,6 +14,7 @@ MaxHeapState::MaxHeapState(StateStack& stack, State::Context context)
 	mHeap.setPosition(context.window->getSize().x / 2.f + 200.f, 200.f);
 	initOptions();
 	initDetails();
+	initActions();
 }
 
 void MaxHeapState::initOptions() {
@@ -23,11 +24,11 @@ void MaxHeapState::initOptions() {
 		Inputs[Push]->randomizeValue();
 	});
 	mActionsHub.addOption(Pop, "Pop", false, [&]() {
-		mActionsHub.setCurrentOption(Pop);
 		mHeap.pop();
+		mActionsHub.setCurrentOption(None);
 	});
-	mActionsHub.addOption(Top, "Top", false, [&]() { mActionsHub.setCurrentOption(Top); });
-	mActionsHub.addOption(Size, "Size", false, [&]() { mActionsHub.setCurrentOption(Size); });
+	mActionsHub.addOption(Top, "Top", false, [&]() { mActionsHub.setCurrentOption(None); });
+	mActionsHub.addOption(Size, "Size", false, [&]() { mActionsHub.setCurrentOption(None); });
 }
 
 void MaxHeapState::initDetails() {
@@ -56,6 +57,10 @@ void MaxHeapState::initDetails() {
 	Inputs[Push]->setPosition(250.f, 250.f);
 	Inputs[Push]->setRange(Heap::MIN_VALUE, Heap::MAX_VALUE);
 	mActionsHub.packOptionGUI(Push, Inputs[Push]);
+}
+
+void MaxHeapState::initActions() {
+	mActionsHub.setOptionAction(Push, [&]() { mHeap.push(Inputs[Push]->getValue()); });
 }
 
 void MaxHeapState::draw() {

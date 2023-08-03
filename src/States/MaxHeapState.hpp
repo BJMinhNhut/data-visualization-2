@@ -22,6 +22,7 @@ class MaxHeapState : public VisualState {
    private:
 	void initOptions();
 	void initDetails();
+	void initActions();
 
    private:
 	enum Option {
