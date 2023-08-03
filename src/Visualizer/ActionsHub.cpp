@@ -17,7 +17,7 @@ ActionsHub::ActionsHub(const TextureHolder& textures, const FontHolder& fonts,
     : mCurrentOption(0),
       mGUIContainer(),
       mGUICommands(MAX_ACTIONS + 1),
-      mActions(MAX_ACTIONS + 1, []() {}),
+      mActions(MAX_ACTIONS + 1),
       mTextures(textures),
       mFonts(fonts),
       mColors(colors) {
@@ -86,9 +86,13 @@ bool ActionsHub::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
 	mGUICommands[mCurrentOption].handleEvent(event);
 
-	if (event.type == sf::Event::KeyReleased) {
-		if (event.key.code == sf::Keyboard::Enter) {
-			mActions[mCurrentOption]();
+	if (mActions[mCurrentOption] != nullptr) {
+		if (event.type == sf::Event::KeyReleased) {
+			if (event.key.code == sf::Keyboard::Enter) {
+				mActions[mCurrentOption]();
+				mGUIContainer.reset();
+				setCurrentOption(0);
+			}
 		}
 	}
 
