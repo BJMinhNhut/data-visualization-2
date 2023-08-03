@@ -51,10 +51,8 @@ void Container::handleEvent(const sf::Event& event) {
 	if (event.type == sf::Event::MouseButtonReleased) {
 		if (event.mouseButton.button == sf::Mouse::Left) {
 			if (hasSelection()) {
-				//				mChildren[mSelectedChild]->deselect();
 				activate(mSelectedChild);
-				//				mSelectedChild = -1;
-				//				updateSelect(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+				updateSelect(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 			}
 		}
 	} else if (event.type == sf::Event::MouseMoved) {

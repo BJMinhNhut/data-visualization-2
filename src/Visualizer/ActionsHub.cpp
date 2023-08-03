@@ -42,10 +42,10 @@ ActionsHub::ActionsHub(const TextureHolder& textures, const FontHolder& fonts,
 	mGUIContainer.pack(title);
 }
 
-void ActionsHub::addOption(int option, const std::string& title,
+void ActionsHub::addOption(int option, const std::string& title, bool toggle,
                            const GUI::Button::Callback& callback) {
 	auto button = std::make_shared<GUI::Button>(GUI::Button::Command, mFonts, mTextures, mColors);
-	button->setToggle(true);
+	button->setToggle(toggle);
 	button->setCallback(callback);
 	button->setPosition(75.f, 135.f + 45.f * (float)option);
 	button->setText(title);

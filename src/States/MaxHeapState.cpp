@@ -9,24 +9,24 @@
 
 MaxHeapState::MaxHeapState(StateStack& stack, State::Context context)
     : VisualState(stack, context, "Max Heap"), mHeap(*context.fonts, *context.colors) {
-	mHeap.setPosition(context.window->getSize().x / 2.f, 200.f);
+	mHeap.setPosition(context.window->getSize().x / 2.f + 200.f, 200.f);
 	initOptions();
 	initDetails();
 }
 
 void MaxHeapState::initOptions() {
-	mActionsHub.addOption(Create, "Create", [&]() { mActionsHub.setCurrentOption(Create); });
-	mActionsHub.addOption(Push, "Push", [&]() {
+	mActionsHub.addOption(Create, "Create", true, [&]() { mActionsHub.setCurrentOption(Create); });
+	mActionsHub.addOption(Push, "Push", false, [&]() {
 		mActionsHub.setCurrentOption(Push);
 		int value = Random::getInt(0, 99);
 		mHeap.push(value);
 	});
-	mActionsHub.addOption(Pop, "Pop", [&]() {
+	mActionsHub.addOption(Pop, "Pop", false, [&]() {
 		mActionsHub.setCurrentOption(Pop);
 		mHeap.pop();
 	});
-	mActionsHub.addOption(Top, "Top", [&]() { mActionsHub.setCurrentOption(Top); });
-	mActionsHub.addOption(Size, "Size", [&]() { mActionsHub.setCurrentOption(Size); });
+	mActionsHub.addOption(Top, "Top", false, [&]() { mActionsHub.setCurrentOption(Top); });
+	mActionsHub.addOption(Size, "Size", false, [&]() { mActionsHub.setCurrentOption(Size); });
 }
 
 void MaxHeapState::initDetails() {

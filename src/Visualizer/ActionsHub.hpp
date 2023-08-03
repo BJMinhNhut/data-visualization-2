@@ -28,7 +28,8 @@ class ActionsHub : public sf::Drawable, public sf::Transformable, public sf::Non
 	bool handleEvent(const sf::Event& event);
 
 	unsigned int getCurrentOption() const;
-	void addOption(int option, const std::string& title, const GUI::Button::Callback& callback);
+	void addOption(int option, const std::string& title, bool toggle,
+	               const GUI::Button::Callback& callback);
 	void packOptionGUI(int option, GUI::Component::Ptr component);
 	void setCurrentOption(int option);
 	void resetOption();
