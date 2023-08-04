@@ -23,7 +23,11 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/Visualizer/ActionsHub.cpp
         src/Visualizer/ActionsHub.hpp
         src/GUI/Input.cpp
-        src/GUI/Input.hpp)
+        src/GUI/Input.hpp
+        src/GUI/Console.cpp
+        src/GUI/Console.hpp
+        src/Visualizer/Player.cpp
+        src/Visualizer/Player.hpp)
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
 target_compile_features(DataVisualization2 PRIVATE cxx_std_17)
