@@ -58,6 +58,12 @@ void Input::randomizeValue() {
 	setValue(Random::getInt(mMinValue, mMaxValue));
 }
 
+void Input::clear() {
+	std::string().swap(buffer);
+	mText.setString(buffer);
+	mValue = 0;
+}
+
 std::pair<int, int> Input::getRange() const {
 	return std::make_pair(mMinValue, mMaxValue);
 }

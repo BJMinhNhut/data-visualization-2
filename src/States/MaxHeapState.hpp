@@ -29,7 +29,7 @@ class MaxHeapState : public VisualState {
 		None,
 		Create,
 		Push,
-		Pop,
+		Delete,
 		Top,
 		Size,
 		NumOptions,

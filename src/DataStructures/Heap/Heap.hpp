@@ -37,7 +37,9 @@ class Heap : public SceneNode {
 
 	[[nodiscard]] int top() const;
 
-	void pop();
+	void remove(const int& index);
+
+	int getSize() const;
 
    private:
 	void loadArray(const std::vector<int>& array);

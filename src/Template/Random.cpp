@@ -4,12 +4,14 @@
 
 #include "Random.hpp"
 
+#include <cassert>
 #include <chrono>
 
 std::mt19937 rng(std::chrono::steady_clock::now().time_since_epoch().count());
 
 int Random::getInt(int Min, int Max) {
-    return std::uniform_int_distribution<int>(Min, Max)(rng);
+	assert(Min <= Max);
+	return std::uniform_int_distribution<int>(Min, Max)(rng);
 }
 
 std::vector<int> Random::getArray(int minLength, int maxLength, int minVal, int maxVal) {

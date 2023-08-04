@@ -30,6 +30,7 @@ class Input : public Component {
 	void setValue(const int& value);
 	void setRange(const int& minValue, const int& maxValue);
 	void randomizeValue();
+	void clear();
 
 	std::pair<int, int> getRange() const;
 	std::string getStringRange() const;

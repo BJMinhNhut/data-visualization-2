@@ -137,11 +137,13 @@ int Heap::top() const {
 	return mNodes[0]->getIntData();
 }
 
-void Heap::pop() {
-	if (mNodes.empty()) {
-		std::cerr << "Heap is empty!\n";
-		return;
-	}
+void Heap::remove(const int& index) {
+	assert(index >= 0 && index < mNodes.size());
+	// up heap phase
+	mNodes[index]->setData(mNodes[0]->getIntData() + 1);
+	heapifyUp(index);
+
+	// down heap phase
 	mNodes[0]->setData(mNodes.back()->getData());
 
 	if (mNodes.size() > 1) {
@@ -156,6 +158,10 @@ void Heap::pop() {
 	heapifyDown();
 
 	alignBinaryTree();
+}
+
+int Heap::getSize() const {
+	return (int)mNodes.size();
 }
 
 void Heap::heapifyUp(int index) {
