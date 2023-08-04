@@ -19,7 +19,8 @@
 VisualState::VisualState(StateStack& stack, Context context, const std::string& title)
     : State(stack, context),
       mGUIContainer(),
-      mActionsHub(*context.textures, *context.fonts, *context.colors) {
+      mActionsHub(
+          std::make_shared<ActionsHub>(*context.textures, *context.fonts, *context.colors)) {
 	initGUIBase();
 
 	auto titleBar = std::make_shared<GUI::Sprite>(context.textures->get(Textures::TitleBar));
@@ -31,6 +32,8 @@ VisualState::VisualState(StateStack& stack, Context context, const std::string& 
 	titleLabel->setPosition(titleBar->getPosition());
 	titleLabel->alignCenter();
 	mGUIContainer.pack(titleLabel);
+
+	mGUIContainer.pack(mActionsHub);
 }
 
 bool VisualState::selectedTextFile(std::string& dir) {
@@ -82,24 +85,21 @@ void VisualState::draw() {
 	window.setView(window.getDefaultView());
 
 	window.draw(mGUIContainer);
-	window.draw(mActionsHub);
 }
 
 bool VisualState::update(sf::Time dt) {
 	mGUIContainer.update(dt);
-	mActionsHub.update(dt);
 	return true;
 }
 
 bool VisualState::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
-	mActionsHub.handleEvent(event);
 	return false;
 }
 
 /*
  * TODO: Animation Structure
- *  - [] Each GUI component has their class (Console, Controller, CodeBlock,...)
+ *  - [x] Each GUI component has their class (Console, Controller, CodeBlock,...)
  *  - [] GUI::Controller: Play/Pause/Replay/..,
  *  - [] AnimationList inside GUI::Controller
  *  - [] AnimationList keep pointer to Console and CodeBlock
