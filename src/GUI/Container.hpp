@@ -18,25 +18,26 @@ namespace GUI {
     public:
         Container();
 
-        void pack(Component::Ptr component);
+	 void pack(const Component::Ptr& component);
 
-        void activateChild(Component::Ptr component);
+	    void activateChild(const Component::Ptr& component);
 
-        void reset();
+	    void reset();
 
-        virtual bool isSelectable() const;
+	    bool isSelectable() const override;
 
-        virtual void update(sf::Time dt);
+	    bool update(sf::Time dt) override;
 
-        virtual void handleEvent(const sf::Event &event);
+	    bool handleEvent(const sf::Event& event) override;
 
-        void updateSelect(sf::Vector2i point);
+	    bool contains(sf::Vector2i point) const override;
 
-    private:
-        virtual void draw(sf::RenderTarget &target,
-                          sf::RenderStates states) const;
+	    void deselect() override;
 
-        bool hasSelection() const;
+	   private:
+	    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	    bool hasSelection() const;
 
         bool hasActivation() const;
 
@@ -44,7 +45,9 @@ namespace GUI {
 
         void activate(std::size_t index);
 
-    private:
+	    void updateSelect(sf::Vector2i point);
+
+	   private:
         std::vector<Component::Ptr> mChildren;
         int mSelectedChild;
         int mActivatedChild;

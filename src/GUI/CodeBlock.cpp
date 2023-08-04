@@ -43,7 +43,9 @@ namespace GUI {
         return false;
     }
 
-    void CodeBlock::handleEvent(const sf::Event &event) {}
+    bool CodeBlock::handleEvent(const sf::Event& event) {
+	    return true;
+    }
 
     void CodeBlock::draw(sf::RenderTarget &target,
                          sf::RenderStates states) const {

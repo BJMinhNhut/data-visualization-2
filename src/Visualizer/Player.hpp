@@ -1,0 +1,10 @@
+//
+// Created by MINH NHUT on 8/4/2023.
+//
+
+#ifndef DATAVISUALIZATION2_PLAYER_HPP
+#define DATAVISUALIZATION2_PLAYER_HPP
+
+class Player {};
+
+#endif  //DATAVISUALIZATION2_PLAYER_HPP

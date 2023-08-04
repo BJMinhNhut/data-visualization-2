@@ -44,11 +44,11 @@ namespace GUI {
 
         virtual bool contains(sf::Vector2i point) const;
 
-        virtual void update(sf::Time dt);
+	    virtual bool update(sf::Time dt);
 
-        virtual void handleEvent(const sf::Event &event) = 0;
+	    virtual bool handleEvent(const sf::Event& event) = 0;
 
-    private:
+	   private:
         bool mIsSelected;
         bool mIsActive;
     };

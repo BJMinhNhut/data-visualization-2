@@ -38,8 +38,8 @@ namespace GUI {
         return false;
     }
 
-    void Component::update(sf::Time dt) {
-        // do nothing as default
+    bool Component::update(sf::Time dt) {
+	    return true;
     }
 
 }  // namespace GUI

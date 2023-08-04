@@ -204,7 +204,15 @@ void Button::deactivate() {
 	}
 }
 
-void Button::handleEvent(const sf::Event& event) {}
+bool Button::handleEvent(const sf::Event& event) {
+	if (event.type == sf::Event::MouseButtonReleased) {
+		if (event.mouseButton.button == sf::Mouse::Left) {
+			activate();
+			return true;
+		}
+	}
+	return false;
+}
 
 bool Button::contains(sf::Vector2i point) const {
 	sf::IntRect bounds(getPosition().x - mSprite.getGlobalBounds().width / 2.f,

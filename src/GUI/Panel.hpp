@@ -16,14 +16,14 @@ namespace GUI {
         Panel(const float &width, const float &height, const sf::Color &fillColor,
               const sf::Color &outlineColor);
 
-        virtual bool isSelectable() const;
+	 bool isSelectable() const override;
 
-        void handleEvent(const sf::Event &event);
+	    bool handleEvent(const sf::Event& event) override;
 
-    private:
-        virtual void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+	   private:
+	    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    private:
+	   private:
         sf::RectangleShape mRect;
     };
 }  // namespace GUI

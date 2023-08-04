@@ -21,16 +21,16 @@ namespace GUI {
     public:
         explicit Sprite(const sf::Texture &texture);
 
-        virtual bool isSelectable() const;
+	 bool isSelectable() const override;
 
-        void setTexture(const sf::Texture &texture);
+	 void setTexture(const sf::Texture &texture);
 
-        virtual void handleEvent(const sf::Event &event);
+	 bool handleEvent(const sf::Event& event) override;
 
-    private:
-        void draw(sf::RenderTarget &target, sf::RenderStates states) const;
+	private:
+	 void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    private:
+	private:
         sf::Sprite mSprite;
     };
 

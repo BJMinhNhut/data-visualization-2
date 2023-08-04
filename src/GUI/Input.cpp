@@ -111,7 +111,7 @@ void Input::deactivate() {
 		mSprite.setTexture(mNormalTexture, true);
 }
 
-void Input::update(sf::Time dt) {
+bool Input::update(sf::Time dt) {
 	if (isActive()) {
 		cursorCountdown += dt;
 
@@ -121,9 +121,10 @@ void Input::update(sf::Time dt) {
 		}
 	} else
 		cursorDrawable = false;
+	return true;
 }
 
-void Input::handleEvent(const sf::Event& event) {
+bool Input::handleEvent(const sf::Event& event) {
 	if (event.type == sf::Event::KeyPressed || event.type == sf::Event::TextEntered) {
 
 		if (event.type == sf::Event::TextEntered) {
@@ -153,6 +154,7 @@ void Input::handleEvent(const sf::Event& event) {
 
 		alignText();
 	}
+	return true;
 }
 
 bool Input::contains(sf::Vector2i point) const {

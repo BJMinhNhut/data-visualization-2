@@ -38,15 +38,14 @@ namespace GUI {
 
         void alignCenter();
 
-        virtual void handleEvent(const sf::Event &event);
+	    bool handleEvent(const sf::Event& event) override;
 
-    private:
+	   private:
         static Fonts::ID getFontID(Type type);
 
-        void draw(sf::RenderTarget &target,
-                  sf::RenderStates states) const;
+        void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-    private:
+	   private:
         sf::Text mText;
     };
 

@@ -31,9 +31,9 @@ namespace GUI {
 
         bool isSelectable() const override;
 
-        void handleEvent(const sf::Event &event) override;
+	    bool handleEvent(const sf::Event& event) override;
 
-    private:
+	   private:
         void draw(sf::RenderTarget &target,
                   sf::RenderStates states) const override;
 

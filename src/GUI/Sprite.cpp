@@ -23,7 +23,7 @@ namespace GUI {
         Utility::centerOrigin(mSprite);
     }
 
-    void Sprite::handleEvent(const sf::Event &event) {}
+    bool Sprite::handleEvent(const sf::Event& event) {}
 
     void Sprite::draw(sf::RenderTarget &target, sf::RenderStates states) const {
         states.transform *= getTransform();
