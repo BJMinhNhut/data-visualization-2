@@ -133,7 +133,7 @@ void Button::setFont(Type type, const FontHolder& fonts, const ColorHolder& colo
 		case Small:
 			mText.setFont(fonts.get(Fonts::Main));
 			mText.setCharacterSize(16u);
-			mText.setFillColor(colors.get(Colors::Blue));
+			mText.setFillColor(colors.get(Colors::Text));
 			break;
 
 		case Big:
