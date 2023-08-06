@@ -98,19 +98,3 @@ bool ActionsHub::handleEvent(const sf::Event& event) {
 
 	return false;
 }
-
-bool ActionsHub::isSelectable() const {
-	return true;
-}
-
-bool ActionsHub::contains(sf::Vector2i point) const {
-	if (mGUIContainer.contains(point))
-		return true;
-	return std::any_of(mGUICommands.begin(), mGUICommands.end(),
-	                   [&](const GUI::Container& detail) { return detail.contains(point); });
-}
-
-void ActionsHub::deselect() {
-	mGUIContainer.deselect();
-	mGUICommands[mCurrentOption].deselect();
-}

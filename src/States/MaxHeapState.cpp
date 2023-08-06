@@ -18,21 +18,21 @@ MaxHeapState::MaxHeapState(StateStack& stack, State::Context context)
 }
 
 void MaxHeapState::initOptions() {
-	mActionsHub->addOption(Create, "Create", [&]() { mActionsHub->setCurrentOption(Create); });
-	mActionsHub->addOption(Push, "Push", [&]() {
-		mActionsHub->setCurrentOption(Push);
+	mActionsHub.addOption(Create, "Create", [&]() { mActionsHub.setCurrentOption(Create); });
+	mActionsHub.addOption(Push, "Push", [&]() {
+		mActionsHub.setCurrentOption(Push);
 		Inputs[Push]->randomizeValue();
 	});
-	mActionsHub->addOption(Delete, "Delete", [&]() {
-		mActionsHub->setCurrentOption(Delete);
+	mActionsHub.addOption(Delete, "Delete", [&]() {
+		mActionsHub.setCurrentOption(Delete);
 		Inputs[Delete]->setRange(0, mHeap.getSize() - 1);
 		if (mHeap.getSize() > 0)
 			Inputs[Delete]->randomizeValue();
 		else
 			Inputs[Delete]->clear();
 	});
-	mActionsHub->addOption(Top, "Top", [&]() { mActionsHub->setCurrentOption(Top); });
-	mActionsHub->addOption(Size, "Size", [&]() { mActionsHub->setCurrentOption(Size); });
+	mActionsHub.addOption(Top, "Top", [&]() { mActionsHub.setCurrentOption(Top); });
+	mActionsHub.addOption(Size, "Size", [&]() { mActionsHub.setCurrentOption(Size); });
 }
 
 void MaxHeapState::initDetails() {
@@ -42,7 +42,7 @@ void MaxHeapState::initDetails() {
 	randomButton->setCallback([&]() { mHeap.randomize(); });
 	randomButton->setPosition(250.f, 200.f);
 	randomButton->setText("Random");
-	mActionsHub->packOptionGUI(Create, randomButton);
+	mActionsHub.packOptionGUI(Create, randomButton);
 
 	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                *getContext().textures, *getContext().colors);
@@ -53,24 +53,24 @@ void MaxHeapState::initDetails() {
 	});
 	fileButton->setPosition(250.f, 275.f);
 	fileButton->setText("Load file");
-	mActionsHub->packOptionGUI(Create, fileButton);
+	mActionsHub.packOptionGUI(Create, fileButton);
 
 	// Push
 	Inputs[Push] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
 	                                            *getContext().colors);
 	Inputs[Push]->setPosition(250.f, 250.f);
-	mActionsHub->packOptionGUI(Push, Inputs[Push]);
+	mActionsHub.packOptionGUI(Push, Inputs[Push]);
 
 	// Delete
 	Inputs[Delete] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
 	                                              *getContext().colors);
 	Inputs[Delete]->setPosition(250.f, 250.f);
-	mActionsHub->packOptionGUI(Delete, Inputs[Delete]);
+	mActionsHub.packOptionGUI(Delete, Inputs[Delete]);
 }
 
 void MaxHeapState::initActions() {
-	mActionsHub->setOptionAction(Push, [&]() { mHeap.push(Inputs[Push]->getValue()); });
-	mActionsHub->setOptionAction(Delete, [&]() { mHeap.remove(Inputs[Delete]->getValue()); });
+	mActionsHub.setOptionAction(Push, [&]() { mHeap.push(Inputs[Push]->getValue()); });
+	mActionsHub.setOptionAction(Delete, [&]() { mHeap.remove(Inputs[Delete]->getValue()); });
 }
 
 void MaxHeapState::draw() {

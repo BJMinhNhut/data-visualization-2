@@ -16,20 +16,16 @@
 
 #include <vector>
 
-class ActionsHub : public GUI::Component {
+class ActionsHub : public sf::Drawable, public sf::Transformable, public sf::NonCopyable {
    public:
 	static const int MAX_ACTIONS;
-	typedef std::shared_ptr<ActionsHub> Ptr;
 
    public:
 	ActionsHub(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-	bool update(sf::Time dt) override;
-	bool handleEvent(const sf::Event& event) override;
-	bool isSelectable() const override;
-	bool contains(sf::Vector2i point) const override;
-	void deselect() override;
+	bool update(sf::Time dt);
+	bool handleEvent(const sf::Event& event);
 
 	unsigned int getCurrentOption() const;
 	void addOption(int option, const std::string& title, const GUI::Button::Callback& callback);
