@@ -27,6 +27,12 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 	                                                colors.get(Colors::UIBorder));
 	playerPanel->setPosition(0.f, 710.f);
 	mGUIContainer.pack(playerPanel);
+
+	mConsole = std::make_shared<GUI::Console>(fonts, colors, 30);
+	mConsole->setPosition(consolePanel->getPosition() + sf::Vector2f(10.f, 10.f));
+	mGUIContainer.pack(mConsole);
+
+	mConsole->log(GUI::Console::Info, "");
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {

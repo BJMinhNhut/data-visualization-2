@@ -19,7 +19,6 @@ namespace GUI {
     : mText(text, fonts.get(getFontID(type)), getFontSize(type)) {
 	mText.setFillColor(colors.get(Colors::Text));
 	    mText.setOrigin(0.f, std::floor(mText.getGlobalBounds().height / 2.f));
-	    mText.setLineSpacing(1.5f);
     }
 
     bool Label::isSelectable() const {

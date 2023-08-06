@@ -5,18 +5,23 @@
 #include "Console.hpp"
 #include "Template/Constants.hpp"
 
+#include <sstream>
+
 namespace GUI {
-Console::Console(const FontHolder& fonts, const ColorHolder& colors)
+Console::Console(const FontHolder& fonts, const ColorHolder& colors, const int& width)
     : Label(Mono, "", fonts, colors),
       currentType(Info),
       InfoColor(colors.get(Colors::Blue)),
-      ErrorColor(colors.get(Colors::Red)) {}
+      ErrorColor(colors.get(Colors::Red)),
+      mWidth(width) {}
 
-void Console::log(LogType type, const std::string& text) {
+void Console::log(LogType type, std::string text) {
+
 	if (type == Console::Info)
-		setText("[INFO] " + text);
+		text = "[INFO] " + text;
 	else if (type == Console::Error)
-		setText("[ERROR] " + text);
+		text = "[ERROR] " + text;
+	setText(wrapText(text));
 
 	currentType = type;
 	setColor(getColorFromType(type));
@@ -39,6 +44,27 @@ sf::Color Console::getColorFromType(LogType type) const {
 		default:
 			return InfoColor;
 	}
+}
+
+std::string Console::wrapText(const std::string& text) const {
+	std::stringstream mStream(text);
+	std::string word;
+	std::string ans;
+	unsigned int lineLength = 0;
+	while (mStream >> word) {
+		if (ans.length() > 0)
+			word.insert(word.begin(), ' ');
+		if (lineLength + word.length() <= mWidth) {
+			lineLength += word.length();
+			ans += word;
+		} else {
+			if (word[0] == ' ')
+				word.erase(word.begin());
+			ans += '\n' + word;
+			lineLength = word.length();
+		}
+	}
+	return ans;
 }
 
 }  // namespace GUI
