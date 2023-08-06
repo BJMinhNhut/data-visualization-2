@@ -27,6 +27,8 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/GUI/Console.cpp
         src/GUI/Console.hpp
         src/Visualizer/Player.cpp
+        src/Visualizer/Player.hpp
+        src/Visualizer/Player.cpp
         src/Visualizer/Player.hpp)
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)

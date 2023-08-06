@@ -19,7 +19,8 @@
 VisualState::VisualState(StateStack& stack, Context context, const std::string& title)
     : State(stack, context),
       mGUIContainer(),
-      mActionsHub(*context.textures, *context.fonts, *context.colors) {
+      mActionsHub(*context.textures, *context.fonts, *context.colors),
+      mPlayer(*context.textures, *context.fonts, *context.colors) {
 	initGUIBase();
 
 	auto titleBar = std::make_shared<GUI::Sprite>(context.textures->get(Textures::TitleBar));
@@ -83,17 +84,20 @@ void VisualState::draw() {
 
 	window.draw(mGUIContainer);
 	window.draw(mActionsHub);
+	window.draw(mPlayer);
 }
 
 bool VisualState::update(sf::Time dt) {
 	mGUIContainer.update(dt);
 	mActionsHub.update(dt);
+	mPlayer.update(dt);
 	return true;
 }
 
 bool VisualState::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
 	mActionsHub.handleEvent(event);
+	mPlayer.handleEvent(event);
 	return false;
 }
 

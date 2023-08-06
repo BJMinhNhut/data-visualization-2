@@ -40,7 +40,7 @@ void MaxHeapState::initDetails() {
 	auto randomButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                  *getContext().textures, *getContext().colors);
 	randomButton->setCallback([&]() { mHeap.randomize(); });
-	randomButton->setPosition(250.f, 200.f);
+	randomButton->setPosition(250.f, 550.f);
 	randomButton->setText("Random");
 	mActionsHub.packOptionGUI(Create, randomButton);
 
@@ -51,21 +51,21 @@ void MaxHeapState::initDetails() {
 		if (selectedTextFile(fileDir))
 			mHeap.loadFromFile(fileDir);
 	});
-	fileButton->setPosition(250.f, 275.f);
+	fileButton->setPosition(250.f, 600.f);
 	fileButton->setText("Load file");
 	mActionsHub.packOptionGUI(Create, fileButton);
 
 	// Push
 	Inputs[Push] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
 	                                            *getContext().colors);
-	Inputs[Push]->setPosition(250.f, 250.f);
+	Inputs[Push]->setPosition(250.f, 590.f);
 	Inputs[Push]->setRange(Heap::MIN_VALUE, Heap::MAX_VALUE);
 	mActionsHub.packOptionGUI(Push, Inputs[Push]);
 
 	// Delete
 	Inputs[Delete] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
 	                                              *getContext().colors);
-	Inputs[Delete]->setPosition(250.f, 250.f);
+	Inputs[Delete]->setPosition(250.f, 590.f);
 	mActionsHub.packOptionGUI(Delete, Inputs[Delete]);
 }
 
