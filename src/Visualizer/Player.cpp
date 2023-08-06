@@ -3,6 +3,7 @@
 //
 
 #include "Player.hpp"
+#include "DataStructures/Heap/HeapCode.hpp"
 #include "GUI/Panel.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
@@ -30,9 +31,32 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 
 	mConsole = std::make_shared<GUI::Console>(fonts, colors, 30);
 	mConsole->setPosition(consolePanel->getPosition() + sf::Vector2f(10.f, 10.f));
+	mConsole->log(GUI::Console::Info, "");
 	mGUIContainer.pack(mConsole);
 
-	mConsole->log(GUI::Console::Info, "");
+	mCodeBlock = std::make_shared<GUI::CodeBlock>(fonts, colors);
+	mCodeBlock->setPosition(codePanel->getPosition());
+	mGUIContainer.pack(mCodeBlock);
+}
+
+void Player::loadCode(const std::string& code) {
+	mCodeBlock->loadCode(code);
+}
+
+void Player::clearCode() {
+	mCodeBlock->loadCode("");
+}
+
+void Player::callError(const std::string& text) {
+	mConsole->log(GUI::Console::Error, text);
+}
+
+void Player::callInfo(const std::string& text) {
+	mConsole->log(GUI::Console::Info, text);
+}
+
+void Player::cleanLog() {
+	mConsole->clean();
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {

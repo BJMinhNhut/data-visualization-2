@@ -12,8 +12,8 @@
 namespace GUI {
     CodeBlock::CodeBlock(const FontHolder &fonts,
                          const ColorHolder &colors)
-            : mText("", fonts.get(Fonts::Mono), 18u),
-              mHighlight(),
+    : mText("", fonts.get(Fonts::Mono), 16u),
+      mHighlight(),
               mLinePositions(),
               highlightList(),
               highlightColor(colors.get(Colors::Highlight)) {
@@ -63,11 +63,10 @@ namespace GUI {
     }
 
     void CodeBlock::getHighLightRectangle() {
-        std::vector<sf::RectangleShape>().swap(mHighlight);
-        for (int id = 0; id < mLinePositions.size(); ++id) {
-            mHighlight[id] =
-                    sf::RectangleShape(sf::Vector2f(500.f, 25.f));
-            mHighlight[id].setPosition(mLinePositions[id]);
+	    mHighlight.resize(mLinePositions.size());
+	    for (int id = 0; id < mLinePositions.size(); ++id) {
+            mHighlight[id] = sf::RectangleShape(sf::Vector2f(350.f, 20.f));
+		    mHighlight[id].setPosition(mLinePositions[id]);
             mHighlight[id].setFillColor(highlightColor);
         }
     }

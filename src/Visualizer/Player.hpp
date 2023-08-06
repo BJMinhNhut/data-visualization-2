@@ -6,6 +6,7 @@
 #define DATAVISUALIZATION2_PLAYER_HPP
 
 #include "GUI/Button.hpp"
+#include "GUI/CodeBlock.hpp"
 #include "GUI/Console.hpp"
 #include "GUI/Container.hpp"
 #include "Template/ColorHolder.hpp"
@@ -25,6 +26,15 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	void update(sf::Time dt);
 	void handleEvent(const sf::Event& event);
 
+	// CodeBlock functions
+	void loadCode(const std::string& code);
+	void clearCode();
+
+	// Console functions
+	void callError(const std::string& text);
+	void callInfo(const std::string& text);
+	void cleanLog();
+
    private:
 	const TextureHolder& mTextures;
 	const FontHolder& mFonts;
@@ -33,6 +43,7 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	// GUI
 	GUI::Container mGUIContainer;
 	GUI::Console::Ptr mConsole;
+	GUI::CodeBlock::Ptr mCodeBlock;
 
 	// Speed
 	static const std::vector<std::pair<std::string, float>> mSpeedMap;

@@ -29,7 +29,8 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/Visualizer/Player.cpp
         src/Visualizer/Player.hpp
         src/Visualizer/Player.cpp
-        src/Visualizer/Player.hpp)
+        src/Visualizer/Player.hpp
+        src/DataStructures/Heap/HeapCode.hpp)
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
 target_compile_features(DataVisualization2 PRIVATE cxx_std_17)
