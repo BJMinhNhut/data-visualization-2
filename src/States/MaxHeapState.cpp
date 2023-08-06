@@ -3,6 +3,7 @@
 //
 
 #include "MaxHeapState.hpp"
+#include "GUI/Label.hpp"
 #include "Template/Random.hpp"
 
 #include <iostream>
@@ -56,6 +57,12 @@ void MaxHeapState::initDetails() {
 	mActionsHub.packOptionGUI(Create, fileButton);
 
 	// Push
+	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Main, "Value", *getContext().fonts,
+	                                               *getContext().colors);
+	valueLabel->setPosition(250.f, 555.f);
+	valueLabel->alignCenter();
+	mActionsHub.packOptionGUI(Push, valueLabel);
+
 	Inputs[Push] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
 	                                            *getContext().colors);
 	Inputs[Push]->setPosition(250.f, 590.f);
@@ -63,6 +70,12 @@ void MaxHeapState::initDetails() {
 	mActionsHub.packOptionGUI(Push, Inputs[Push]);
 
 	// Delete
+	auto indexLabel = std::make_shared<GUI::Label>(GUI::Label::Main, "Index", *getContext().fonts,
+	                                               *getContext().colors);
+	indexLabel->setPosition(250.f, 555.f);
+	indexLabel->alignCenter();
+	mActionsHub.packOptionGUI(Delete, indexLabel);
+
 	Inputs[Delete] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
 	                                              *getContext().colors);
 	Inputs[Delete]->setPosition(250.f, 590.f);

@@ -15,41 +15,39 @@
 
 namespace GUI {
 
-    class Label : public Component {
-    public:
-        enum Type {
-            Main,
-            Bold,
-            Mono,
-        };
+class Label : public Component {
+   public:
+	enum Type {
+		Main,
+		Bold,
+		Mono,
+	};
 
-    public:
-        typedef std::shared_ptr<Label> Ptr;
+   public:
+	typedef std::shared_ptr<Label> Ptr;
 
-    public:
-        Label(Type type, const std::string &text, const FontHolder &fonts,
-              const ColorHolder &colors);
+   public:
+	Label(Type type, const std::string& text, const FontHolder& fonts, const ColorHolder& colors);
 
-        virtual bool isSelectable() const;
+	bool isSelectable() const override;
 
-        void setText(const std::string &text);
+	void setText(const std::string& text);
 
-        void setColor(const sf::Color &color);
+	void setColor(const sf::Color& color);
 
-        void alignCenter();
+	void alignCenter();
 
-        virtual void handleEvent(const sf::Event &event);
+	void handleEvent(const sf::Event& event) override;
 
-    private:
-        static Fonts::ID getFontID(Type type);
+   private:
+	static Fonts::ID getFontID(Type type);
 
-        void draw(sf::RenderTarget &target,
-                  sf::RenderStates states) const;
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    private:
-        sf::Text mText;
-    };
+   private:
+	sf::Text mText;
+};
 
 }  // namespace GUI
 
-#endif //DATAVISUALIZATION2_LABEL_HPP
+#endif  //DATAVISUALIZATION2_LABEL_HPP

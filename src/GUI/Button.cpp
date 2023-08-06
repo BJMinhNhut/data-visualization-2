@@ -144,7 +144,7 @@ void Button::setFont(Type type, const FontHolder& fonts, const ColorHolder& colo
 
 		default:
 			mText.setFont(fonts.get(Fonts::Main));
-			mText.setCharacterSize(17u);
+			mText.setCharacterSize(16u);
 			mText.setFillColor(colors.get(Colors::Text));
 			break;
 	}

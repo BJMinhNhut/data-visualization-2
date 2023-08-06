@@ -10,6 +10,8 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include <cmath>
+
 const int ActionsHub::MAX_ACTIONS = 5;
 
 ActionsHub::ActionsHub(const TextureHolder& textures, const FontHolder& fonts,
@@ -39,7 +41,7 @@ void ActionsHub::addOption(int option, const std::string& title,
 	auto button = std::make_shared<GUI::Button>(GUI::Button::Command, mFonts, mTextures, mColors);
 	button->setToggle(true);
 	button->setCallback(callback);
-	button->setPosition(75.f, 470.f - HEIGHT / 2.f + 10.f + HEIGHT * (float)option);
+	button->setPosition(75.f, 470.f - std::floor(HEIGHT / 2.f) + 10.f + HEIGHT * (float)option);
 	button->setText(title);
 	mGUIContainer.pack(button);
 }
