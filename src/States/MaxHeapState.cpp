@@ -59,6 +59,7 @@ void MaxHeapState::initDetails() {
 	Inputs[Push] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
 	                                            *getContext().colors);
 	Inputs[Push]->setPosition(250.f, 250.f);
+	Inputs[Push]->setRange(Heap::MIN_VALUE, Heap::MAX_VALUE);
 	mActionsHub.packOptionGUI(Push, Inputs[Push]);
 
 	// Delete
