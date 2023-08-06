@@ -3,7 +3,6 @@
 //
 
 #include "Player.hpp"
-#include "DataStructures/Heap/HeapCode.hpp"
 #include "GUI/Panel.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
