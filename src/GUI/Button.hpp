@@ -20,80 +20,83 @@
 #include <vector>
 
 namespace GUI {
-class Button : public Component {
-   public:
-	enum Type {
-		Home,
-		Back,
-		Command,
-		Checkbox,
-		Play,
-		Pause,
-		Replay,
-		SmallArrow,
-		Arrow,
-		DoubleArrow,
-		Small,
-		Big,
-		MenuHash,
-		MenuAVL,
-		Menu234,
-		MenuMinHeap,
-		MenuMaxHeap,
-		MenuTrie,
-		MenuGraph,
-	};
+    class Button : public Component {
+    public:
+        enum Type {
+            Home,
+            Back,
+            Command,
+            Checkbox,
+            Play,
+            Pause,
+            Replay,
+            SmallArrow,
+            Arrow,
+            DoubleArrow,
+            Small,
+            Big,
+            MenuHash,
+            MenuAVL,
+            Menu234,
+            MenuMinHeap,
+            MenuMaxHeap,
+            MenuTrie,
+            MenuGraph,
+        };
 
-	typedef std::shared_ptr<Button> Ptr;
-	typedef std::function<void()> Callback;
+    public:
+        typedef std::shared_ptr<Button> Ptr;
+        typedef std::function<void()> Callback;
 
-   public:
-	Button(Type type, const FontHolder& fonts, const TextureHolder& textures,
-	       const ColorHolder& colors);
+    public:
+        Button(Type type, const FontHolder &fonts,
+               const TextureHolder &textures, const ColorHolder &colors);
 
-	void setCallback(Callback callback);
+        void setCallback(Callback callback);
 
-	void setText(const std::string& text);
+        void setText(const std::string &text);
 
-	void setToggle(bool flag);
+        void setToggle(bool flag);
 
-	bool isSelectable() const override;
+        virtual bool isSelectable() const;
 
-	void select() override;
+        virtual void select();
 
-	void deselect() override;
+        virtual void deselect();
 
-	void activate() override;
+        virtual void activate();
 
-	void deactivate() override;
+        virtual void deactivate();
 
-	bool contains(sf::Vector2i point) const override;
+        virtual void handleEvent(const sf::Event &event);
 
-	bool handleEvent(const sf::Event& event) override;
+        virtual bool contains(sf::Vector2i point) const;
 
-   private:
-	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    private:
+        virtual void draw(sf::RenderTarget &target,
+                          sf::RenderStates states) const;
 
-	static Textures::ID getNormalTextureID(Type type);
+        static Textures::ID getNormalTextureID(Type type);
 
-	static Textures::ID getSelectedTextureID(Type type);
+        static Textures::ID getSelectedTextureID(Type type);
 
-	static Textures::ID getPressedTextureID(Type type);
+        static Textures::ID getPressedTextureID(Type type);
 
-	void setFont(Type type, const FontHolder& fonts, const ColorHolder& colors);
+        void setFont(Type type, const FontHolder &fonts,
+                     const ColorHolder &colors);
 
-   private:
-	Callback mCallback;
-	const sf::Texture mNormalTexture;
-	const sf::Texture mSelectedTexture;
-	const sf::Texture mPressedTexture;
+    private:
+        Callback mCallback;
+        const sf::Texture mNormalTexture;
+        const sf::Texture mSelectedTexture;
+        const sf::Texture mPressedTexture;
 
-	sf::Sprite mSprite;
-	sf::Text mText;
+        sf::Sprite mSprite;
+        sf::Text mText;
 
-	bool mIsToggle;
-};
+        bool mIsToggle;
+    };
 
 }  // namespace GUI
 
-#endif  //DATAVISUALIZATION2_BUTTON_HPP
+#endif //DATAVISUALIZATION2_BUTTON_HPP

@@ -21,7 +21,7 @@ namespace GUI {
         return false;
     }
 
-    bool Panel::handleEvent(const sf::Event& event) {}
+    void Panel::handleEvent(const sf::Event &event) {}
 
     void Panel::draw(sf::RenderTarget &target, sf::RenderStates states) const {
         states.transform *= getTransform();

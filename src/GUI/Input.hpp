@@ -43,8 +43,8 @@ class Input : public Component {
 	void activate() override;
 	void deactivate() override;
 
-	bool update(sf::Time dt) override;
-	bool handleEvent(const sf::Event& event) override;
+	void update(sf::Time dt) override;
+	void handleEvent(const sf::Event& event) override;
 	bool contains(sf::Vector2i point) const override;
 
 	ValidationResult validate() const;

@@ -49,9 +49,7 @@ namespace GUI {
         }
     }
 
-    bool Label::handleEvent(const sf::Event& event) {
-	    return true;
-    }
+    void Label::handleEvent(const sf::Event &event) {}
 
     void Label::draw(sf::RenderTarget &target,
                      sf::RenderStates states) const {
