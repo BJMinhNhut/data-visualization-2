@@ -20,6 +20,9 @@
 
 class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopyable {
    public:
+	enum State { Play, Pause, Replay, numStates };
+
+   public:
 	Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
@@ -35,6 +38,11 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	void callInfo(const std::string& text);
 	void cleanLog();
 
+	// Controller
+	State getCurrentState() const;
+	void increaseSpeed();
+	void decreaseSpeed();
+
    private:
 	const TextureHolder& mTextures;
 	const FontHolder& mFonts;
@@ -44,6 +52,8 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	GUI::Container mGUIContainer;
 	GUI::Console::Ptr mConsole;
 	GUI::CodeBlock::Ptr mCodeBlock;
+	GUI::Label::Ptr mSpeed;
+	std::vector<GUI::Container> ControllerGUI;
 
 	// Speed
 	static const std::vector<std::pair<std::string, float>> mSpeedMap;
