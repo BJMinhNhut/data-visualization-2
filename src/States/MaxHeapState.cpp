@@ -57,7 +57,7 @@ void MaxHeapState::initDetails() {
 	mActionsHub.packOptionGUI(Create, fileButton);
 
 	// Push
-	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Main, "Value", *getContext().fonts,
+	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Value", *getContext().fonts,
 	                                               *getContext().colors);
 	valueLabel->setPosition(250.f, 555.f);
 	valueLabel->alignCenter();
@@ -70,7 +70,7 @@ void MaxHeapState::initDetails() {
 	mActionsHub.packOptionGUI(Push, Inputs[Push]);
 
 	// Delete
-	auto indexLabel = std::make_shared<GUI::Label>(GUI::Label::Main, "Index", *getContext().fonts,
+	auto indexLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Index", *getContext().fonts,
 	                                               *getContext().colors);
 	indexLabel->setPosition(250.f, 555.f);
 	indexLabel->alignCenter();

@@ -21,6 +21,7 @@ class Label : public Component {
 		Main,
 		Bold,
 		Mono,
+		Small,
 	};
 
    public:
@@ -41,6 +42,7 @@ class Label : public Component {
 
    private:
 	static Fonts::ID getFontID(Type type);
+	static unsigned int getFontSize(Type type);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
