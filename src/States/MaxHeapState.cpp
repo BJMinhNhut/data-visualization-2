@@ -19,21 +19,32 @@ MaxHeapState::MaxHeapState(StateStack& stack, State::Context context)
 }
 
 void MaxHeapState::initOptions() {
-	mActionsHub.addOption(Create, "Create", [&]() { mActionsHub.setCurrentOption(Create); });
+	mActionsHub.addOption(Create, "Create", [&]() {
+		mActionsHub.setCurrentOption(Create);
+		mPlayer.callInfo("Init a new heap");
+	});
 	mActionsHub.addOption(Push, "Push", [&]() {
 		mActionsHub.setCurrentOption(Push);
+		mPlayer.callInfo("Push a new value to heap");
 		Inputs[Push]->randomizeValue();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
+		mPlayer.callInfo("Delete a node from heap by ID");
 		Inputs[Delete]->setRange(0, mHeap.getSize() - 1);
 		if (mHeap.getSize() > 0)
 			Inputs[Delete]->randomizeValue();
 		else
 			Inputs[Delete]->clear();
 	});
-	mActionsHub.addOption(Top, "Top", [&]() { mActionsHub.setCurrentOption(Top); });
-	mActionsHub.addOption(Size, "Size", [&]() { mActionsHub.setCurrentOption(Size); });
+	mActionsHub.addOption(Top, "Top", [&]() {
+		mActionsHub.setCurrentOption(Top);
+		mPlayer.callInfo("Get value of the top node");
+	});
+	mActionsHub.addOption(Size, "Size", [&]() {
+		mActionsHub.setCurrentOption(Size);
+		mPlayer.callInfo("Get size of heap");
+	});
 }
 
 void MaxHeapState::initDetails() {
