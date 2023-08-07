@@ -157,3 +157,6 @@ void Player::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
 	ControllerGUI[getCurrentState()].handleEvent(event);
 }
+void Player::highlight(const std::vector<int>& lineIDs) {
+	mCodeBlock->setHighlight(lineIDs);
+}

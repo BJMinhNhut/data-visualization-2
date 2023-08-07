@@ -20,6 +20,9 @@
 
 class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopyable {
    public:
+	typedef std::shared_ptr<Player> Ptr;
+
+   public:
 	enum State { Play, Pause, Replay, numStates };
 
    public:
@@ -31,6 +34,7 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 
 	// CodeBlock functions
 	void loadCode(const std::string& code);
+	void highlight(const std::vector<int>& lineIDs);
 	void clearCode();
 
 	// Console functions

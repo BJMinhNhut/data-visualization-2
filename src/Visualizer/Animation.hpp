@@ -11,20 +11,16 @@
 #include <functional>
 
 class Animation {
-public:
-    explicit Animation(const std::function<void()> &forward);
+   public:
+	explicit Animation(const std::function<void()>& forward,
+	                   const std::function<void()>& backward = nullptr);
 
-    Animation(const std::function<void()> &forward,
-              const std::function<void()> &backward);
+	void play();
+	void revert();
 
-    void play();
-
-    void reverse();
-
-private:
-    std::function<void()> mForward;
-    std::function<void()> mBackward;
+   private:
+	const std::function<void()>& mForward;
+	const std::function<void()>& mBackward;
 };
 
-
-#endif //DATAVISUALIZATION2_ANIMATION_HPP
+#endif  //DATAVISUALIZATION2_ANIMATION_HPP

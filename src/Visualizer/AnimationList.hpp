@@ -5,58 +5,54 @@
 #ifndef DATAVISUALIZATION2_ANIMATIONLIST_HPP
 #define DATAVISUALIZATION2_ANIMATIONLIST_HPP
 
-
 #include "Animation.hpp"
+#include "Player.hpp"
 
 #include "SFML/System/NonCopyable.hpp"
 
 #include <vector>
 
-class AnimationList {
-public:
-    AnimationList();
+class AnimationList : public sf::NonCopyable {
+   public:
+	typedef std::function<void()> callback;
 
-    bool isFinished() const;
+   public:
+	AnimationList(const Player::Ptr& player);
 
-    unsigned int getProgress() const;
+	[[nodiscard]] bool isFinished() const;
+	[[nodiscard]] unsigned int getProgress() const;
+	[[nodiscard]] unsigned int getSize() const;
+	[[nodiscard]] float getSpeed() const;
 
-    unsigned int getSize() const;
+	[[nodiscard]] bool isEmpty() const;
+	[[nodiscard]] bool isPlaying() const;
 
-    float getSpeed() const;
+	void push(const callback& forward, const callback& backward, const std::vector<int>& highlights,
+	          const std::string& description);
+	void clear();
 
-    bool isEmpty() const;
+	void play();
+	void pause();
+	void playNext();
+	void playPrevious();
+	void goToFront();
+	void goToBack();
 
-    bool isPlaying() const;
+	void resetCoolDown();
+	void setSpeed(const float& speed);
 
-    void push(const Animation &animation);
+	void update(sf::Time dt);
 
-    void clear();
+   private:
+	const Player::Ptr& mPlayer;
 
-    void play();
+	sf::Time mCoolDown;
+	float mSpeed;
 
-    void pause();
+	unsigned int currentAnimation;
+	bool mIsPlaying;
 
-    void playNext();
-
-    void playPrevious();
-
-    void goToFront();
-
-    void goToBack();
-
-    void resetCoolDown();
-
-    void setSpeed(const float &speed);
-
-    void update(sf::Time dt);
-
-private:
-    unsigned int currentAnimation;
-    sf::Time mCooldown;
-    float mSpeed;
-    bool mIsPlaying;
-    std::vector<Animation> mList;
+	std::vector<Animation> mList;
 };
 
-
-#endif //DATAVISUALIZATION2_ANIMATIONLIST_HPP
+#endif  //DATAVISUALIZATION2_ANIMATIONLIST_HPP
