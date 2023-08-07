@@ -6,6 +6,8 @@
 #define DATAVISUALIZATION2_ANIMATIONLIST_HPP
 
 #include "Animation.hpp"
+#include "GUI/CodeBlock.hpp"
+#include "GUI/Console.hpp"
 #include "Player.hpp"
 
 #include "SFML/System/NonCopyable.hpp"
@@ -14,10 +16,7 @@
 
 class AnimationList : public sf::NonCopyable {
    public:
-	typedef std::function<void()> callback;
-
-   public:
-	AnimationList(const Player::Ptr& player);
+	AnimationList(const GUI::CodeBlock::Ptr& codeblock, const GUI::Console::Ptr& console);
 
 	[[nodiscard]] bool isFinished() const;
 	[[nodiscard]] unsigned int getProgress() const;
@@ -27,8 +26,7 @@ class AnimationList : public sf::NonCopyable {
 	[[nodiscard]] bool isEmpty() const;
 	[[nodiscard]] bool isPlaying() const;
 
-	void push(const callback& forward, const callback& backward, const std::vector<int>& highlights,
-	          const std::string& description);
+	void push(const Animation& animation);
 	void clear();
 
 	void play();
@@ -44,7 +42,11 @@ class AnimationList : public sf::NonCopyable {
 	void update(sf::Time dt);
 
    private:
-	const Player::Ptr& mPlayer;
+	void play(const unsigned int& id);
+
+   private:
+	const GUI::CodeBlock::Ptr& mCodeBlock;
+	const GUI::Console::Ptr& mConsole;
 
 	sf::Time mCoolDown;
 	float mSpeed;

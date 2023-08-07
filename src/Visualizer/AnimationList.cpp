@@ -6,12 +6,13 @@
 
 #include <iostream>
 
-AnimationList::AnimationList(const Player::Ptr& player)
+AnimationList::AnimationList(const GUI::CodeBlock::Ptr& codeblock, const GUI::Console::Ptr& console)
     : currentAnimation(0),
       mIsPlaying(false),
       mCoolDown(sf::seconds(0.f)),
       mSpeed(1.f),
-      mPlayer(player),
+      mCodeBlock(codeblock),
+      mConsole(console),
       mList() {}
 
 bool AnimationList::isFinished() const {
@@ -38,15 +39,8 @@ bool AnimationList::isPlaying() const {
 	return mIsPlaying;
 }
 
-void AnimationList::push(const callback& forward, const callback& backward,
-                         const std::vector<int>& lineIDs, const std::string& description) {
-	mList.emplace_back(
-	    [&]() {
-		    mPlayer->highlight(lineIDs);
-		    mPlayer->callInfo(description);
-		    forward();
-	    },
-	    [&]() { backward(); });
+void AnimationList::push(const Animation& animation) {
+	mList.push_back(animation);
 }
 
 void AnimationList::play() {
@@ -70,10 +64,16 @@ void AnimationList::clear() {
 	mCoolDown = sf::seconds(0.f);
 }
 
+void AnimationList::play(const unsigned int& id) {
+	mList[id].play();
+	mCodeBlock->setHighlight(mList[id].getLineIDs());
+	mConsole->log(GUI::Console::Info, mList[id].getDescription());
+}
+
 void AnimationList::playNext() {
 	if (currentAnimation == mList.size())
 		return;
-	mList[currentAnimation].play();
+	play(currentAnimation);
 	currentAnimation++;
 	resetCoolDown();
 }
@@ -86,7 +86,7 @@ void AnimationList::playPrevious() {
 
 	if (currentAnimation >= 1) {
 		mList[currentAnimation - 1].revert();
-		mList[currentAnimation - 1].play();
+		play(currentAnimation - 1);
 	}
 	resetCoolDown();
 }
