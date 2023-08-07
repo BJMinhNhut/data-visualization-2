@@ -8,13 +8,10 @@
 #include "Animation.hpp"
 #include "GUI/CodeBlock.hpp"
 #include "GUI/Console.hpp"
-#include "Player.hpp"
-
-#include "SFML/System/NonCopyable.hpp"
 
 #include <vector>
 
-class AnimationList : public sf::NonCopyable {
+class AnimationList {
    public:
 	AnimationList(const GUI::CodeBlock::Ptr& codeblock, const GUI::Console::Ptr& console);
 
