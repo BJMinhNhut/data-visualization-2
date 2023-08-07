@@ -98,17 +98,19 @@ bool VisualState::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
 	mActionsHub.handleEvent(event);
 	mPlayer.handleEvent(event);
+
 	return false;
 }
 
 /*
  * TODO: Animation Structure
- *  - [] Each GUI component has their class (Console, Controller, CodeBlock,...)
- *  - [] GUI::Controller: Play/Pause/Replay/..,
- *  - [] AnimationList inside GUI::Controller
- *  - [] AnimationList keep pointer to Console and CodeBlock
- *  - [] Animation include Console Log text and Highlight lines.
- *  - [] When running AnimationList, it loads Log text and HighlightLines to corresponding pointer.
+ *  - [x] Each GUI component has their class (Console, Controller, CodeBlock,...)
+ *  - [x] GUI::Controller: Play/Pause/Replay/..,
+ *  - [x] AnimationList inside GUI::Controller
+ *  - [x] AnimationList keep pointer to Console and CodeBlock
+ *  - [x] Animation include Console Log text and Highlight lines.
+ *  - [x] When running AnimationList, it loads Log text and HighlightLines to corresponding pointer.
  *  - [] Main Data Structure return AnimationList to load into GUI:Controller
  *  - [x] File dialog call, return user's file name
+ *  - [] Try catch when load animation
  */
