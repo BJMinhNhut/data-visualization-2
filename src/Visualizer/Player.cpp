@@ -19,7 +19,10 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
       mColors(colors),
       mGUIContainer(),
       mSpeedID(1),
-      ControllerGUI(numStates) {
+      ControllerGUI(numStates),
+      mConsole(std::make_shared<GUI::Console>(fonts, colors, 30)),
+      mCodeBlock(std::make_shared<GUI::CodeBlock>(fonts, colors)),
+      mAnimationList(mCodeBlock, mConsole) {
 
 	// CodeBlock
 	auto codePanel = std::make_shared<GUI::Panel>(350.f, 270.f, colors.get(Colors::UISecondary),
@@ -27,7 +30,6 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 	codePanel->setPosition(0.f, 100.f);
 	mGUIContainer.pack(codePanel);
 
-	mCodeBlock = std::make_shared<GUI::CodeBlock>(fonts, colors);
 	mCodeBlock->setPosition(codePanel->getPosition());
 	mGUIContainer.pack(mCodeBlock);
 
@@ -37,7 +39,6 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 	consolePanel->setPosition(0.f, 370.f);
 	mGUIContainer.pack(consolePanel);
 
-	mConsole = std::make_shared<GUI::Console>(fonts, colors, 30);
 	mConsole->setPosition(consolePanel->getPosition() + sf::Vector2f(10.f, 10.f));
 	mConsole->log(GUI::Console::Info, "");
 	mGUIContainer.pack(mConsole);
@@ -126,11 +127,18 @@ Player::State Player::getCurrentState() const {
 	return Play;
 }
 
+void Player::loadAnimation(const std::vector<Animation>& list, const std::string& code) {
+	mCodeBlock->loadCode(code);
+	mAnimationList.clear();
+	for (auto& animation : list)
+		mAnimationList.push(animation);
+}
+
 void Player::increaseSpeed() {
 	if (mSpeedID + 1 < mSpeedMap.size()) {
 		mSpeedID++;
 		mSpeed->setText(mSpeedMap[mSpeedID].first);
-		//		mAnimationList.setSpeed(mSpeedMap[mSpeedID].second);
+		mAnimationList.setSpeed(mSpeedMap[mSpeedID].second);
 	}
 }
 
@@ -138,7 +146,7 @@ void Player::decreaseSpeed() {
 	if (mSpeedID > 0) {
 		mSpeedID--;
 		mSpeed->setText(mSpeedMap[mSpeedID].first);
-		//		mAnimationList.setSpeed(mSpeedMap[mSpeedID].second);
+		mAnimationList.setSpeed(mSpeedMap[mSpeedID].second);
 	}
 }
 

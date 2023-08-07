@@ -5,6 +5,7 @@
 #ifndef DATAVISUALIZATION2_PLAYER_HPP
 #define DATAVISUALIZATION2_PLAYER_HPP
 
+#include "AnimationList.hpp"
 #include "GUI/Button.hpp"
 #include "GUI/CodeBlock.hpp"
 #include "GUI/Console.hpp"
@@ -33,9 +34,9 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	void handleEvent(const sf::Event& event);
 
 	// CodeBlock functions
-	void loadCode(const std::string& code);
-	void highlight(const std::vector<int>& lineIDs);
-	void clearCode();
+	[[maybe_unused]] void loadCode(const std::string& code);
+	[[maybe_unused]] void highlight(const std::vector<int>& lineIDs);
+	[[maybe_unused]] void clearCode();
 
 	// Console functions
 	void callError(const std::string& text);
@@ -44,6 +45,7 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 
 	// Controller
 	State getCurrentState() const;
+	void loadAnimation(const std::vector<Animation>& list, const std::string& code);
 	void increaseSpeed();
 	void decreaseSpeed();
 
@@ -59,7 +61,8 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	GUI::Label::Ptr mSpeed;
 	std::vector<GUI::Container> ControllerGUI;
 
-	// Speed
+	// Animation
+	AnimationList mAnimationList;
 	static const std::vector<std::pair<std::string, float>> mSpeedMap;
 	int mSpeedID;
 };
