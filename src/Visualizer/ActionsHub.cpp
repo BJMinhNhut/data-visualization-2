@@ -19,7 +19,6 @@ ActionsHub::ActionsHub(const TextureHolder& textures, const FontHolder& fonts,
     : mCurrentOption(0),
       mGUIContainer(),
       mGUICommands(MAX_ACTIONS + 1),
-      mActions(MAX_ACTIONS + 1),
       mTextures(textures),
       mFonts(fonts),
       mColors(colors) {
@@ -59,10 +58,6 @@ unsigned int ActionsHub::getCurrentOption() const {
 	return mCurrentOption;
 }
 
-void ActionsHub::setOptionAction(int option, const std::function<void()>& action) {
-	mActions[option] = action;
-}
-
 void ActionsHub::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	target.draw(mGUIContainer, states);
@@ -78,16 +73,6 @@ bool ActionsHub::update(sf::Time dt) {
 bool ActionsHub::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
 	mGUICommands[mCurrentOption].handleEvent(event);
-
-	if (mActions[mCurrentOption] != nullptr) {
-		if (event.type == sf::Event::KeyReleased) {
-			if (event.key.code == sf::Keyboard::Enter) {
-				mActions[mCurrentOption]();
-				mGUIContainer.reset();
-				setCurrentOption(0);
-			}
-		}
-	}
 
 	return false;
 }

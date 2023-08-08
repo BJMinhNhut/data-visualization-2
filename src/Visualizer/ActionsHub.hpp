@@ -31,7 +31,6 @@ class ActionsHub : public sf::Drawable, public sf::Transformable, public sf::Non
 	void addOption(int option, const std::string& title, const GUI::Button::Callback& callback);
 	void packOptionGUI(int option, GUI::Component::Ptr component);
 	void setCurrentOption(int option);
-	void setOptionAction(int option, const std::function<void()>& action);
 
    private:
 	const TextureHolder& mTextures;
@@ -40,7 +39,6 @@ class ActionsHub : public sf::Drawable, public sf::Transformable, public sf::Non
 	unsigned int mCurrentOption;
 	GUI::Container mGUIContainer;
 	std::vector<GUI::Container> mGUICommands;
-	std::vector<std::function<void()>> mActions;
 };
 
 #endif  //DATAVISUALIZATION2_ACTIONSHUB_HPP
