@@ -15,8 +15,8 @@ class Animation {
 	typedef std::function<void()> callback;
 
    public:
-	explicit Animation(const std::vector<int>& lineIDs, const std::string& description,
-	                   const callback& forward, const callback& backward = nullptr);
+	explicit Animation(std::vector<int> lineIDs, std::string description, callback forward,
+	                   callback backward = nullptr);
 
 	[[nodiscard]] const std::string& getDescription() const;
 	[[nodiscard]] const std::vector<int>& getLineIDs() const;
@@ -25,10 +25,10 @@ class Animation {
 	void revert();
 
    private:
-	const std::vector<int>& mLineIDs;
-	const std::string& mDescription;
-	const std::function<void()>& mForward;
-	const std::function<void()>& mBackward;
+	const std::vector<int> mLineIDs;
+	const std::string mDescription;
+	const std::function<void()> mForward;
+	const std::function<void()> mBackward;
 };
 
 #endif  //DATAVISUALIZATION2_ANIMATION_HPP

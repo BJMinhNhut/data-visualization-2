@@ -4,9 +4,14 @@
 
 #include "Animation.hpp"
 
-Animation::Animation(const std::vector<int>& lineIDs, const std::string& description,
-                     const callback& forward, const callback& backward)
-    : mBackward(backward), mForward(forward), mLineIDs(lineIDs), mDescription(description) {}
+#include <utility>
+
+Animation::Animation(std::vector<int> lineIDs, std::string description, callback forward,
+                     callback backward)
+    : mBackward(std::move(backward)),
+      mForward(std::move(forward)),
+      mLineIDs(std::move(lineIDs)),
+      mDescription(std::move(description)) {}
 
 void Animation::play() {
 	mForward();
