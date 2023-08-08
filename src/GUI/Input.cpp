@@ -69,7 +69,7 @@ std::pair<int, int> Input::getRange() const {
 }
 
 std::string Input::getStringRange() const {
-	return '[' + std::to_string(mMinValue) + ',' + std::to_string(mMaxValue);
+	return '[' + std::to_string(mMinValue) + ',' + std::to_string(mMaxValue) + ']';
 }
 
 int Input::getValue() const {
