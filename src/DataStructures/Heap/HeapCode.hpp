@@ -7,7 +7,7 @@
 
 #include <string>
 
-namespace Heap {
+namespace HeapCode {
 
 namespace Max {
 const std::string Push(
