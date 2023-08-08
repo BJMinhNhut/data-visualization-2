@@ -13,7 +13,8 @@
 const std::vector<std::pair<std::string, float>> Player::mSpeedMap(
     {{"x0.5", 0.5f}, {"x1.0", 1.f}, {"x2.0", 2.f}, {"x5.0", 5.f}, {"x10", 10.f}});
 
-Player::Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors)
+Player::Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors,
+               const std::function<void()>& playCallback)
     : mTextures(textures),
       mFonts(fonts),
       mColors(colors),
@@ -22,7 +23,8 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
       ControllerGUI(numStates),
       mConsole(std::make_shared<GUI::Console>(fonts, colors, 30)),
       mCodeBlock(std::make_shared<GUI::CodeBlock>(fonts, colors)),
-      mAnimationList(mCodeBlock, mConsole) {
+      mAnimationList(mCodeBlock, mConsole),
+      mPlayCallback(playCallback) {
 
 	// CodeBlock
 	auto codePanel = std::make_shared<GUI::Panel>(350.f, 270.f, colors.get(Colors::UISecondary),
@@ -55,14 +57,20 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 
 	auto play = std::make_shared<GUI::Button>(GUI::Button::Play, fonts, textures, colors);
 	play->setPosition(PLAYER_CENTER);
+	play->setCallback(playCallback);
 	ControllerGUI[Play].pack(play);
 
 	auto pause = std::make_shared<GUI::Button>(GUI::Button::Pause, fonts, textures, colors);
 	pause->setPosition(PLAYER_CENTER);
+	pause->setCallback([&]() { mAnimationList.pause(); });
 	ControllerGUI[Pause].pack(pause);
 
 	auto replay = std::make_shared<GUI::Button>(GUI::Button::Replay, fonts, textures, colors);
 	replay->setPosition(PLAYER_CENTER);
+	replay->setCallback([&]() {
+		mAnimationList.goToFront();
+		mAnimationList.play();
+	});
 	ControllerGUI[Replay].pack(replay);
 
 	auto front = std::make_shared<GUI::Button>(GUI::Button::DoubleArrow, fonts, textures, colors);
@@ -124,6 +132,10 @@ void Player::cleanLog() {
 }
 
 Player::State Player::getCurrentState() const {
+	if (mAnimationList.isPlaying())
+		return Pause;
+	if (mAnimationList.isFinished())
+		return Replay;
 	return Play;
 }
 

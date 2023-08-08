@@ -22,10 +22,10 @@ class VisualState : public State {
 	VisualState(StateStack& stack, Context context, const std::string& title = "");
 
 	void draw() override;
-
 	bool update(sf::Time dt) override;
-
 	bool handleEvent(const sf::Event& event) override;
+
+	virtual std::pair<std::vector<Animation>, std::string> getSteps(unsigned int option);
 
    protected:
 	[[nodiscard]] static bool selectedTextFile(std::string& dir);

@@ -15,12 +15,16 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 
 #include <iostream>
+#include <tuple>
 
 VisualState::VisualState(StateStack& stack, Context context, const std::string& title)
     : State(stack, context),
       mGUIContainer(),
       mActionsHub(*context.textures, *context.fonts, *context.colors),
-      mPlayer(*context.textures, *context.fonts, *context.colors) {
+      mPlayer(*context.textures, *context.fonts, *context.colors, [&]() {
+	      const auto& [animations, code] = getSteps(mActionsHub.getCurrentOption());
+	      mPlayer.loadAnimation(animations, code);
+      }) {
 	initGUIBase();
 
 	auto titleBar = std::make_shared<GUI::Sprite>(context.textures->get(Textures::TitleBar));
@@ -32,6 +36,11 @@ VisualState::VisualState(StateStack& stack, Context context, const std::string& 
 	titleLabel->setPosition(titleBar->getPosition());
 	titleLabel->alignCenter();
 	mGUIContainer.pack(titleLabel);
+}
+
+std::pair<std::vector<Animation>, std::string> VisualState::getSteps(unsigned int option) {
+	// do nothing as default
+	return make_pair(std::vector<Animation>(), std::string());
 }
 
 bool VisualState::selectedTextFile(std::string& dir) {

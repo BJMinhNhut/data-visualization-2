@@ -27,7 +27,8 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	enum State { Play, Pause, Replay, numStates };
 
    public:
-	Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors);
+	Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors,
+	       const std::function<void()>& playCallback);
 
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	void update(sf::Time dt);
@@ -53,6 +54,7 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	const TextureHolder& mTextures;
 	const FontHolder& mFonts;
 	const ColorHolder& mColors;
+	const std::function<void()>& mPlayCallback;
 
 	// GUI
 	GUI::Container mGUIContainer;
