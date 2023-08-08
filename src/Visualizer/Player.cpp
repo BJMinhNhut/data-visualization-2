@@ -15,10 +15,7 @@ const std::vector<std::pair<std::string, float>> Player::mSpeedMap(
 
 Player::Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors,
                const std::function<void()>& playCallback)
-    : mTextures(textures),
-      mFonts(fonts),
-      mColors(colors),
-      mGUIContainer(),
+    : mGUIContainer(),
       mSpeedID(1),
       ControllerGUI(numStates),
       mConsole(std::make_shared<GUI::Console>(fonts, colors, 30)),

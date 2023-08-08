@@ -51,9 +51,6 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	void decreaseSpeed();
 
    private:
-	const TextureHolder& mTextures;
-	const FontHolder& mFonts;
-	const ColorHolder& mColors;
 	const std::function<void()>& mPlayCallback;
 
 	// GUI
