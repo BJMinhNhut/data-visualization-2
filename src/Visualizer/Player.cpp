@@ -143,6 +143,7 @@ void Player::loadAnimation(const std::vector<Animation>& list, const std::string
 	mAnimationList.clear();
 	for (auto& animation : list)
 		mAnimationList.push(animation);
+	mAnimationList.play();
 }
 
 void Player::increaseSpeed() {
@@ -170,6 +171,7 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 void Player::update(sf::Time dt) {
 	mGUIContainer.update(dt);
 	ControllerGUI[getCurrentState()].update(dt);
+	mAnimationList.update(dt);
 }
 
 void Player::handleEvent(const sf::Event& event) {
