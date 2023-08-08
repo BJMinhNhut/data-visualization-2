@@ -51,14 +51,13 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	void decreaseSpeed();
 
    private:
-	const std::function<void()>& mPlayCallback;
-
 	// GUI
 	GUI::Container mGUIContainer;
 	GUI::Console::Ptr mConsole;
 	GUI::CodeBlock::Ptr mCodeBlock;
 	GUI::Label::Ptr mSpeed;
 	std::vector<GUI::Container> ControllerGUI;
+	std::vector<GUI::Button::Ptr> playButtons;
 
 	// Animation
 	AnimationList mAnimationList;

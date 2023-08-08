@@ -9,6 +9,7 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 
 #include <cmath>
+#include <iostream>
 
 const std::vector<std::pair<std::string, float>> Player::mSpeedMap(
     {{"x0.5", 0.5f}, {"x1.0", 1.f}, {"x2.0", 2.f}, {"x5.0", 5.f}, {"x10", 10.f}});
@@ -18,10 +19,10 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
     : mGUIContainer(),
       mSpeedID(1),
       ControllerGUI(numStates),
+      playButtons(numStates),
       mConsole(std::make_shared<GUI::Console>(fonts, colors, 30)),
       mCodeBlock(std::make_shared<GUI::CodeBlock>(fonts, colors)),
-      mAnimationList(mCodeBlock, mConsole),
-      mPlayCallback(playCallback) {
+      mAnimationList(mCodeBlock, mConsole) {
 
 	// CodeBlock
 	auto codePanel = std::make_shared<GUI::Panel>(350.f, 270.f, colors.get(Colors::UISecondary),
@@ -52,23 +53,24 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 	    playerPanel->getPosition() +
 	    sf::Vector2f(std::round(350.f / 2.f) - 25.f, std::round(100.f / 2.f));
 
-	auto play = std::make_shared<GUI::Button>(GUI::Button::Play, fonts, textures, colors);
-	play->setPosition(PLAYER_CENTER);
-	play->setCallback(playCallback);
-	ControllerGUI[Play].pack(play);
+	playButtons[Play] = std::make_shared<GUI::Button>(GUI::Button::Play, fonts, textures, colors);
+	playButtons[Play]->setPosition(PLAYER_CENTER);
+	playButtons[Play]->setCallback(playCallback);
+	ControllerGUI[Play].pack(playButtons[Play]);
 
-	auto pause = std::make_shared<GUI::Button>(GUI::Button::Pause, fonts, textures, colors);
-	pause->setPosition(PLAYER_CENTER);
-	pause->setCallback([&]() { mAnimationList.pause(); });
-	ControllerGUI[Pause].pack(pause);
+	playButtons[Pause] = std::make_shared<GUI::Button>(GUI::Button::Pause, fonts, textures, colors);
+	playButtons[Pause]->setPosition(PLAYER_CENTER);
+	playButtons[Pause]->setCallback([&]() { mAnimationList.pause(); });
+	ControllerGUI[Pause].pack(playButtons[Pause]);
 
-	auto replay = std::make_shared<GUI::Button>(GUI::Button::Replay, fonts, textures, colors);
-	replay->setPosition(PLAYER_CENTER);
-	replay->setCallback([&]() {
+	playButtons[Replay] =
+	    std::make_shared<GUI::Button>(GUI::Button::Replay, fonts, textures, colors);
+	playButtons[Replay]->setPosition(PLAYER_CENTER);
+	playButtons[Replay]->setCallback([&]() {
 		mAnimationList.goToFront();
 		mAnimationList.play();
 	});
-	ControllerGUI[Replay].pack(replay);
+	ControllerGUI[Replay].pack(playButtons[Replay]);
 
 	auto front = std::make_shared<GUI::Button>(GUI::Button::DoubleArrow, fonts, textures, colors);
 	front->setPosition(PLAYER_CENTER + sf::Vector2f(-90.f, 0.f));
@@ -173,6 +175,12 @@ void Player::update(sf::Time dt) {
 void Player::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
 	ControllerGUI[getCurrentState()].handleEvent(event);
+
+	if (event.type == sf::Event::KeyReleased) {
+		if (event.key.code == sf::Keyboard::Enter) {
+			playButtons[getCurrentState()]->activate();
+		}
+	}
 }
 void Player::highlight(const std::vector<int>& lineIDs) {
 	mCodeBlock->setHighlight(lineIDs);
