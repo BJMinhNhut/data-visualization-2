@@ -74,20 +74,24 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 
 	auto front = std::make_shared<GUI::Button>(GUI::Button::DoubleArrow, fonts, textures, colors);
 	front->setPosition(PLAYER_CENTER + sf::Vector2f(-90.f, 0.f));
+	front->setCallback([&]() { mAnimationList.goToFront(); });
 	mGUIContainer.pack(front);
 
 	auto previous = std::make_shared<GUI::Button>(GUI::Button::Arrow, fonts, textures, colors);
 	previous->setPosition(PLAYER_CENTER + sf::Vector2f(-52.f, 0.f));
 	previous->setRotation(180);
+	previous->setCallback([&]() { mAnimationList.playPrevious(); });
 	mGUIContainer.pack(previous);
 
 	auto next = std::make_shared<GUI::Button>(GUI::Button::Arrow, fonts, textures, colors);
 	next->setPosition(PLAYER_CENTER + sf::Vector2f(52.f, 0.f));
+	next->setCallback([&]() { mAnimationList.playNext(); });
 	mGUIContainer.pack(next);
 
 	auto back = std::make_shared<GUI::Button>(GUI::Button::DoubleArrow, fonts, textures, colors);
 	back->setPosition(PLAYER_CENTER + sf::Vector2f(90.f, 0.f));
 	back->setRotation(180);
+	back->setCallback([&]() { mAnimationList.goToBack(); });
 	mGUIContainer.pack(back);
 
 	// Speed
