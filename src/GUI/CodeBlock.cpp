@@ -28,6 +28,7 @@ namespace GUI {
         mText.setString(code);
         getLinePosition();
         getHighLightRectangle();
+	    std::vector<int>().swap(highlightList);
     }
 
     void CodeBlock::setHighlight(const std::vector<int> &lineID) {
