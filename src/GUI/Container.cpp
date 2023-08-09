@@ -8,6 +8,8 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Window/Event.hpp>
 
+#include <iostream>
+
 namespace GUI {
 
 Container::Container() : mChildren(), mSelectedChild(-1), mActivatedChild(-1) {}
@@ -48,15 +50,17 @@ void Container::handleEvent(const sf::Event& event) {
 		mChildren[mActivatedChild]->handleEvent(event);
 	}
 
-	if (event.type == sf::Event::MouseButtonReleased) {
+	//	std::cout << "*current " << mSelectedChild << '\n';
+	if (event.type == sf::Event::MouseMoved) {
+		updateSelect(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
+	} else if (event.type == sf::Event::MouseButtonReleased) {
 		if (event.mouseButton.button == sf::Mouse::Left) {
+			updateSelect(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 			if (hasSelection()) {
 				activate(mSelectedChild);
-				updateSelect(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
+				std::cout << "activate " << mSelectedChild << '\n';
 			}
 		}
-	} else if (event.type == sf::Event::MouseMoved) {
-		updateSelect(sf::Vector2i(event.mouseMove.x, event.mouseMove.y));
 	}
 }
 
@@ -80,6 +84,7 @@ void Container::select(std::size_t index) {
 		if (hasSelection() && !mChildren[mSelectedChild]->isActive())
 			mChildren[mSelectedChild]->deselect();
 
+		//		std::cout << "select " << index << '\n';
 		mChildren[index]->select();
 		mSelectedChild = index;
 	}
@@ -92,7 +97,8 @@ void Container::activate(std::size_t index) {
 			mChildren[mActivatedChild]->deselect();
 		}
 		mChildren[index]->activate();
-		mActivatedChild = index;
+		if (mChildren[index]->isActive())
+			mActivatedChild = index;
 	}
 }
 
@@ -106,6 +112,7 @@ void Container::updateSelect(sf::Vector2i point) {
 	}
 	// no component is selected
 	if (hasSelection() && !mChildren[mSelectedChild]->isActive()) {
+		//		std::cout << "deselect " << mSelectedChild << '\n';
 		mChildren[mSelectedChild]->deselect();
 		mSelectedChild = -1;
 	}
