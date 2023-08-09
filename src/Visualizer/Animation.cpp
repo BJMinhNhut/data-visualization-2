@@ -14,11 +14,13 @@ Animation::Animation(std::vector<int> lineIDs, std::string description, callback
       mDescription(std::move(description)) {}
 
 void Animation::play() {
-	mForward();
+	if (mForward)
+		mForward();
 }
 
 void Animation::revert() {
-	mBackward();
+	if (mBackward)
+		mBackward();
 }
 const std::string& Animation::getDescription() const {
 	return mDescription;
