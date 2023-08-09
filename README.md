@@ -50,8 +50,8 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Create
   - [x] Push
   - [ ] Delete
-  - [ ] Top
-  - [ ] Size
+  - [x] Top
+  - [x] Size
 - [ ] Trie
   - [ ] Create
   - [ ] Insert

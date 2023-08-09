@@ -153,6 +153,34 @@ std::pair<std::vector<Animation>, std::string> Heap::pushAnimation(const int& va
 	return make_pair(list, code);
 }
 
+std::pair<std::vector<Animation>, std::string> Heap::getTopAnimation() {
+	const std::string& code = HeapCode::Top;
+	std::vector<Animation> list;
+	if (mNodes.empty())
+		throw std::out_of_range("Heap is empty");
+	list.push_back(Animation(
+	    {0}, "Heap top: A[0] = " + mNodes[0]->getData(),
+	    [&]() { mNodes[0]->highlight(PolyNode::Primary); },
+	    [&]() { mNodes[0]->highlight(PolyNode::None); }));
+	return std::make_pair(list, code);
+}
+
+std::pair<std::vector<Animation>, std::string> Heap::getSizeAnimation() {
+	const std::string& code = HeapCode::Top;
+	std::vector<Animation> list;
+	list.push_back(Animation(
+	    {0}, "Heap size = " + std::to_string(mNodes.size()),
+	    [&]() {
+		    for (auto& node : mNodes)
+			    node->highlight(PolyNode::Primary);
+	    },
+	    [&]() {
+		    for (auto& node : mNodes)
+			    node->highlight(PolyNode::None);
+	    }));
+	return std::make_pair(list, code);
+}
+
 void Heap::loadArray(const std::vector<int>& array) {
 	clear();
 	for (int v : array)

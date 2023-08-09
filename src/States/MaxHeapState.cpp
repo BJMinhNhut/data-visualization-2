@@ -123,8 +123,11 @@ std::pair<std::vector<Animation>, std::string> MaxHeapState::getSteps(unsigned i
 					                        Inputs[Push]->getStringRange());
 				return mHeap.pushAnimation(Inputs[Push]->getValue());
 				//			case Delete:
-				//			case Top:
-				//			case Size:
+
+			case Top:
+				return mHeap.getTopAnimation();
+			case Size:
+				return mHeap.getSizeAnimation();
 		}
 	} catch (const std::exception& err) {
 		mPlayer.callError(err.what());
