@@ -34,10 +34,7 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	void update(sf::Time dt);
 	void handleEvent(const sf::Event& event);
 
-	// CodeBlock functions
-	[[maybe_unused]] void loadCode(const std::string& code);
-	[[maybe_unused]] void highlight(const std::vector<int>& lineIDs);
-	[[maybe_unused]] void clearCode();
+	void reset();
 
 	// Console functions
 	void callError(const std::string& text);

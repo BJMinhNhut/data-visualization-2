@@ -114,11 +114,9 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 	mGUIContainer.pack(speedDown);
 }
 
-void Player::loadCode(const std::string& code) {
-	mCodeBlock->loadCode(code);
-}
-
-void Player::clearCode() {
+void Player::reset() {
+	mAnimationList.clear();
+	mConsole->log(GUI::Console::Info, "");
 	mCodeBlock->loadCode("");
 }
 
@@ -187,7 +185,4 @@ void Player::handleEvent(const sf::Event& event) {
 			playButtons[getCurrentState()]->activate();
 		}
 	}
-}
-void Player::highlight(const std::vector<int>& lineIDs) {
-	mCodeBlock->setHighlight(lineIDs);
 }

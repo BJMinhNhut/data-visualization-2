@@ -19,10 +19,11 @@ class MaxHeapState : public VisualState {
 
 	bool handleEvent(const sf::Event& event) override;
 
+	std::pair<std::vector<Animation>, std::string> getSteps(unsigned int option) override;
+
    private:
 	void initOptions();
 	void initDetails();
-	void initActions();
 
    private:
 	enum Option {

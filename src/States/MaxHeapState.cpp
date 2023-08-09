@@ -12,24 +12,27 @@ MaxHeapState::MaxHeapState(StateStack& stack, State::Context context)
     : VisualState(stack, context, "Max Heap"),
       mHeap(*context.fonts, *context.colors),
       Inputs(NumOptions, nullptr) {
-	mHeap.setPosition(context.window->getSize().x / 2.f + 200.f, 200.f);
+	mHeap.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 200.f,
+	                        Heap::Transition::None);
 	initOptions();
 	initDetails();
-	initActions();
 }
 
 void MaxHeapState::initOptions() {
 	mActionsHub.addOption(Create, "Create", [&]() {
 		mActionsHub.setCurrentOption(Create);
+		mPlayer.reset();
 		mPlayer.callInfo("Init a new heap");
 	});
 	mActionsHub.addOption(Push, "Push", [&]() {
 		mActionsHub.setCurrentOption(Push);
+		mPlayer.reset();
 		mPlayer.callInfo("Push a new value to heap");
 		Inputs[Push]->randomizeValue();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
+		mPlayer.reset();
 		mPlayer.callInfo("Delete a node from heap by ID");
 		Inputs[Delete]->setRange(0, mHeap.getSize() - 1);
 		if (mHeap.getSize() > 0)
@@ -39,10 +42,12 @@ void MaxHeapState::initOptions() {
 	});
 	mActionsHub.addOption(Top, "Top", [&]() {
 		mActionsHub.setCurrentOption(Top);
+		mPlayer.reset();
 		mPlayer.callInfo("Get value of the top node");
 	});
 	mActionsHub.addOption(Size, "Size", [&]() {
 		mActionsHub.setCurrentOption(Size);
+		mPlayer.reset();
 		mPlayer.callInfo("Get size of heap");
 	});
 }
@@ -93,11 +98,6 @@ void MaxHeapState::initDetails() {
 	mActionsHub.packOptionGUI(Delete, Inputs[Delete]);
 }
 
-void MaxHeapState::initActions() {
-	mActionsHub.setOptionAction(Push, [&]() { mHeap.push(Inputs[Push]->getValue()); });
-	mActionsHub.setOptionAction(Delete, [&]() { mHeap.remove(Inputs[Delete]->getValue()); });
-}
-
 void MaxHeapState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mHeap);
@@ -113,4 +113,21 @@ bool MaxHeapState::update(sf::Time dt) {
 bool MaxHeapState::handleEvent(const sf::Event& event) {
 	VisualState::handleEvent(event);
 	return false;
+}
+std::pair<std::vector<Animation>, std::string> MaxHeapState::getSteps(unsigned int option) {
+	try {
+		switch (option) {
+			case Push:
+				if (Inputs[Push]->validate() != GUI::Input::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Push]->getStringRange());
+				return mHeap.pushAnimation(Inputs[Push]->getValue());
+				//			case Delete:
+				//			case Top:
+				//			case Size:
+		}
+	} catch (const std::exception& err) {
+		mPlayer.callError(err.what());
+	}
+	return VisualState::getSteps(option);
 }

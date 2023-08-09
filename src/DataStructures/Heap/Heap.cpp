@@ -3,6 +3,7 @@
 //
 
 #include "Heap.hpp"
+#include "HeapCode.hpp"
 #include "Template/Random.hpp"
 #include "Template/Utility.hpp"
 
@@ -29,7 +30,7 @@ void Heap::Height::updateRight(const Heap::Height& child) {
 }
 
 Heap::Heap(const FontHolder& fonts, const ColorHolder& colors)
-    : mNodes(), mFonts(fonts), mColors(colors), height() {
+    : mNodes(), mFonts(fonts), mColors(colors), height(), mBin(nullptr) {
 	randomize();
 }
 
@@ -56,6 +57,40 @@ void Heap::loadFromFile(const std::string& fileDir) {
 	}
 	fileStream.close();
 	loadArray(elements);
+}
+
+std::pair<std::vector<Animation>, std::string> Heap::pushAnimation(const int& value) {
+	const std::string& code = HeapCode::Max::Push;
+	std::vector<Animation> list;
+	list.push_back(Animation(
+	    {0, 1}, "Push " + std::to_string(value) + " to the back of heap",
+	    [&, value]() { purePush(value); }, [&]() { purePop(); }));
+
+	int index = (int)mNodes.size();
+	int curValue = value;
+	while (true) {
+		int parentID = parent(index);
+		int parValue = mNodes[parentID]->getIntData();
+
+		if (index > 0 && curValue > parValue) {
+			list.push_back(Animation({2}, "Node is not root, " + std::to_string(parValue) + " < " +
+			                                  std::to_string(curValue)));
+			list.push_back(
+			    Animation({3, 4}, "Swap two nodes and move to parent",
+			              [&, index, parentID]() { mNodes[index]->swapData(mNodes[parentID]); }));
+			index = parentID;
+		} else {
+			if (index == 0)
+				list.push_back(Animation({2}, "Node is root, finish heapify up"));
+			else
+				list.push_back(Animation({2}, std::to_string(parValue) +
+				                                  " >= " + std::to_string(curValue) +
+				                                  " satisfied, finish heapify up"));
+			break;
+		}
+	}
+
+	return make_pair(list, code);
 }
 
 void Heap::loadArray(const std::vector<int>& array) {
@@ -98,7 +133,7 @@ void Heap::alignBinaryTree() {
 			xOffset = float(1 << height[id].left) * TREE_OFF_SET.x;
 		else
 			xOffset = -float(1 << height[id].right) * TREE_OFF_SET.x;
-		mNodes[id]->setPosition(xOffset, TREE_OFF_SET.y);
+		mNodes[id]->setTargetPosition(xOffset, TREE_OFF_SET.y, Transition::Smooth);
 	}
 }
 
@@ -108,6 +143,11 @@ void Heap::push(const int& value) {
 		return;
 	}
 
+	purePush(value);
+	heapifyUp((int)mNodes.size() - 1);
+}
+
+void Heap::purePush(const int& value) {
 	std::cout << "Heap push: " << value << '\n';
 
 	auto* newNode = new PolyNode(mFonts, mColors);
@@ -120,11 +160,15 @@ void Heap::push(const int& value) {
 		mNodes[nodeParent]->addEdgeOut(newNode);
 		mNodes[nodeParent]->attachChild(PolyNode::Ptr(newNode));
 	}
-
 	mNodes.push_back(newNode);
 	height.emplace_back(0, 0);
-	heapifyUp((int)mNodes.size() - 1);
+	alignBinaryTree();
+}
 
+void Heap::purePop() {
+	dump(mNodes.back());
+	mNodes.pop_back();
+	height.pop_back();
 	alignBinaryTree();
 }
 
@@ -204,4 +248,17 @@ void Heap::heapifyDown() {
 
 int Heap::parent(const int& index) {
 	return (index - 1) / 2;
+}
+
+void Heap::dump(PolyNode* node) {
+	node->removeAllEdges();
+	node->setTargetScale(0.f, 0.f, Transition::Smooth);
+	mBin = node;
+}
+
+void Heap::updateCurrent(sf::Time dt) {
+	if (mBin != nullptr && mBin->getScale().x == 0.f) {
+		detachChild(*mBin);
+		mBin = nullptr;
+	}
 }

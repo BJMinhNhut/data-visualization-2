@@ -7,6 +7,7 @@
 
 #include "../PolyNode.hpp"
 #include "Template/SceneNode.hpp"
+#include "Visualizer/Animation.hpp"
 
 #include <vector>
 
@@ -33,7 +34,7 @@ class Heap : public SceneNode {
 
 	void loadFromFile(const std::string& fileDir);
 
-	void push(const int& value);
+	std::pair<std::vector<Animation>, std::string> pushAnimation(const int& value);
 
 	[[nodiscard]] int top() const;
 
@@ -42,22 +43,29 @@ class Heap : public SceneNode {
 	int getSize() const;
 
    private:
-	void loadArray(const std::vector<int>& array);
+	void alignBinaryTree();
 
+	void push(const int& value);
+	void heapifyUp(int index);
+	void heapifyDown();
+
+	void loadArray(const std::vector<int>& array);
 	void clear(const int& root = 0);
+
+	void purePush(const int& value);
+	void purePop();
 
 	[[nodiscard]] static inline int parent(const int& index);
 
-	void alignBinaryTree();
+	void dump(PolyNode* node);
 
-	void heapifyUp(int index);
-
-	void heapifyDown();
+	void updateCurrent(sf::Time dt) override;
 
    private:
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 	std::vector<PolyNode*> mNodes;
+	PolyNode* mBin;
 
 	struct Height {
 		int left, right;

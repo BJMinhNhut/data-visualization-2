@@ -44,9 +44,9 @@ void AnimationList::push(const Animation& animation) {
 }
 
 void AnimationList::play() {
-#ifdef SFML_DEBUG
-	std::cerr << "playing animation\n";
-#endif
+	//#ifdef SFML_DEBUG
+	//	std::cerr << "playing animation\n";
+	//#endif
 	mIsPlaying = true;
 }
 
@@ -55,9 +55,9 @@ void AnimationList::pause() {
 }
 
 void AnimationList::clear() {
-#ifdef SFML_DEBUG
-	std::cerr << "clear call\n";
-#endif
+	//#ifdef SFML_DEBUG
+	//	std::cerr << "clear call\n";
+	//#endif
 	std::vector<Animation>().swap(mList);
 	currentAnimation = 0;
 	mIsPlaying = false;

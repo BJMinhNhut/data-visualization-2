@@ -11,6 +11,7 @@
 #include <SFML/Window/Event.hpp>
 
 #include <cmath>
+#include <utility>
 
 const int ActionsHub::MAX_ACTIONS = 5;
 
@@ -34,12 +35,11 @@ ActionsHub::ActionsHub(const TextureHolder& textures, const FontHolder& fonts,
 	mGUIContainer.pack(optionPanel);
 }
 
-void ActionsHub::addOption(int option, const std::string& title,
-                           const GUI::Button::Callback& callback) {
+void ActionsHub::addOption(int option, const std::string& title, GUI::Button::Callback callback) {
 	static const float HEIGHT = 45.f;
 	auto button = std::make_shared<GUI::Button>(GUI::Button::Command, mFonts, mTextures, mColors);
 	button->setToggle(true);
-	button->setCallback(callback);
+	button->setCallback(std::move(callback));
 	button->setPosition(75.f, 470.f - std::floor(HEIGHT / 2.f) + 10.f + HEIGHT * (float)option);
 	button->setText(title);
 	mGUIContainer.pack(button);
@@ -50,8 +50,8 @@ void ActionsHub::packOptionGUI(int option, GUI::Component::Ptr component) {
 }
 
 void ActionsHub::setCurrentOption(int option) {
+	mGUICommands[getCurrentOption()].reset();
 	mCurrentOption = option;
-	mGUICommands[option].reset();
 }
 
 unsigned int ActionsHub::getCurrentOption() const {
