@@ -62,30 +62,90 @@ void Heap::loadFromFile(const std::string& fileDir) {
 std::pair<std::vector<Animation>, std::string> Heap::pushAnimation(const int& value) {
 	const std::string& code = HeapCode::Max::Push;
 	std::vector<Animation> list;
+	list.push_back(Animation({}, "Push " + std::to_string(value) + " to heap"));
 	list.push_back(Animation(
 	    {0, 1}, "Push " + std::to_string(value) + " to the back of heap",
-	    [&, value]() { purePush(value); }, [&]() { purePop(); }));
+	    [&, value]() {
+		    purePush(value);
+		    mNodes.back()->highlight(PolyNode::Primary);
+	    },
+	    [&]() { purePop(); }));
 
 	int index = (int)mNodes.size();
+	int last = -1;
 	int curValue = value;
 	while (true) {
 		int parentID = parent(index);
 		int parValue = mNodes[parentID]->getIntData();
 
 		if (index > 0 && curValue > parValue) {
-			list.push_back(Animation({2}, "Node is not root, " + std::to_string(parValue) + " < " +
-			                                  std::to_string(curValue)));
-			list.push_back(
-			    Animation({3, 4}, "Swap two nodes and move to parent",
-			              [&, index, parentID]() { mNodes[index]->swapData(mNodes[parentID]); }));
+			list.push_back(Animation(
+			    {2},
+			    "Node is not root, " + std::to_string(parValue) + " < " + std::to_string(curValue),
+			    [&, index, parentID, last]() {
+				    if (last >= 0)
+					    mNodes[last]->highlight(PolyNode::None);
+				    mNodes[index]->highlight(PolyNode::Primary);
+				    mNodes[parentID]->highlight(PolyNode::Secondary);
+			    },
+			    [&, index, parentID, last]() {
+				    if (last >= 0)
+					    mNodes[last]->highlight(PolyNode::Primary);
+				    mNodes[index]->highlight(PolyNode::Secondary);
+				    mNodes[parentID]->highlight(PolyNode::None);
+			    }));
+			list.push_back(Animation(
+			    {3, 4}, "Swap two nodes and move to parent",
+			    [&, index, parentID]() {
+				    mNodes[index]->swapData(mNodes[parentID]);
+				    mNodes[parentID]->highlight(PolyNode::Primary);
+				    mNodes[index]->highlight(PolyNode::Secondary);
+			    },
+			    [&, index, parentID]() {
+				    mNodes[index]->swapData(mNodes[parentID]);
+				    mNodes[parentID]->highlight(PolyNode::Secondary);
+				    mNodes[index]->highlight(PolyNode::Primary);
+			    }));
+			last = index;
 			index = parentID;
 		} else {
 			if (index == 0)
-				list.push_back(Animation({2}, "Node is root, finish heapify up"));
+				list.push_back(Animation(
+				    {2}, "Node is root",
+				    [&, index, last]() {
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    mNodes[last]->highlight(PolyNode::None);
+				    },
+				    [&, index, last]() {
+					    mNodes[index]->highlight(PolyNode::None);
+					    mNodes[last]->highlight(PolyNode::Primary);
+				    }));
 			else
-				list.push_back(Animation({2}, std::to_string(parValue) +
-				                                  " >= " + std::to_string(curValue) +
-				                                  " satisfied, finish heapify up"));
+				list.push_back(Animation(
+				    {2}, std::to_string(parValue) + " >= " + std::to_string(curValue),
+				    [&, parentID, last]() {
+					    if (last >= 0)
+						    mNodes[last]->highlight(PolyNode::None);
+					    mNodes[parentID]->highlight(PolyNode::Secondary);
+				    },
+				    [&, index, parentID, last]() {
+					    if (last >= 0)
+						    mNodes[last]->highlight(PolyNode::Secondary);
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    mNodes[parentID]->highlight(PolyNode::None);
+				    }));
+			list.push_back(Animation(
+			    {}, "Finish push, complexity is O(logN)",
+			    [&, index, parentID]() {
+				    mNodes[index]->highlight(PolyNode::None);
+				    if (index > 0)
+					    mNodes[parentID]->highlight(PolyNode::None);
+			    },
+			    [&, index, parentID]() {
+				    mNodes[index]->highlight(PolyNode::Primary);
+				    if (index > 0)
+					    mNodes[parentID]->highlight(PolyNode::Secondary);
+			    }));
 			break;
 		}
 	}
