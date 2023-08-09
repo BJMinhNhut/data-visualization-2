@@ -13,28 +13,29 @@
 #include <string>
 
 namespace Colors {
-    enum ID {
-        Text,
-        UIPrimary,
-        UISecondary,
-        UIBorder,
-        Blue,
-        Red,
-        Highlight,
-    };
+enum ID {
+	Text,
+	UIPrimary,
+	UISecondary,
+	UIBorder,
+	Blue,
+	Red,
+	Highlight,
+	DimHighlight,
+};
 }
 
 class ColorHolder {
-public:
-    void load(Colors::ID id, const sf::Color &color);
+   public:
+	void load(Colors::ID id, const sf::Color& color);
 
-    [[nodiscard]] const sf::Color &get(Colors::ID id) const;
+	[[nodiscard]] const sf::Color& get(Colors::ID id) const;
 
-private:
-    void insertColor(Colors::ID id, std::unique_ptr<sf::Color> color);
+   private:
+	void insertColor(Colors::ID id, std::unique_ptr<sf::Color> color);
 
-private:
-    std::map<Colors::ID, std::unique_ptr<sf::Color>> mColorMap;
+   private:
+	std::map<Colors::ID, std::unique_ptr<sf::Color>> mColorMap;
 };
 
-#endif //DATAVISUALIZATION2_COLORHOLDER_HPP
+#endif  //DATAVISUALIZATION2_COLORHOLDER_HPP

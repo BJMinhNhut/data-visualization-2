@@ -44,8 +44,9 @@ namespace Utility {
         colors.load(Colors::UIPrimary, Constants::WhiteUI);
         colors.load(Colors::UISecondary, Constants::WhiteDisplay);
         colors.load(Colors::UIBorder, Constants::GrayBorder);
-        colors.load(Colors::Highlight, Constants::YellowLight);
-        colors.load(Colors::Red, Constants::RedDark);
+	    colors.load(Colors::Highlight, Constants::OrangeLight);
+	    colors.load(Colors::DimHighlight, Constants::YellowLight);
+	    colors.load(Colors::Red, Constants::RedDark);
         colors.load(Colors::Blue, Constants::BlueDark);
     }
 
@@ -56,8 +57,9 @@ namespace Utility {
         colors.load(Colors::UIPrimary, Constants::BlackUI);
         colors.load(Colors::UISecondary, Constants::BlackDisplay);
         colors.load(Colors::UIBorder, Constants::BlueGrayBorder);
-        colors.load(Colors::Highlight, Constants::TealDark);
-        colors.load(Colors::Red, Constants::RedLight);
+	    colors.load(Colors::Highlight, Constants::TealLight);
+	    colors.load(Colors::DimHighlight, Constants::TealDark);
+	    colors.load(Colors::Red, Constants::RedLight);
         colors.load(Colors::Blue, Constants::BlueLight);
     }
 
