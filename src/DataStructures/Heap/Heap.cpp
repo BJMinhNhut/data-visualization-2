@@ -257,7 +257,7 @@ void Heap::dump(PolyNode* node) {
 }
 
 void Heap::updateCurrent(sf::Time dt) {
-	if (mBin != nullptr && mBin->getScale().x == 0.f) {
+	if (mBin != nullptr && mBin->getScale().x < SceneNode::EPS) {
 		detachChild(*mBin);
 		mBin = nullptr;
 	}
