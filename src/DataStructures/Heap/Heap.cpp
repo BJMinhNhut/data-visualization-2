@@ -62,6 +62,8 @@ void Heap::loadFromFile(const std::string& fileDir) {
 std::pair<std::vector<Animation>, std::string> Heap::pushAnimation(const int& value) {
 	const std::string& code = HeapCode::Max::Push;
 	std::vector<Animation> list;
+	if (mNodes.size() == MAX_SIZE)
+		throw std::length_error("Heap maximum size reached");
 	list.push_back(Animation({}, "Push " + std::to_string(value) + " to heap"));
 	list.push_back(Animation(
 	    {0, 1}, "Push " + std::to_string(value) + " to the back of heap",
