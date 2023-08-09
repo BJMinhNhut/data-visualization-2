@@ -16,7 +16,7 @@ AnimationList::AnimationList(const GUI::CodeBlock::Ptr& codeblock, const GUI::Co
       mList() {}
 
 bool AnimationList::isFinished() const {
-	return !mList.empty() && currentAnimation == mList.size();
+	return !mList.empty() && !mIsPlaying && currentAnimation == mList.size();
 }
 
 unsigned int AnimationList::getProgress() const {
@@ -79,7 +79,7 @@ void AnimationList::playNext() {
 }
 
 void AnimationList::playPrevious() {
-	if (currentAnimation == 0)
+	if (currentAnimation == 1 || mList.empty())
 		return;
 	currentAnimation--;
 	mList[currentAnimation].revert();
@@ -92,7 +92,7 @@ void AnimationList::playPrevious() {
 }
 
 void AnimationList::goToFront() {
-	while (currentAnimation > 0)
+	while (currentAnimation > 1)
 		playPrevious();
 	resetCoolDown();
 }
@@ -104,7 +104,7 @@ void AnimationList::goToBack() {
 }
 
 void AnimationList::resetCoolDown() {
-	mCoolDown = sf::seconds(0.f);
+	mCoolDown = sf::milliseconds(1000.f / mSpeed);
 }
 
 void AnimationList::setSpeed(const float& speed) {
@@ -113,12 +113,12 @@ void AnimationList::setSpeed(const float& speed) {
 
 void AnimationList::update(sf::Time dt) {
 	if (isPlaying()) {
-		if (currentAnimation == mList.size())
-			pause();
-		else {
-			mCoolDown += dt;
-			if (mCoolDown > sf::seconds(1.f / mSpeed))
-				playNext();
+		if (mCoolDown <= sf::milliseconds(0.f)) {
+			playNext();
+			if (currentAnimation == mList.size())
+				pause();
+		} else {
+			mCoolDown -= dt;
 		}
 	}
 }
