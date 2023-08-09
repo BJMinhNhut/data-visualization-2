@@ -116,6 +116,7 @@ bool MaxHeapState::handleEvent(const sf::Event& event) {
 }
 std::pair<std::vector<Animation>, std::string> MaxHeapState::getSteps(unsigned int option) {
 	try {
+		mHeap.clearHighlight();
 		switch (option) {
 			case Push:
 				if (Inputs[Push]->validate() != GUI::Input::Success)

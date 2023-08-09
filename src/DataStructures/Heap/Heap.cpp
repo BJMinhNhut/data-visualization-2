@@ -206,6 +206,11 @@ void Heap::clear(const int& root) {
 	}
 }
 
+void Heap::clearHighlight() {
+	for (auto& node : mNodes)
+		node->highlight(PolyNode::None);
+}
+
 void Heap::alignBinaryTree() {
 	fill(height.begin(), height.end(), Height(0, 0));
 	for (int id = (int)mNodes.size() - 1; id > 0; --id) {

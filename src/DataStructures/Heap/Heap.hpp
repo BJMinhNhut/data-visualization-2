@@ -40,7 +40,7 @@ class Heap : public SceneNode {
 
 	[[nodiscard]] int top() const;
 
-	void remove(const int& index);
+	void clearHighlight();
 
 	int getSize() const;
 
@@ -48,6 +48,7 @@ class Heap : public SceneNode {
 	void alignBinaryTree();
 
 	void push(const int& value);
+	void remove(const int& index);
 	void heapifyUp(int index);
 	void heapifyDown();
 
