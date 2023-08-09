@@ -50,6 +50,8 @@ void ActionsHub::packOptionGUI(int option, GUI::Component::Ptr component) {
 }
 
 void ActionsHub::setCurrentOption(int option) {
+	if (option == 0)
+		mGUIContainer.reset();
 	mGUICommands[getCurrentOption()].reset();
 	mCurrentOption = option;
 }
