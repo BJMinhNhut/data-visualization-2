@@ -44,8 +44,11 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	// Controller
 	State getCurrentState() const;
 	void loadAnimation(const std::vector<Animation>& list, const std::string& code);
+	void play();
 	void increaseSpeed();
 	void decreaseSpeed();
+
+	bool hasAnimation() const;
 
    private:
 	// GUI

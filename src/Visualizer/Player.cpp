@@ -148,6 +148,10 @@ void Player::loadAnimation(const std::vector<Animation>& list, const std::string
 	mAnimationList.play();
 }
 
+void Player::play() {
+	mAnimationList.play();
+}
+
 void Player::increaseSpeed() {
 	if (mSpeedID + 1 < mSpeedMap.size()) {
 		mSpeedID++;
@@ -162,6 +166,10 @@ void Player::decreaseSpeed() {
 		mSpeed->setText(mSpeedMap[mSpeedID].first);
 		mAnimationList.setSpeed(mSpeedMap[mSpeedID].second);
 	}
+}
+
+bool Player::hasAnimation() const {
+	return mAnimationList.getSize() > 0;
 }
 
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
