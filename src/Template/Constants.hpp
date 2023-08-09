@@ -22,7 +22,7 @@ sf::Color const WhiteDisplay(255, 255, 255);
 sf::Color const WhiteUI(245, 245, 245);
 sf::Color const GrayBorder(189, 189, 189);
 sf::Color const YellowLight(255, 245, 157);
-sf::Color const OrangeLight(239, 108, 0);
+sf::Color const OrangeLight(255, 213, 79);
 sf::Color const RedDark(183, 28, 28);
 
 sf::Color const BlackUI(69, 90, 100);
