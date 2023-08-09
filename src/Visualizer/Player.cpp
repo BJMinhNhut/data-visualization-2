@@ -172,6 +172,10 @@ bool Player::hasAnimation() const {
 	return mAnimationList.getSize() > 0;
 }
 
+bool Player::isPlaying() const {
+	return mAnimationList.isPlaying();
+}
+
 void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	target.draw(mGUIContainer, states);

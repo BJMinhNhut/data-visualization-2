@@ -108,7 +108,8 @@ bool VisualState::update(sf::Time dt) {
 
 bool VisualState::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
-	mActionsHub.handleEvent(event);
+	if (!mPlayer.isPlaying())
+		mActionsHub.handleEvent(event);
 	mPlayer.handleEvent(event);
 
 	return false;

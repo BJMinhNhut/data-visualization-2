@@ -49,6 +49,7 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	void decreaseSpeed();
 
 	bool hasAnimation() const;
+	bool isPlaying() const;
 
    private:
 	// GUI
