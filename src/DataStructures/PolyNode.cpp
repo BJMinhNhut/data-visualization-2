@@ -62,27 +62,27 @@ void PolyNode::setPoint(const int &points) {
 }
 
 void PolyNode::addEdgeOut(PolyNode *to) {
-    Edge *edge = new Edge(this, to, Edge::EdgeType::Undirected, mColors);
-    outEdges.push_back(std::unique_ptr<Edge>(edge));
-    to->addEdgeIn(edge);
+	auto edge = std::make_shared<Edge>(this, to, Edge::EdgeType::Undirected, mColors);
+	outEdges.push_back(edge);
+	to->addEdgeIn(edge);
 }
 
-void PolyNode::addEdgeIn(Edge *edge) {
-    inEdges.push_back(edge);
+void PolyNode::addEdgeIn(const Edge::Ptr& edge) {
+	inEdges.push_back(edge);
 }
 
 void PolyNode::removeEdgeOut(PolyNode *to) {
     for (auto itr = outEdges.begin(); itr != outEdges.end(); ++itr) {
         if ((*itr)->getTo() == to) {
-            to->removeEdgeIn((*itr).get());
-            outEdges.erase(itr);
+			to->removeEdgeIn(*itr);
+			outEdges.erase(itr);
             return;
         }
     }
 }
 
-void PolyNode::removeEdgeIn(Edge *edge) {
-    for (auto itr = inEdges.begin(); itr != inEdges.end(); ++itr) {
+void PolyNode::removeEdgeIn(const Edge::Ptr& edge) {
+	for (auto itr = inEdges.begin(); itr != inEdges.end(); ++itr) {
         if (*itr == edge) {
             inEdges.erase(itr);
             return;
@@ -90,16 +90,27 @@ void PolyNode::removeEdgeIn(Edge *edge) {
     }
 }
 
+void PolyNode::removeAllEdges() {
+	for (auto& edge : inEdges)
+		edge->getFrom()->removeEdgeOut(this);
+	for (auto& edge : outEdges)
+		edge->getTo()->removeEdgeIn(edge);
+	std::vector<Edge::Ptr>().swap(inEdges);
+	std::vector<Edge::Ptr>().swap(outEdges);
+}
+
 void PolyNode::setPosition(float pX, float pY) {
 	SceneNode::setPosition(pX, pY);
-	for (auto edge: inEdges) edge->callUpdate();
-    for (std::unique_ptr<Edge> &edge: outEdges) edge->callUpdate();
+	for (auto& edge : inEdges)
+		edge->callUpdate();
+	for (auto& edge : outEdges)
+		edge->callUpdate();
 }
 
 void PolyNode::setPosition(sf::Vector2f position) {
 	SceneNode::setPosition(position);
-	for (auto edge : inEdges)
+	for (auto& edge : inEdges)
 		edge->callUpdate();
-	for (std::unique_ptr<Edge>& edge : outEdges)
+	for (auto& edge : outEdges)
 		edge->callUpdate();
 }

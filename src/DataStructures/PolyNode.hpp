@@ -27,9 +27,10 @@ public:
     void setPoint(const int &points);
 
     void addEdgeOut(PolyNode *to);
-    void addEdgeIn(Edge *edge);
-    void removeEdgeOut(PolyNode *to);
-    void removeEdgeIn(Edge *edge);
+	void addEdgeIn(const Edge::Ptr& edge);
+	void removeEdgeOut(PolyNode *to);
+	void removeEdgeIn(const Edge::Ptr& edge);
+	void removeAllEdges();
 
 	void setPosition(float pX, float pY) override;
 	void setPosition(sf::Vector2f position) override;
@@ -43,9 +44,8 @@ public:
 private:
     sf::Text mText;
     sf::CircleShape mPolygon;
-    std::vector<Edge *> inEdges;
-    std::vector<std::unique_ptr<Edge>> outEdges;
-    const ColorHolder &mColors;
+	std::vector<Edge::Ptr> inEdges, outEdges;
+	const ColorHolder &mColors;
 };
 
 
