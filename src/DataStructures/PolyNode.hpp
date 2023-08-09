@@ -20,26 +20,21 @@ public:
                       const ColorHolder &colors);
 
     [[nodiscard]] std::string getData() const;
-
     [[nodiscard]] int getIntData() const;
 
     void setData(const std::string &data);
-
     void setData(const int &data);
-
     void setPoint(const int &points);
 
     void addEdgeOut(PolyNode *to);
-
     void addEdgeIn(Edge *edge);
-
     void removeEdgeOut(PolyNode *to);
-
     void removeEdgeIn(Edge *edge);
 
-    void setPosition(float x, float y);
+	void setPosition(float pX, float pY) override;
+	void setPosition(sf::Vector2f position) override;
 
-private:
+   private:
     void updateCurrent(sf::Time dt) override;
 
     void drawCurrent(sf::RenderTarget &target,

@@ -31,7 +31,7 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node) {
 void SceneNode::update(sf::Time dt) {
 	sf::Vector2f deltaPosition = (targetPosition - getPosition()) * 0.1f;
 	if (fmax(fabs(deltaPosition.x), fabs(deltaPosition.y)) > EPS)
-		move(deltaPosition);
+		setPosition(getPosition() + deltaPosition);
 
 	sf::Vector2f deltaScale = (targetScale - getScale()) * 0.1f;
 	if (fmax(fabs(deltaScale.x), fabs(deltaScale.y)) > EPS)
@@ -81,6 +81,14 @@ sf::Transform SceneNode::getWorldTransform() const {
 	return transform;
 }
 
+void SceneNode::setPosition(sf::Vector2f position) {
+	Transformable::setPosition(position);
+}
+
+void SceneNode::setPosition(float pX, float pY) {
+	Transformable::setPosition(pX, pY);
+}
+
 void SceneNode::setTargetPosition(sf::Vector2f position, Transition transition) {
 	targetPosition = position;
 	if (transition == None)
@@ -88,7 +96,9 @@ void SceneNode::setTargetPosition(sf::Vector2f position, Transition transition) 
 }
 
 void SceneNode::setTargetPosition(float pX, float pY, Transition transition) {
-	setTargetPosition(sf::Vector2f(pX, pY), transition);
+	targetPosition = sf::Vector2f(pX, pY);
+	if (transition == None)
+		setPosition(pX, pY);
 }
 
 void SceneNode::setTargetScale(sf::Vector2f scale, Transition transition) {

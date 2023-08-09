@@ -90,8 +90,16 @@ void PolyNode::removeEdgeIn(Edge *edge) {
     }
 }
 
-void PolyNode::setPosition(float x, float y) {
-    SceneNode::setPosition(x, y);
-    for (auto edge: inEdges) edge->callUpdate();
+void PolyNode::setPosition(float pX, float pY) {
+	SceneNode::setPosition(pX, pY);
+	for (auto edge: inEdges) edge->callUpdate();
     for (std::unique_ptr<Edge> &edge: outEdges) edge->callUpdate();
+}
+
+void PolyNode::setPosition(sf::Vector2f position) {
+	SceneNode::setPosition(position);
+	for (auto edge : inEdges)
+		edge->callUpdate();
+	for (std::unique_ptr<Edge>& edge : outEdges)
+		edge->callUpdate();
 }
