@@ -48,9 +48,10 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] Search
 - [ ] Min/Max Heap
   - [x] Create
-  - [ ] Insert
+  - [x] Push
   - [ ] Delete
-  - [ ] Search
+  - [ ] Top
+  - [ ] Size
 - [ ] Trie
   - [ ] Create
   - [ ] Insert
