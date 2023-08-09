@@ -15,8 +15,8 @@ class Animation {
 	typedef std::function<void()> callback;
 
    public:
-	explicit Animation(std::vector<int> lineIDs, std::string description, callback forward,
-	                   callback backward = nullptr);
+	explicit Animation(std::vector<int> lineIDs, std::string description,
+	                   callback forward = nullptr, callback backward = nullptr);
 
 	[[nodiscard]] const std::string& getDescription() const;
 	[[nodiscard]] const std::vector<int>& getLineIDs() const;
