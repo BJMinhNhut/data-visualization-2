@@ -9,6 +9,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <cmath>
 #include <iostream>
 
 PolyNode::PolyNode(const FontHolder& fonts, const ColorHolder& colors)
@@ -27,6 +28,10 @@ void PolyNode::updateCurrent(sf::Time dt) {
 		edge->update(dt);
 	for (auto& edge : inEdges)
 		edge->update(dt);
+
+	sf::Vector2f deltaScale = (sf::Vector2f(1.f, 1.f) - mText.getScale()) * 0.1f;
+	if (fmax(fabs(deltaScale.x), fabs(deltaScale.y)) > SceneNode::EPS)
+		mText.setScale(mText.getScale() + deltaScale);
 }
 
 void PolyNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
@@ -47,11 +52,13 @@ int PolyNode::getIntData() const {
 
 void PolyNode::setData(const std::string& data) {
 	mText.setString(data);
+	mText.setScale(0.f, 0.f);
 	Utility::centerOrigin(mText);
 }
 
 void PolyNode::setData(const int& data) {
 	mText.setString(std::to_string(data));
+	mText.setScale(0.f, 0.f);
 	Utility::centerOrigin(mText);
 }
 
