@@ -27,6 +27,7 @@ void Container::activateChild(Component::Ptr component) {
 void Container::reset() {
 	if (hasActivation()) {
 		mChildren[mActivatedChild]->deactivate();
+		mChildren[mActivatedChild]->deselect();
 	}
 
 	if (hasSelection())
