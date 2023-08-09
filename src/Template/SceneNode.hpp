@@ -16,6 +16,10 @@
 class SceneNode : public sf::Transformable, public sf::Drawable, private sf::NonCopyable {
    public:
 	typedef std::unique_ptr<SceneNode> Ptr;
+	enum Transition {
+		None,
+		Smooth,
+	};
 
    public:
 	SceneNode();
@@ -25,18 +29,28 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 
 	void update(sf::Time dt);
 
+	void moveToWorldPosition(Transition transition);
+	virtual void setTargetPosition(sf::Vector2f position, Transition transition);
+	virtual void setTargetPosition(float pX, float pY, Transition transition);
+	virtual void setTargetScale(sf::Vector2f scale, Transition transition);
+	virtual void setTargetScale(float pX, float pY, Transition transition);
+
 	sf::Vector2f getWorldPosition() const;
 	sf::Transform getWorldTransform() const;
+	sf::Vector2f getTargetPosition() const;
 
    private:
 	virtual void updateCurrent(sf::Time dt);
 	void updateChildren(sf::Time dt);
 
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
    private:
+	static const float EPS;
+	sf::Vector2f targetPosition;
+	sf::Vector2f targetScale;
 	std::vector<Ptr> mChildren;
 	SceneNode* mParent;
 };

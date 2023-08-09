@@ -5,8 +5,12 @@
 #include "SceneNode.hpp"
 
 #include <cassert>
+#include <cmath>
 
-SceneNode::SceneNode() : mChildren(), mParent(nullptr) {}
+const float SceneNode::EPS = 1e-3;
+
+SceneNode::SceneNode()
+    : mChildren(), mParent(nullptr), targetPosition(0.f, 0.f), targetScale(1.f, 1.f) {}
 
 void SceneNode::attachChild(Ptr child) {
 	child->mParent = this;
@@ -25,6 +29,14 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node) {
 }
 
 void SceneNode::update(sf::Time dt) {
+	sf::Vector2f deltaPosition = (targetPosition - getPosition()) * 0.1f;
+	if (fmax(fabs(deltaPosition.x), fabs(deltaPosition.y)) > EPS)
+		move(deltaPosition);
+
+	sf::Vector2f deltaScale = (targetScale - getScale()) * 0.1f;
+	if (fmax(fabs(deltaScale.x), fabs(deltaScale.y)) > EPS)
+		setScale(getScale() + deltaScale);
+
 	updateCurrent(dt);
 	updateChildren(dt);
 }
@@ -67,4 +79,34 @@ sf::Transform SceneNode::getWorldTransform() const {
 		transform = node->getTransform() * transform;
 
 	return transform;
+}
+
+void SceneNode::setTargetPosition(sf::Vector2f position, Transition transition) {
+	targetPosition = position;
+	if (transition == None)
+		setPosition(targetPosition);
+}
+
+void SceneNode::setTargetPosition(float pX, float pY, Transition transition) {
+	setTargetPosition(sf::Vector2f(pX, pY), transition);
+}
+
+void SceneNode::setTargetScale(sf::Vector2f scale, Transition transition) {
+	targetScale = scale;
+	if (transition == None)
+		setScale(targetScale);
+}
+
+void SceneNode::setTargetScale(float pX, float pY, Transition transition) {
+	targetScale = sf::Vector2f(pX, pY);
+	if (transition == None)
+		setScale(targetScale);
+}
+
+void SceneNode::moveToWorldPosition(Transition transition) {
+	setTargetPosition(getWorldPosition(), transition);
+}
+
+sf::Vector2f SceneNode::getTargetPosition() const {
+	return targetPosition;
 }
