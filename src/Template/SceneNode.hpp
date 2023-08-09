@@ -50,11 +50,13 @@ class SceneNode : public sf::Transformable, public sf::Drawable, private sf::Non
 	void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
    private:
-	static const float EPS;
 	sf::Vector2f targetPosition;
 	sf::Vector2f targetScale;
 	std::vector<Ptr> mChildren;
 	SceneNode* mParent;
+
+   protected:
+	static const float EPS;
 };
 
 #endif  //NATUREOFCODE_SCENENODE_HPP
