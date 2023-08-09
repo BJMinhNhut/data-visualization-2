@@ -72,6 +72,20 @@ void PolyNode::setPoint(const int& points) {
 	mPolygon.setPointCount(points);
 }
 
+void PolyNode::highlight(Highlight type) {
+	switch (type) {
+		case Primary:
+			mPolygon.setFillColor(mColors.get(Colors::Highlight));
+			break;
+		case Secondary:
+			mPolygon.setFillColor(mColors.get(Colors::DimHighlight));
+			break;
+		default:
+			mPolygon.setFillColor(mColors.get(Colors::UIPrimary));
+			break;
+	}
+}
+
 void PolyNode::addEdgeOut(PolyNode* to) {
 	auto edge = std::make_shared<Edge>(this, to, Edge::EdgeType::Undirected, mColors);
 	outEdges.push_back(edge);

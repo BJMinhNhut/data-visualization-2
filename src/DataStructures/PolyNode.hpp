@@ -16,6 +16,13 @@
 
 class PolyNode : public SceneNode {
    public:
+	enum Highlight {
+		None,
+		Primary,
+		Secondary,
+	};
+
+   public:
 	explicit PolyNode(const FontHolder& fonts, const ColorHolder& colors);
 
 	[[nodiscard]] std::string getData() const;
@@ -25,6 +32,7 @@ class PolyNode : public SceneNode {
 	void setData(const int& data);
 	void swapData(PolyNode* node);
 	void setPoint(const int& points);
+	void highlight(Highlight type);
 
 	void addEdgeOut(PolyNode* to);
 	void addEdgeIn(const Edge::Ptr& edge);
