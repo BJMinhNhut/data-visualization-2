@@ -63,6 +63,7 @@ bool VisualState::selectedTextFile(std::string& dir) {
 		return false;
 	} else {
 		std::cout << "Selected file: " << dialog.result()[0] << '\n';
+		dir = dialog.result()[0];
 		return true;
 	}
 }
