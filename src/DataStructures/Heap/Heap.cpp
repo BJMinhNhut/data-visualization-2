@@ -168,7 +168,7 @@ std::pair<std::vector<Animation>, std::string> Heap::getTopAnimation() {
 }
 
 std::pair<std::vector<Animation>, std::string> Heap::getSizeAnimation() {
-	const std::string& code = HeapCode::Top;
+	const std::string& code = HeapCode::Size;
 	std::vector<Animation> list;
 	list.push_back(Animation(
 	    {0}, "Heap size = " + std::to_string(mNodes.size()),
