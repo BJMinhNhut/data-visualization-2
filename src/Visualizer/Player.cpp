@@ -115,6 +115,7 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 }
 
 void Player::reset() {
+	mAnimationList.goToBack();
 	mAnimationList.clear();
 	mConsole->log(GUI::Console::Info, "");
 	mCodeBlock->loadCode("");
