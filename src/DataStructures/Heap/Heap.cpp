@@ -449,7 +449,7 @@ void Heap::push(const int& value) {
 }
 
 void Heap::purePush(const int& value) {
-	std::cout << "Heap push: " << value << '\n';
+	//	std::cout << "Heap push: " << value << '\n';
 
 	auto* newNode = new PolyNode(mFonts, mColors);
 	newNode->setData(value);
