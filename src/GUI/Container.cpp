@@ -59,7 +59,7 @@ void Container::handleEvent(const sf::Event& event) {
 			updateSelect(sf::Vector2i(event.mouseButton.x, event.mouseButton.y));
 			if (hasSelection()) {
 				activate(mSelectedChild);
-				std::cout << "activate " << mSelectedChild << '\n';
+				//				std::cout << "activate " << mSelectedChild << '\n';
 			}
 		}
 	}
