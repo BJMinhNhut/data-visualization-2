@@ -73,86 +73,292 @@ std::pair<std::vector<Animation>, std::string> Heap::pushAnimation(const int& va
 	    },
 	    [&]() { purePop(); }));
 
-	int index = (int)mNodes.size();
-	int last = -1;
-	int curValue = value;
-	while (true) {
-		int parentID = parent(index);
-		int parValue = mNodes[parentID]->getIntData();
+	/* up heap */
+	{
+		int index = (int)mNodes.size();
+		int last = -1;
+		int curValue = value;
+		while (true) {
+			int parentID = parent(index);
+			int parValue = mNodes[parentID]->getIntData();
 
-		if (index > 0 && curValue > parValue) {
-			list.push_back(Animation(
-			    {2},
-			    "Node is not root, " + std::to_string(parValue) + " < " + std::to_string(curValue),
-			    [&, index, parentID, last]() {
-				    if (last >= 0)
-					    mNodes[last]->highlight(PolyNode::None);
-				    mNodes[index]->highlight(PolyNode::Primary);
-				    mNodes[parentID]->highlight(PolyNode::Secondary);
-			    },
-			    [&, index, parentID, last]() {
-				    if (last >= 0)
-					    mNodes[last]->highlight(PolyNode::Primary);
-				    mNodes[index]->highlight(PolyNode::Secondary);
-				    mNodes[parentID]->highlight(PolyNode::None);
-			    }));
-			list.push_back(Animation(
-			    {3, 4}, "Swap two nodes and move to parent",
-			    [&, index, parentID]() {
-				    mNodes[index]->swapData(mNodes[parentID]);
-				    mNodes[parentID]->highlight(PolyNode::Primary);
-				    mNodes[index]->highlight(PolyNode::Secondary);
-			    },
-			    [&, index, parentID]() {
-				    mNodes[index]->swapData(mNodes[parentID]);
-				    mNodes[parentID]->highlight(PolyNode::Secondary);
-				    mNodes[index]->highlight(PolyNode::Primary);
-			    }));
-			last = index;
-			index = parentID;
-		} else {
-			if (index == 0)
+			if (index > 0 && curValue > parValue) {
 				list.push_back(Animation(
-				    {2}, "Node is root",
-				    [&, index, last]() {
-					    mNodes[index]->highlight(PolyNode::Primary);
-					    mNodes[last]->highlight(PolyNode::None);
-				    },
-				    [&, index, last]() {
-					    mNodes[index]->highlight(PolyNode::None);
-					    mNodes[last]->highlight(PolyNode::Primary);
-				    }));
-			else
-				list.push_back(Animation(
-				    {2}, std::to_string(parValue) + " >= " + std::to_string(curValue),
-				    [&, parentID, last]() {
+				    {2},
+				    "Node is not root, " + std::to_string(parValue) + " < " +
+				        std::to_string(curValue),
+				    [&, index, parentID, last]() {
 					    if (last >= 0)
 						    mNodes[last]->highlight(PolyNode::None);
+					    mNodes[index]->highlight(PolyNode::Primary);
 					    mNodes[parentID]->highlight(PolyNode::Secondary);
 				    },
 				    [&, index, parentID, last]() {
 					    if (last >= 0)
-						    mNodes[last]->highlight(PolyNode::Secondary);
-					    mNodes[index]->highlight(PolyNode::Primary);
+						    mNodes[last]->highlight(PolyNode::Primary);
+					    mNodes[index]->highlight(PolyNode::Secondary);
 					    mNodes[parentID]->highlight(PolyNode::None);
 				    }));
-			list.push_back(Animation(
-			    {}, "Finish push, complexity is O(logN)",
-			    [&, index, parentID]() {
-				    mNodes[index]->highlight(PolyNode::None);
-				    if (index > 0)
-					    mNodes[parentID]->highlight(PolyNode::None);
-			    },
-			    [&, index, parentID]() {
-				    mNodes[index]->highlight(PolyNode::Primary);
-				    if (index > 0)
+				list.push_back(Animation(
+				    {3}, "Swap two nodes and move to parent",
+				    [&, index, parentID]() {
+					    mNodes[index]->swapData(mNodes[parentID]);
+					    mNodes[parentID]->highlight(PolyNode::Primary);
+					    mNodes[index]->highlight(PolyNode::Secondary);
+				    },
+				    [&, index, parentID]() {
+					    mNodes[index]->swapData(mNodes[parentID]);
 					    mNodes[parentID]->highlight(PolyNode::Secondary);
-			    }));
-			break;
+					    mNodes[index]->highlight(PolyNode::Primary);
+				    }));
+				last = index;
+				index = parentID;
+			} else {
+				if (index == 0)
+					list.push_back(Animation(
+					    {2}, "Node is root",
+					    [&, index, last]() {
+						    mNodes[index]->highlight(PolyNode::Primary);
+						    if (last >= 0)
+							    mNodes[last]->highlight(PolyNode::None);
+					    },
+					    [&, index, last]() {
+						    mNodes[index]->highlight(PolyNode::None);
+						    if (last >= 0)
+							    mNodes[last]->highlight(PolyNode::Primary);
+					    }));
+				else {
+					list.push_back(Animation(
+					    {2}, std::to_string(parValue) + " >= " + std::to_string(curValue),
+					    [&, parentID, last]() {
+						    if (last >= 0)
+							    mNodes[last]->highlight(PolyNode::None);
+						    mNodes[parentID]->highlight(PolyNode::Secondary);
+					    },
+					    [&, index, parentID, last]() {
+						    if (last >= 0)
+							    mNodes[last]->highlight(PolyNode::Secondary);
+						    mNodes[index]->highlight(PolyNode::Primary);
+						    mNodes[parentID]->highlight(PolyNode::None);
+					    }));
+				}
+				list.push_back(Animation(
+				    {}, "Finish push, complexity is O(logN)",
+				    [&, index, parentID]() {
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    if (index > 0)
+						    mNodes[parentID]->highlight(PolyNode::None);
+				    },
+				    [&, index, parentID]() {
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    if (index > 0)
+						    mNodes[parentID]->highlight(PolyNode::Secondary);
+				    }));
+				break;
+			}
 		}
 	}
 
 	return make_pair(list, code);
+}
+
+std::pair<std::vector<Animation>, std::string> Heap::deleteAnimation(const int& id) {
+	if (id < 0 || id >= mNodes.size())
+		throw std::out_of_range("Index must be in range [0, " + std::to_string(mNodes.size()) +
+		                        "]");
+
+	// Create a temporary heap
+	std::vector<int> values(mNodes.size());
+	for (int i = 0; i < mNodes.size(); ++i)
+		values[i] = mNodes[i]->getIntData();
+
+	const std::string& code = HeapCode::Max::Delete;
+	std::vector<Animation> list;
+	list.push_back(Animation(
+	    {}, "Delete node at index " + std::to_string(id) + " from heap",
+	    [&, id]() { mNodes[id]->highlight(PolyNode::Primary); },
+	    [&, id]() { mNodes[id]->highlight(PolyNode::None); }));
+
+	std::string backup = std::to_string(values[id]);
+	list.push_back(Animation(
+	    {0},
+	    "Assign A[" + std::to_string(id) + "] with a value more prior than A[0], start heapify up",
+	    [&, id]() {
+		    mNodes[id]->setData(mNodes[0]->getIntData() + 1);
+		    mNodes[0]->highlight(PolyNode::Secondary);
+		    mNodes[id]->highlight(PolyNode::Primary);
+	    },
+	    [&, id, backup]() {
+		    mNodes[id]->setData(backup);
+		    mNodes[id]->highlight(PolyNode::Primary);
+		    mNodes[0]->highlight(PolyNode::None);
+	    }));
+	values[id] = values[0] + 1;
+
+	// up Heap
+	{
+		int index = id;
+		int last = 0;
+		int curValue = values[id];
+		while (true) {
+			int parentID = parent(index);
+			int parValue = values[parentID];
+
+			if (index > 0 && curValue > parValue) {
+				list.push_back(Animation(
+				    {1},
+				    "Node is not root, " + std::to_string(parValue) + " < " +
+				        std::to_string(curValue),
+				    [&, index, parentID, last]() {
+					    if (last >= 0)
+						    mNodes[last]->highlight(PolyNode::None);
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    mNodes[parentID]->highlight(PolyNode::Secondary);
+				    },
+				    [&, index, parentID, last]() {
+					    if (last >= 0)
+						    mNodes[last]->highlight(PolyNode::Primary);
+					    mNodes[index]->highlight(PolyNode::Secondary);
+					    mNodes[parentID]->highlight(PolyNode::None);
+				    }));
+				list.push_back(Animation(
+				    {2}, "Swap two nodes and move to parent",
+				    [&, index, parentID]() {
+					    mNodes[index]->swapData(mNodes[parentID]);
+					    mNodes[parentID]->highlight(PolyNode::Primary);
+					    mNodes[index]->highlight(PolyNode::Secondary);
+				    },
+				    [&, index, parentID]() {
+					    mNodes[index]->swapData(mNodes[parentID]);
+					    mNodes[parentID]->highlight(PolyNode::Secondary);
+					    mNodes[index]->highlight(PolyNode::Primary);
+				    }));
+				std::swap(values[index], values[parentID]);
+				last = index;
+				index = parentID;
+			} else {
+				if (index == 0)
+					list.push_back(Animation(
+					    {1}, "Node is root",
+					    [&, index, last]() {
+						    mNodes[index]->highlight(PolyNode::Primary);
+						    if (last >= 0)
+							    mNodes[last]->highlight(PolyNode::None);
+					    },
+					    [&, index, last]() {
+						    mNodes[index]->highlight(PolyNode::None);
+						    if (last >= 0)
+							    mNodes[last]->highlight(PolyNode::Primary);
+					    }));
+				else
+					list.push_back(Animation(
+					    {1}, std::to_string(parValue) + " >= " + std::to_string(curValue),
+					    [&, parentID, last]() {
+						    if (last >= 0)
+							    mNodes[last]->highlight(PolyNode::None);
+						    mNodes[parentID]->highlight(PolyNode::Secondary);
+					    },
+					    [&, index, parentID, last]() {
+						    if (last >= 0)
+							    mNodes[last]->highlight(PolyNode::Secondary);
+						    mNodes[index]->highlight(PolyNode::Primary);
+						    mNodes[parentID]->highlight(PolyNode::None);
+					    }));
+				break;
+			}
+		}
+	}
+
+	backup = std::to_string(values[0]);
+	std::cout << "backup " << backup << '\n';
+	list.push_back(Animation(
+	    {3}, "Assign A[0] with A[size-1]",
+	    [&]() {
+		    mNodes[0]->setData(mNodes.back()->getData());
+		    mNodes[0]->highlight(PolyNode::Primary);
+		    mNodes.back()->highlight(PolyNode::Secondary);
+	    },
+	    [&, backup]() {
+		    mNodes[0]->setData(backup);
+		    mNodes[0]->highlight(PolyNode::None);
+		    mNodes.back()->highlight(PolyNode::None);
+	    }));
+	values[0] = values.back();
+
+	backup = std::to_string(values.back());
+	list.push_back(Animation(
+	    {4}, "Remove A[size-1], decrease size", [&]() { purePop(); },
+	    [&, backup] { purePush(stoi(backup)); }));
+	values.pop_back();
+
+	/* down heap */
+	{
+		int index = 0;
+		int last = -1;
+		while (index < values.size()) {
+			int leftChild = index * 2 + 1;
+			int rightChild = index * 2 + 2;
+			int largest = index;
+
+			if (leftChild < values.size() && values[largest] < values[leftChild])
+				largest = leftChild;
+			if (rightChild < values.size() && values[largest] < values[rightChild])
+				largest = rightChild;
+			if (largest != index) {
+				list.push_back(Animation(
+				    {5},
+				    "Largest child of A[" + std::to_string(index) + "] is A[" +
+				        std::to_string(largest) + "]",
+				    [&, index, largest, last]() {
+					    if (last != -1)
+						    mNodes[last]->highlight(PolyNode::None);
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    mNodes[largest]->highlight(PolyNode::Secondary);
+				    },
+				    [&, index, largest, last]() {
+					    if (last != -1)
+						    mNodes[last]->highlight(PolyNode::Secondary);
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    mNodes[largest]->highlight(PolyNode::None);
+				    }));
+				list.push_back(Animation(
+				    {6, 7},
+				    "Swap A[" + std::to_string(index) + "] with A[" + std::to_string(largest) +
+				        "], then move to A[" + std::to_string(largest) + "]",
+				    [&, index, largest, last]() {
+					    mNodes[index]->swapData(mNodes[largest]);
+					    mNodes[index]->highlight(PolyNode::Secondary);
+					    mNodes[largest]->highlight(PolyNode::Primary);
+				    },
+				    [&, index, largest]() {
+					    mNodes[index]->swapData(mNodes[largest]);
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    mNodes[largest]->highlight(PolyNode::Secondary);
+				    }));
+				std::swap(values[largest], values[index]);
+				last = index;
+				index = largest;
+			} else {
+				list.push_back(Animation(
+				    {5}, "Node has no larger child",
+				    [&, index, last]() {
+					    mNodes[index]->highlight(PolyNode::Primary);
+					    if (last >= 0)
+						    mNodes[last]->highlight(PolyNode::None);
+				    },
+				    [&, index, last]() {
+					    mNodes[index]->highlight(PolyNode::None);
+					    if (last >= 0)
+						    mNodes[last]->highlight(PolyNode::Primary);
+				    }));
+				break;
+			}
+		}
+		list.push_back(
+		    Animation({}, "Finish deletion, complexity is O(logN)", [&]() { clearHighlight(); }));
+	}
+
+	return std::make_pair(list, code);
 }
 
 std::pair<std::vector<Animation>, std::string> Heap::getTopAnimation() {

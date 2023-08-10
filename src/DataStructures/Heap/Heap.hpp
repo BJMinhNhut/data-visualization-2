@@ -35,6 +35,7 @@ class Heap : public SceneNode {
 	void loadFromFile(const std::string& fileDir);
 
 	std::pair<std::vector<Animation>, std::string> pushAnimation(const int& value);
+	std::pair<std::vector<Animation>, std::string> deleteAnimation(const int& id);
 	std::pair<std::vector<Animation>, std::string> getTopAnimation();
 	std::pair<std::vector<Animation>, std::string> getSizeAnimation();
 

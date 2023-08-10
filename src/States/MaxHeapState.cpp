@@ -123,12 +123,14 @@ std::pair<std::vector<Animation>, std::string> MaxHeapState::getSteps(unsigned i
 					throw std::out_of_range("Value must be in range " +
 					                        Inputs[Push]->getStringRange());
 				return mHeap.pushAnimation(Inputs[Push]->getValue());
-				//			case Delete:
-
+			case Delete:
+				return mHeap.deleteAnimation(Inputs[Delete]->getValue());
 			case Top:
 				return mHeap.getTopAnimation();
 			case Size:
 				return mHeap.getSizeAnimation();
+			default:
+				return VisualState::getSteps(option);
 		}
 	} catch (const std::exception& err) {
 		mPlayer.callError(err.what());
