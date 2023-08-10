@@ -26,8 +26,10 @@ VisualState::VisualState(StateStack& stack, Context context, const std::string& 
 		      const auto& [animations, code] = getSteps(mActionsHub.getCurrentOption());
 		      mPlayer.loadAnimation(animations, code);
 	      }
-	      mActionsHub.setCurrentOption(0);
-	      mPlayer.play();
+	      if (mPlayer.hasAnimation()) {
+		      mActionsHub.setCurrentOption(0);
+		      mPlayer.play();
+	      }
       }) {
 	initGUIBase();
 
