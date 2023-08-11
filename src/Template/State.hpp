@@ -49,7 +49,7 @@ protected:
 
     void requestStateClear();
 
-    Context getContext() const;
+    [[nodiscard]] Context getContext() const;
 
 private:
     StateStack *mStack;

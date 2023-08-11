@@ -13,7 +13,9 @@ namespace States {
         About,
         DataMenu,
         VisualTemplate,
-    };
+        VisualMaxHeap,
+	VisualMinHeap,
+};
 }
 
 #endif  //NATUREOFCODE_STATEIDENTIFIERS_HPP

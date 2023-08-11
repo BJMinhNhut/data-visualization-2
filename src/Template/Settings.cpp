@@ -30,7 +30,7 @@ bool Settings::operator!=(const Settings &settings) const {
     return !((*this) == settings);
 }
 
-const Settings getSettings() {
+Settings getSettings() {
     std::ifstream settingsFile("settings.bin",
                                std::ios::in | std::ios::binary);
     Settings settings;

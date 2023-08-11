@@ -5,66 +5,40 @@
 #ifndef DATAVISUALIZATION2_VISUALSTATE_HPP
 #define DATAVISUALIZATION2_VISUALSTATE_HPP
 
-#include "Template/AnimationList.hpp"
 //#include "GUI/CodeBlock.hpp"
 //#include "GUI/Console.hpp"
+#include "GUI/Button.hpp"
 #include "GUI/Container.hpp"
-#include "States.hpp"
+#include "Template/State.hpp"
+#include "Visualizer/ActionsHub.hpp"
+#include "Visualizer/Player.hpp"
 
+#include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 class VisualState : public State {
 
-public:
-    VisualState(StateStack &stack, Context context,
-                const std::string &title = "");
+   public:
+	VisualState(StateStack& stack, Context context, const std::string& title = "");
 
-    virtual void draw();
+	void draw() override;
+	bool update(sf::Time dt) override;
+	bool handleEvent(const sf::Event& event) override;
 
-    virtual bool update(sf::Time dt);
+	virtual std::pair<std::vector<Animation>, std::string> getSteps(unsigned int option);
 
-    virtual bool handleEvent(const sf::Event &event);
+   protected:
+	[[nodiscard]] static bool selectedTextFile(std::string& dir);
 
-protected:
-    void callError(const std::string &text);
+   private:
+	void initGUIBase();
 
-    void callInfo(const std::string &text);
+   protected:
+	ActionsHub mActionsHub;
+	Player mPlayer;
 
-    void cleanLog();
-
-    void addAnimation(
-            const std::string &description,
-            const std::vector<int> &highlightLineID,
-            const std::function<void()> &forward = []() {},
-            const std::function<void()> &backward = []() {});
-
-    void clearAnimation();
-
-    void loadCode(const std::string &code);
-
-    void clearCode();
-
-/*    std::shared_ptr<GUI::Button> createNewGUIButton(
-            GUI::Button::Type type, sf::Vector2f position,
-            std::string label, GUI::Button::Callback callback,
-            bool toggle = false);*/
-
-private:
-    void initGUIButtons();
-
-    void initGUIPanels();
-
-    void initConsole();
-
-private:
-    GUI::Container mGUIContainer;
-//    GUI::Console::Ptr GUIConsole;
-//    GUI::ProgressBar::Ptr GUIProgressBar;
-//    GUI::CodeBlock::Ptr GUICodeBlock;
-
-    // Graphics
-    sf::Sprite mBackgroundSprite;
+   private:
+	GUI::Container mGUIContainer;
 };
 
-
-#endif //DATAVISUALIZATION2_VISUALSTATE_HPP
+#endif  //DATAVISUALIZATION2_VISUALSTATE_HPP

@@ -83,8 +83,8 @@ DataState::DataState(StateStack &stack, Context context)
     MinHeapButton->setPosition(context.window->getSize().x / 2.f - 413, 640.f);
     MinHeapButton->setCallback([this]() {
         requestStackPop();
-        requestStackPush(States::VisualTemplate);
-    });
+		requestStackPush(States::VisualMinHeap);
+	});
     mGUIContainer.pack(MinHeapButton);
 
     auto MaxHeapButton = std::make_shared<GUI::Button>(
@@ -94,7 +94,7 @@ DataState::DataState(StateStack &stack, Context context)
                                640.f);
     MaxHeapButton->setCallback([this]() {
         requestStackPop();
-        requestStackPush(States::VisualTemplate);
+        requestStackPush(States::VisualMaxHeap);
     });
     mGUIContainer.pack(MaxHeapButton);
 

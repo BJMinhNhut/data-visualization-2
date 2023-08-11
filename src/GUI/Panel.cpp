@@ -21,6 +21,10 @@ namespace GUI {
         return false;
     }
 
+    sf::Vector2f Panel::getSize() const {
+	    return mRect.getSize();
+    }
+
     void Panel::handleEvent(const sf::Event &event) {}
 
     void Panel::draw(sf::RenderTarget &target, sf::RenderStates states) const {

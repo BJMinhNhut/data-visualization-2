@@ -10,14 +10,15 @@
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <cmath>
+
 namespace GUI {
 
     Label::Label(Type type, const std::string &text,
                  const FontHolder &fonts, const ColorHolder &colors)
-            : mText(text, fonts.get(getFontID(type)), 19u) {
-        mText.setFillColor(colors.get(Colors::Text));
-        mText.setOrigin(0.f, mText.getGlobalBounds().height / 2.f);
-        mText.setLineSpacing(1.5f);
+    : mText(text, fonts.get(getFontID(type)), getFontSize(type)) {
+	mText.setFillColor(colors.get(Colors::Text));
+	    mText.setOrigin(0.f, std::floor(mText.getGlobalBounds().height / 2.f));
     }
 
     bool Label::isSelectable() const {
@@ -47,6 +48,16 @@ namespace GUI {
             default:
                 return Fonts::Main;
         }
+    }
+
+    unsigned int Label::getFontSize(Type type) {
+	    switch (type) {
+		    case Main:
+		    case Bold:
+			    return 19u;
+		    default:
+			    return 16u;
+	    }
     }
 
     void Label::handleEvent(const sf::Event &event) {}

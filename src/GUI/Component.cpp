@@ -8,7 +8,7 @@ namespace GUI {
 
     Component::Component() : mIsSelected(false), mIsActive(false) {}
 
-    Component::~Component() {}
+    Component::~Component() = default;
 
     bool Component::isSelected() const {
         return mIsSelected;
