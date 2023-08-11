@@ -9,11 +9,11 @@
 #include <iostream>
 
 MinHeapState::MinHeapState(StateStack& stack, State::Context context)
-    : VisualState(stack, context, "Min MaxHeap"),
+    : VisualState(stack, context, "Min Heap"),
       mHeap(*context.fonts, *context.colors),
       Inputs(NumOptions, nullptr) {
 	mHeap.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 200.f,
-	                        MaxHeap::Transition::None);
+	                        MinHeap::Transition::None);
 	initOptions();
 	initDetails();
 }
@@ -82,7 +82,7 @@ void MinHeapState::initDetails() {
 	Inputs[Push] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
 	                                            *getContext().colors);
 	Inputs[Push]->setPosition(250.f, 590.f);
-	Inputs[Push]->setRange(MaxHeap::MIN_VALUE, MaxHeap::MAX_VALUE);
+	Inputs[Push]->setRange(MinHeap::MIN_VALUE, MinHeap::MAX_VALUE);
 	mActionsHub.packOptionGUI(Push, Inputs[Push]);
 
 	// Delete

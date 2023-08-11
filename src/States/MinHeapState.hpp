@@ -5,7 +5,7 @@
 #ifndef DATAVISUALIZATION2_MINHEAPSTATE_HPP
 #define DATAVISUALIZATION2_MINHEAPSTATE_HPP
 
-#include "DataStructures/Heap/MaxHeap.hpp"
+#include "DataStructures/Heap/MinHeap.hpp"
 #include "GUI/Input.hpp"
 #include "VisualState.hpp"
 
@@ -35,7 +35,7 @@ class MinHeapState : public VisualState {
 		Size,
 		NumOptions,
 	};
-	MaxHeap mHeap;
+	MinHeap mHeap;
 	std::vector<GUI::Input::Ptr> Inputs;
 };
 

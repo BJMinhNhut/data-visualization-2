@@ -43,7 +43,6 @@ const std::string Delete(
     "while (A[i] > A[Smallest])\n"
     "	swap(A[i], A[Smallest])\n"
     "	i = Smallest");
-}
 
 }  // namespace Min
 
