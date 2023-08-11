@@ -18,7 +18,7 @@ const std::string Push(
 
 const std::string Delete(
     "A[i] = A[0]+1\n"
-    "while (i > 0 && A[i/2] > A[i])\n"
+    "while (i > 0 && A[i/2] < A[i])\n"
     "	swap(A[i/2], A[i]), i /= 2\n"
     "A[0] = A[size-1]\n"
     "size--\n"
@@ -33,6 +33,18 @@ const std::string Push(
     "A[i] = value\n"
     "while (i > 0 && A[i/2] > A[i])\n"
     "	swap(A[i/2], A[i]), i /= 2\n");
+
+const std::string Delete(
+    "A[i] = A[0]+1\n"
+    "while (i > 0 && A[i/2] > A[i])\n"
+    "	swap(A[i/2], A[i]), i /= 2\n"
+    "A[0] = A[size-1]\n"
+    "size--\n"
+    "while (A[i] > A[Smallest])\n"
+    "	swap(A[i], A[Smallest])\n"
+    "	i = Smallest");
+}
+
 }  // namespace Min
 
 const std::string Top("return A[0]");
