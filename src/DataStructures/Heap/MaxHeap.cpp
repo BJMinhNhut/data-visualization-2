@@ -365,9 +365,9 @@ std::pair<std::vector<Animation>, std::string> MaxHeap::getTopAnimation() {
 	const std::string& code = HeapCode::Top;
 	std::vector<Animation> list;
 	if (mNodes.empty())
-		throw std::out_of_range("MaxHeap is empty");
+		throw std::out_of_range("Heap is empty");
 	list.push_back(Animation(
-	    {0}, "MaxHeap top: A[0] = " + mNodes[0]->getData(),
+	    {0}, "Heap top: A[0] = " + mNodes[0]->getData() + ", complexity is O(1)",
 	    [&]() { mNodes[0]->highlight(PolyNode::Primary); },
 	    [&]() { mNodes[0]->highlight(PolyNode::None); }));
 	return std::make_pair(list, code);
@@ -377,7 +377,7 @@ std::pair<std::vector<Animation>, std::string> MaxHeap::getSizeAnimation() {
 	const std::string& code = HeapCode::Size;
 	std::vector<Animation> list;
 	list.push_back(Animation(
-	    {0}, "MaxHeap size = " + std::to_string(mNodes.size()),
+	    {0}, "Heap size = " + std::to_string(mNodes.size()) + ", complexity is O(1)",
 	    [&]() {
 		    for (auto& node : mNodes)
 			    node->highlight(PolyNode::Primary);
