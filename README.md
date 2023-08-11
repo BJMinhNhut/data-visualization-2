@@ -23,7 +23,7 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] Hash table
   - [ ] AVL tree
   - [ ] 2-3-4 tree
-  - [ ] Min/Max Heap
+  - [ ] Min/Max MaxHeap
   - [ ] Trie
   - [ ] Graph
 
@@ -46,7 +46,7 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] Update
   - [ ] Delete
   - [ ] Search
-- [ ] Min/Max Heap
+- [ ] Min/Max MaxHeap
   - [x] Create
   - [x] Push
   - [x] Delete

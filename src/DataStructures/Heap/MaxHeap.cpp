@@ -2,7 +2,7 @@
 // Created by MINH NHUT on 7/28/2023.
 //
 
-#include "Heap.hpp"
+#include "MaxHeap.hpp"
 #include "HeapCode.hpp"
 #include "Template/Random.hpp"
 #include "Template/Utility.hpp"
@@ -14,32 +14,32 @@
 #include <iostream>
 #include <queue>
 
-const sf::Vector2f Heap::TREE_OFF_SET(35.f, 100.f);
-const unsigned int Heap::MAX_SIZE(31);
-const int Heap::MAX_VALUE(999);
-const int Heap::MIN_VALUE(0);
+const sf::Vector2f MaxHeap::TREE_OFF_SET(35.f, 100.f);
+const unsigned int MaxHeap::MAX_SIZE(31);
+const int MaxHeap::MAX_VALUE(999);
+const int MaxHeap::MIN_VALUE(0);
 
-Heap::Height::Height(int left, int right) : left(left), right(right) {}
+MaxHeap::Height::Height(int left, int right) : left(left), right(right) {}
 
-void Heap::Height::updateLeft(const Heap::Height& child) {
+void MaxHeap::Height::updateLeft(const MaxHeap::Height& child) {
 	left = std::max(child.left, child.right) + 1;
 }
 
-void Heap::Height::updateRight(const Heap::Height& child) {
+void MaxHeap::Height::updateRight(const MaxHeap::Height& child) {
 	right = std::max(child.left, child.right) + 1;
 }
 
-Heap::Heap(const FontHolder& fonts, const ColorHolder& colors)
+MaxHeap::MaxHeap(const FontHolder& fonts, const ColorHolder& colors)
     : mNodes(), mFonts(fonts), mColors(colors), height(), mBin(nullptr) {
 	randomize();
 }
 
-void Heap::randomize() {
-	std::vector<int> elements(Random::getArray(1, Heap::MAX_SIZE, MIN_VALUE, MAX_VALUE));
+void MaxHeap::randomize() {
+	std::vector<int> elements(Random::getArray(1, MaxHeap::MAX_SIZE, MIN_VALUE, MAX_VALUE));
 	loadArray(elements);
 }
 
-void Heap::loadFromFile(const std::string& fileDir) {
+void MaxHeap::loadFromFile(const std::string& fileDir) {
 	std::ifstream fileStream(fileDir);
 	std::vector<int> elements;
 	std::string token;
@@ -59,11 +59,11 @@ void Heap::loadFromFile(const std::string& fileDir) {
 	loadArray(elements);
 }
 
-std::pair<std::vector<Animation>, std::string> Heap::pushAnimation(const int& value) {
+std::pair<std::vector<Animation>, std::string> MaxHeap::pushAnimation(const int& value) {
 	const std::string& code = HeapCode::Max::Push;
 	std::vector<Animation> list;
 	if (mNodes.size() == MAX_SIZE)
-		throw std::length_error("Heap maximum size reached");
+		throw std::length_error("MaxHeap maximum size reached");
 	list.push_back(Animation({}, "Push " + std::to_string(value) + " to heap"));
 	list.push_back(Animation(
 	    {0, 1}, "Push " + std::to_string(value) + " to the back of heap",
@@ -162,7 +162,7 @@ std::pair<std::vector<Animation>, std::string> Heap::pushAnimation(const int& va
 	return make_pair(list, code);
 }
 
-std::pair<std::vector<Animation>, std::string> Heap::deleteAnimation(const int& id) {
+std::pair<std::vector<Animation>, std::string> MaxHeap::deleteAnimation(const int& id) {
 	if (id < 0 || id >= mNodes.size())
 		throw std::out_of_range("Index must be in range [0, " + std::to_string(mNodes.size()) +
 		                        "]");
@@ -195,7 +195,7 @@ std::pair<std::vector<Animation>, std::string> Heap::deleteAnimation(const int& 
 	    }));
 	values[id] = values[0] + 1;
 
-	// up Heap
+	// up MaxHeap
 	{
 		int index = id;
 		int last = 0;
@@ -361,23 +361,23 @@ std::pair<std::vector<Animation>, std::string> Heap::deleteAnimation(const int& 
 	return std::make_pair(list, code);
 }
 
-std::pair<std::vector<Animation>, std::string> Heap::getTopAnimation() {
+std::pair<std::vector<Animation>, std::string> MaxHeap::getTopAnimation() {
 	const std::string& code = HeapCode::Top;
 	std::vector<Animation> list;
 	if (mNodes.empty())
-		throw std::out_of_range("Heap is empty");
+		throw std::out_of_range("MaxHeap is empty");
 	list.push_back(Animation(
-	    {0}, "Heap top: A[0] = " + mNodes[0]->getData(),
+	    {0}, "MaxHeap top: A[0] = " + mNodes[0]->getData(),
 	    [&]() { mNodes[0]->highlight(PolyNode::Primary); },
 	    [&]() { mNodes[0]->highlight(PolyNode::None); }));
 	return std::make_pair(list, code);
 }
 
-std::pair<std::vector<Animation>, std::string> Heap::getSizeAnimation() {
+std::pair<std::vector<Animation>, std::string> MaxHeap::getSizeAnimation() {
 	const std::string& code = HeapCode::Size;
 	std::vector<Animation> list;
 	list.push_back(Animation(
-	    {0}, "Heap size = " + std::to_string(mNodes.size()),
+	    {0}, "MaxHeap size = " + std::to_string(mNodes.size()),
 	    [&]() {
 		    for (auto& node : mNodes)
 			    node->highlight(PolyNode::Primary);
@@ -389,13 +389,13 @@ std::pair<std::vector<Animation>, std::string> Heap::getSizeAnimation() {
 	return std::make_pair(list, code);
 }
 
-void Heap::loadArray(const std::vector<int>& array) {
+void MaxHeap::loadArray(const std::vector<int>& array) {
 	clear();
 	for (int v : array)
 		push(v);
 }
 
-void Heap::clear(const int& root) {
+void MaxHeap::clear(const int& root) {
 	if (mNodes.empty())
 		return;
 	int leftNode = root * 2 + 1, rightNode = root * 2 + 2;
@@ -414,12 +414,12 @@ void Heap::clear(const int& root) {
 	}
 }
 
-void Heap::clearHighlight() {
+void MaxHeap::clearHighlight() {
 	for (auto& node : mNodes)
 		node->highlight(PolyNode::None);
 }
 
-void Heap::alignBinaryTree() {
+void MaxHeap::alignBinaryTree() {
 	fill(height.begin(), height.end(), Height(0, 0));
 	for (int id = (int)mNodes.size() - 1; id > 0; --id) {
 		int parentID = parent(id);
@@ -438,9 +438,9 @@ void Heap::alignBinaryTree() {
 	}
 }
 
-void Heap::push(const int& value) {
+void MaxHeap::push(const int& value) {
 	if (mNodes.size() == MAX_SIZE) {
-		std::cerr << "Heap maximum size reached!\n";
+		std::cerr << "MaxHeap maximum size reached!\n";
 		return;
 	}
 
@@ -448,8 +448,8 @@ void Heap::push(const int& value) {
 	heapifyUp((int)mNodes.size() - 1);
 }
 
-void Heap::purePush(const int& value) {
-	//	std::cout << "Heap push: " << value << '\n';
+void MaxHeap::purePush(const int& value) {
+	//	std::cout << "MaxHeap push: " << value << '\n';
 
 	auto* newNode = new PolyNode(mFonts, mColors);
 	newNode->setData(value);
@@ -466,23 +466,23 @@ void Heap::purePush(const int& value) {
 	alignBinaryTree();
 }
 
-void Heap::purePop() {
+void MaxHeap::purePop() {
 	dump(mNodes.back());
 	mNodes.pop_back();
 	height.pop_back();
 	alignBinaryTree();
 }
 
-int Heap::top() const {
+int MaxHeap::top() const {
 	if (mNodes.empty()) {
-		std::cerr << "Heap is empty!\n";
+		std::cerr << "MaxHeap is empty!\n";
 		return -1;
 	}
 
 	return mNodes[0]->getIntData();
 }
 
-void Heap::remove(const int& index) {
+void MaxHeap::remove(const int& index) {
 	assert(index >= 0 && index < mNodes.size());
 	// up heap phase
 	mNodes[index]->setData(mNodes[0]->getIntData() + 1);
@@ -505,11 +505,11 @@ void Heap::remove(const int& index) {
 	alignBinaryTree();
 }
 
-int Heap::getSize() const {
+int MaxHeap::getSize() const {
 	return (int)mNodes.size();
 }
 
-void Heap::heapifyUp(int index) {
+void MaxHeap::heapifyUp(int index) {
 	assert(index < mNodes.size());
 	while (index > 0) {
 		int curValue = mNodes[index]->getIntData();
@@ -524,7 +524,7 @@ void Heap::heapifyUp(int index) {
 	}
 }
 
-void Heap::heapifyDown() {
+void MaxHeap::heapifyDown() {
 	int index = 0;
 	while (index < mNodes.size()) {
 		int leftChild = index * 2 + 1;
@@ -547,17 +547,17 @@ void Heap::heapifyDown() {
 	}
 }
 
-int Heap::parent(const int& index) {
+int MaxHeap::parent(const int& index) {
 	return (index - 1) / 2;
 }
 
-void Heap::dump(PolyNode* node) {
+void MaxHeap::dump(PolyNode* node) {
 	node->removeAllEdges();
 	node->setTargetScale(0.f, 0.f, Transition::Smooth);
 	mBin = node;
 }
 
-void Heap::updateCurrent(sf::Time dt) {
+void MaxHeap::updateCurrent(sf::Time dt) {
 	if (mBin != nullptr && mBin->getScale().x < SceneNode::EPS) {
 		detachChild(*mBin);
 		mBin = nullptr;

@@ -2,8 +2,8 @@
 // Created by MINH NHUT on 7/28/2023.
 //
 
-#ifndef DATAVISUALIZATION2_HEAP_HPP
-#define DATAVISUALIZATION2_HEAP_HPP
+#ifndef DATAVISUALIZATION2_MAXHEAP_HPP
+#define DATAVISUALIZATION2_MAXHEAP_HPP
 
 #include "../PolyNode.hpp"
 #include "Template/SceneNode.hpp"
@@ -11,15 +11,7 @@
 
 #include <vector>
 
-/*
- * TODO: Heap features
- *  - [x] Binary Tree style nodes alignment
- *  - [] Comparison definition
- *  - [x] Randomize data
- *  - [] AnimationList generation
- */
-
-class Heap : public SceneNode {
+class MaxHeap : public SceneNode {
    public:
 	static const unsigned int MAX_SIZE;
 	static const sf::Vector2f TREE_OFF_SET;
@@ -28,7 +20,7 @@ class Heap : public SceneNode {
 	enum NodeSide { Right, Left };
 
    public:
-	Heap(const FontHolder&, const ColorHolder&);
+	MaxHeap(const FontHolder&, const ColorHolder&);
 
 	void randomize();
 
@@ -83,4 +75,4 @@ class Heap : public SceneNode {
 	std::vector<Height> height;
 };
 
-#endif  //DATAVISUALIZATION2_HEAP_HPP
+#endif  //DATAVISUALIZATION2_MAXHEAP_HPP

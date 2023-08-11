@@ -11,8 +11,8 @@ include_directories(src)
 add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/Template/SceneNode.cpp src/Template/State.cpp src/Template/StateStack.cpp src/States/MenuState.cpp src/States/MenuState.hpp src/States/StatesList.hpp src/Template/Utility.cpp src/Template/Utility.hpp src/Template/Constants.hpp src/GUI/Component.cpp src/GUI/Component.hpp src/GUI/Container.cpp src/GUI/Container.hpp src/GUI/Button.cpp src/GUI/Button.hpp src/Template/ColorHolder.cpp src/Template/ColorHolder.hpp src/States/AboutState.cpp src/States/AboutState.hpp src/GUI/Sprite.cpp src/GUI/Sprite.hpp src/GUI/Panel.cpp src/GUI/Panel.hpp src/GUI/Label.cpp src/GUI/Label.hpp src/Template/Settings.cpp src/Template/Settings.hpp src/States/SettingsState.cpp src/States/SettingsState.hpp src/States/DataState.cpp src/States/DataState.hpp src/States/VisualState.cpp src/States/VisualState.hpp src/States/VisualState.hpp src/Visualizer/Animation.cpp src/Visualizer/Animation.hpp src/Visualizer/AnimationList.cpp src/Visualizer/AnimationList.hpp src/DataStructures/PolyNode.cpp src/DataStructures/PolyNode.hpp
         src/States/MaxHeapState.cpp
         src/States/MaxHeapState.hpp
-        src/DataStructures/Heap/Heap.cpp
-        src/DataStructures/Heap/Heap.hpp
+        src/DataStructures/Heap/MaxHeap.cpp
+        src/DataStructures/Heap/MaxHeap.hpp
         src/Template/Random.cpp
         src/Template/Random.hpp
         src/Template/portable-file-dialogs.h
