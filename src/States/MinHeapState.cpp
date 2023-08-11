@@ -124,6 +124,9 @@ std::pair<std::vector<Animation>, std::string> MinHeapState::getSteps(unsigned i
 					                        Inputs[Push]->getStringRange());
 				return mHeap.pushAnimation(Inputs[Push]->getValue());
 			case Delete:
+				if (Inputs[Delete]->validate() != GUI::Input::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Delete]->getStringRange());
 				return mHeap.deleteAnimation(Inputs[Delete]->getValue());
 			case Top:
 				return mHeap.getTopAnimation();
