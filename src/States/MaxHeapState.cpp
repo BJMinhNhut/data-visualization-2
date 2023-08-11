@@ -9,7 +9,7 @@
 #include <iostream>
 
 MaxHeapState::MaxHeapState(StateStack& stack, State::Context context)
-    : VisualState(stack, context, "Max MaxHeap"),
+    : VisualState(stack, context, "Max Heap"),
       mHeap(*context.fonts, *context.colors),
       Inputs(NumOptions, nullptr) {
 	mHeap.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 200.f,

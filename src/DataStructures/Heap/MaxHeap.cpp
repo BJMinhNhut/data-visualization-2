@@ -17,7 +17,7 @@
 const sf::Vector2f MaxHeap::TREE_OFF_SET(35.f, 100.f);
 const unsigned int MaxHeap::MAX_SIZE(31);
 const int MaxHeap::MAX_VALUE(999);
-const int MaxHeap::MIN_VALUE(0);
+const int MaxHeap::MIN_VALUE(1);
 
 MaxHeap::Height::Height(int left, int right) : left(left), right(right) {}
 
@@ -63,7 +63,7 @@ std::pair<std::vector<Animation>, std::string> MaxHeap::pushAnimation(const int&
 	const std::string& code = HeapCode::Max::Push;
 	std::vector<Animation> list;
 	if (mNodes.size() == MAX_SIZE)
-		throw std::length_error("MaxHeap maximum size reached");
+		throw std::length_error("Heap maximum size reached");
 	list.push_back(Animation({}, "Push " + std::to_string(value) + " to heap"));
 	list.push_back(Animation(
 	    {0, 1}, "Push " + std::to_string(value) + " to the back of heap",
@@ -82,7 +82,7 @@ std::pair<std::vector<Animation>, std::string> MaxHeap::pushAnimation(const int&
 			int parentID = parent(index);
 			int parValue = mNodes[parentID]->getIntData();
 
-			if (index > 0 && curValue > parValue) {
+			if (index > 0 && parValue < curValue) {
 				list.push_back(Animation(
 				    {2},
 				    "Node is not root, " + std::to_string(parValue) + " < " +
@@ -195,7 +195,7 @@ std::pair<std::vector<Animation>, std::string> MaxHeap::deleteAnimation(const in
 	    }));
 	values[id] = values[0] + 1;
 
-	// up MaxHeap
+	// up Heap
 	{
 		int index = id;
 		int last = 0;
@@ -204,7 +204,7 @@ std::pair<std::vector<Animation>, std::string> MaxHeap::deleteAnimation(const in
 			int parentID = parent(index);
 			int parValue = values[parentID];
 
-			if (index > 0 && curValue > parValue) {
+			if (index > 0 && parValue < curValue) {
 				list.push_back(Animation(
 				    {1},
 				    "Node is not root, " + std::to_string(parValue) + " < " +
