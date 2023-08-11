@@ -13,9 +13,12 @@
 #include <iostream>
 
 PolyNode::PolyNode(const FontHolder& fonts, const ColorHolder& colors)
-    : mText("", fonts.get(Fonts::Mono), 18u), mPolygon(22.f), mColors(colors) {
+    : mText("", fonts.get(Fonts::Mono), 18u),
+      mPolygon(22.f),
+      mColors(colors),
+      mLabel("", fonts.get(Fonts::Mono), 16u) {
 	mText.setFillColor(colors.get(Colors::Text));
-	Utility::centerOrigin(mText);
+	mLabel.setFillColor(colors.get(Colors::Blue));
 
 	mPolygon.setFillColor(colors.get(Colors::UIPrimary));
 	mPolygon.setOutlineColor(colors.get(Colors::UIBorder));
@@ -39,6 +42,7 @@ void PolyNode::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 		target.draw(*edge, states);
 	target.draw(mPolygon, states);
 	target.draw(mText, states);
+	target.draw(mLabel, states);
 }
 
 std::string PolyNode::getData() const {
@@ -66,6 +70,18 @@ void PolyNode::swapData(PolyNode* node) {
 	std::string temp = this->getData();
 	this->setData(node->getData());
 	node->setData(temp);
+}
+
+void PolyNode::setLabel(const std::string& label) {
+	mLabel.setString(label);
+	Utility::centerOrigin(mLabel);
+	mLabel.setPosition(0.f, mPolygon.getRadius() + 15.f);
+}
+
+void PolyNode::setLabel(const int& label) {
+	mLabel.setString(std::to_string(label));
+	Utility::centerOrigin(mLabel);
+	mLabel.setPosition(0.f, mPolygon.getRadius() + 15.f);
 }
 
 void PolyNode::setPoint(const int& points) {

@@ -453,6 +453,7 @@ void MaxHeap::purePush(const int& value) {
 
 	auto* newNode = new PolyNode(mFonts, mColors);
 	newNode->setData(value);
+	newNode->setLabel(mNodes.size());
 
 	if (mNodes.empty())
 		attachChild(PolyNode::Ptr(newNode));

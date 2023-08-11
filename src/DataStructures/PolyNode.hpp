@@ -31,6 +31,8 @@ class PolyNode : public SceneNode {
 	void setData(const std::string& data);
 	void setData(const int& data);
 	void swapData(PolyNode* node);
+	void setLabel(const std::string& label);
+	void setLabel(const int& label);
 	void setPoint(const int& points);
 	void highlight(Highlight type);
 
@@ -49,7 +51,7 @@ class PolyNode : public SceneNode {
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
    private:
-	sf::Text mText;
+	sf::Text mText, mLabel;
 	sf::CircleShape mPolygon;
 	std::vector<Edge::Ptr> inEdges, outEdges;
 	const ColorHolder& mColors;
