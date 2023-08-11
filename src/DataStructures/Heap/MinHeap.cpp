@@ -399,6 +399,7 @@ void MinHeap::clear(const int& root) {
 	if (mNodes.empty())
 		return;
 	int leftNode = root * 2 + 1, rightNode = root * 2 + 2;
+	mNodes[root]->removeAllEdges();
 	if (leftNode < mNodes.size()) {
 		clear(leftNode);
 		mNodes[root]->detachChild(*mNodes[leftNode]);
