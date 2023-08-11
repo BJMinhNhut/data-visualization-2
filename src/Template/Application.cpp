@@ -120,6 +120,7 @@ void Application::registerStates() {
 	mStateStack.registerState<DataState>(States::DataMenu);
 	mStateStack.registerState<VisualState>(States::VisualTemplate);
 	mStateStack.registerState<MaxHeapState>(States::VisualMaxHeap);
+	mStateStack.registerState<MinHeapState>(States::VisualMinHeap);
 }
 
 void Application::loadIcon() {

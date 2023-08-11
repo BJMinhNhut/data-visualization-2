@@ -5,11 +5,12 @@
 #ifndef DATAVISUALIZATION2_STATESLIST_HPP
 #define DATAVISUALIZATION2_STATESLIST_HPP
 
-#include "MenuState.hpp"
 #include "AboutState.hpp"
-#include "SettingsState.hpp"
 #include "DataState.hpp"
-#include "VisualState.hpp"
 #include "MaxHeapState.hpp"
+#include "MenuState.hpp"
+#include "MinHeapState.hpp"
+#include "SettingsState.hpp"
+#include "VisualState.hpp"
 
 #endif //DATAVISUALIZATION2_STATESLIST_HPP
