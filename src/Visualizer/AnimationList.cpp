@@ -41,6 +41,7 @@ bool AnimationList::isPlaying() const {
 
 void AnimationList::push(const Animation& animation) {
 	mList.push_back(animation);
+	mProgress->setLength((int)mList.size());
 }
 
 void AnimationList::play() {
@@ -62,12 +63,18 @@ void AnimationList::clear() {
 	currentAnimation = 0;
 	mIsPlaying = false;
 	mCoolDown = sf::seconds(0.f);
+	mProgress->setLength(0);
+}
+
+void AnimationList::setProgressBar(std::shared_ptr<GUI::ProgressBar>& progress) {
+	mProgress = std::move(progress);
 }
 
 void AnimationList::play(const unsigned int& id) {
 	mList[id].play();
 	mCodeBlock->setHighlight(mList[id].getLineIDs());
 	mConsole->log(GUI::Console::Info, mList[id].getDescription());
+	mProgress->setProgress((int)id);
 }
 
 void AnimationList::playNext() {

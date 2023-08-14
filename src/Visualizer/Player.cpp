@@ -4,6 +4,7 @@
 
 #include "Player.hpp"
 #include "GUI/Panel.hpp"
+#include "GUI/ProgressBar.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
@@ -112,6 +113,12 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 	speedDown->setPosition(mSpeed->getPosition() + sf::Vector2f(0.f, 20.f));
 	speedDown->setCallback([&] { decreaseSpeed(); });
 	mGUIContainer.pack(speedDown);
+
+	auto progress = std::make_shared<GUI::ProgressBar>(colors, sf::Vector2f(350.f, 5.f));
+	progress->setPosition(playerPanel->getPosition());
+	mGUIContainer.pack(progress);
+
+	mAnimationList.setProgressBar(progress);
 }
 
 void Player::reset() {

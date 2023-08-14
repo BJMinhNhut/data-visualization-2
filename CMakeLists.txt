@@ -34,7 +34,10 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/States/MinHeapState.cpp
         src/States/MinHeapState.hpp
         src/DataStructures/Heap/MinHeap.cpp
-        src/DataStructures/Heap/MinHeap.hpp)
+        src/DataStructures/Heap/MinHeap.hpp
+        src/GUI/ProgressBar.cpp
+        src/GUI/ProgressBar.hpp
+)
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
 target_compile_features(DataVisualization2 PRIVATE cxx_std_17)
