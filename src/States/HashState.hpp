@@ -5,6 +5,7 @@
 #ifndef DATAVISUALIZATION2_HASHSTATE_HPP
 #define DATAVISUALIZATION2_HASHSTATE_HPP
 
+#include "DataStructures/HashTable/HashTable.hpp"
 #include "GUI/Input.hpp"
 #include "VisualState.hpp"
 
@@ -22,7 +23,7 @@ class HashState : public VisualState {
 
    private:
 	void initOptions();
-	void initDetails();
+	void initCreate();
 
    private:
 	enum Option {
@@ -33,6 +34,7 @@ class HashState : public VisualState {
 		Search,
 		NumOptions,
 	};
+	HashTable mHashTable;
 	std::vector<GUI::Input::Ptr> Inputs;
 };
 

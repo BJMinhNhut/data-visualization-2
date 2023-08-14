@@ -3,11 +3,16 @@
 //
 
 #include "HashState.hpp"
+#include "GUI/Panel.hpp"
 
 HashState::HashState(StateStack& stack, State::Context context)
-    : VisualState(stack, context, "Hash table - Linear Probing"), Inputs(NumOptions) {
+    : VisualState(stack, context, "Hash Table - Linear Probing"),
+      Inputs(NumOptions),
+      mHashTable(*context.fonts, *context.colors) {
 	initOptions();
-	initDetails();
+	initCreate();
+
+	mHashTable.setTargetPosition(500.f, 200.f, SceneNode::None);
 }
 
 void HashState::initOptions() {
@@ -15,6 +20,7 @@ void HashState::initOptions() {
 		mActionsHub.setCurrentOption(Create);
 		mPlayer.reset();
 		mPlayer.callInfo("Init a new hash table");
+		Inputs[Create]->setValue((int)mHashTable.getSize());
 	});
 	mActionsHub.addOption(Insert, "Insert", [&]() {
 		mActionsHub.setCurrentOption(Insert);
@@ -39,15 +45,68 @@ void HashState::initOptions() {
 	});
 }
 
-void HashState::initDetails() {}
+void HashState::initCreate() {
+	// Create
+	auto sizeLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Size", *getContext().fonts,
+	                                              *getContext().colors);
+	sizeLabel->setPosition(250.f, 590.f - 90.f);
+	sizeLabel->alignCenter();
+	mActionsHub.packOptionGUI(Create, sizeLabel);
+
+	Inputs[Create] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
+	                                              *getContext().colors);
+	Inputs[Create]->setPosition(250.f, 590.f - 55.f);
+	Inputs[Create]->setRange(2, (int)HashTable::MAX_SIZE);
+	mActionsHub.packOptionGUI(Create, Inputs[Create]);
+
+	auto horizon =
+	    std::make_shared<GUI::Panel>(200.f, 0.f, getContext().colors->get(Colors::UIPrimary),
+	                                 getContext().colors->get(Colors::UIBorder));
+	horizon->setPosition(150.f, 590.f - 15.f);
+	mActionsHub.packOptionGUI(Create, horizon);
+
+	auto randomButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
+	                                                  *getContext().textures, *getContext().colors);
+	randomButton->setCallback([&]() {
+		if (Inputs[Create]->validate() == GUI::Input::Success) {
+			mHashTable.setSize(Inputs[Create]->getValue());
+			mHashTable.randomize();
+			mPlayer.callInfo("Created a hash table with random elements, size = " +
+			                 std::to_string(mHashTable.getSize()));
+		} else
+			mPlayer.callError("Size must be in range " + Inputs[Create]->getStringRange());
+	});
+	randomButton->setPosition(250.f, 590.f + 25.f);
+	randomButton->setText("Random");
+	mActionsHub.packOptionGUI(Create, randomButton);
+
+	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
+	                                                *getContext().textures, *getContext().colors);
+	fileButton->setCallback([&]() {
+		if (Inputs[Create]->validate() == GUI::Input::Success) {
+			std::string fileDir;
+			mHashTable.setSize(Inputs[Create]->getValue());
+			if (selectedTextFile(fileDir))
+				mHashTable.loadFromFile(fileDir);
+			mPlayer.callInfo("Created a hash table with elements loaded from file, size = " +
+			                 std::to_string(mHashTable.getSize()));
+		} else
+			mPlayer.callError("Size must be in range " + Inputs[Create]->getStringRange());
+	});
+	fileButton->setPosition(250.f, 590.f + 75.f);
+	fileButton->setText("Load file");
+	mActionsHub.packOptionGUI(Create, fileButton);
+}
 
 void HashState::draw() {
 	VisualState::draw();
+	getContext().window->draw(mHashTable);
 }
 
 bool HashState::update(sf::Time dt) {
 	bool result = true;
 	result |= VisualState::update(dt);
+	mHashTable.update(dt);
 	return result;
 }
 
