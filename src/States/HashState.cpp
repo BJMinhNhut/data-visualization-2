@@ -10,7 +10,34 @@ HashState::HashState(StateStack& stack, State::Context context)
 	initDetails();
 }
 
-void HashState::initOptions() {}
+void HashState::initOptions() {
+	mActionsHub.addOption(Create, "Create", [&]() {
+		mActionsHub.setCurrentOption(Create);
+		mPlayer.reset();
+		mPlayer.callInfo("Init a new hash table");
+	});
+	mActionsHub.addOption(Insert, "Insert", [&]() {
+		mActionsHub.setCurrentOption(Insert);
+		mPlayer.reset();
+		mPlayer.callInfo("Push a new value to hash table");
+		//		Inputs[Insert]->randomizeValue();
+	});
+	mActionsHub.addOption(Delete, "Delete", [&]() {
+		mActionsHub.setCurrentOption(Delete);
+		mPlayer.reset();
+		mPlayer.callInfo("Delete a node from heap by ID");
+		//		Inputs[Delete]->setRange(0, mHeap.getSize() - 1);
+		//		if (mHeap.getSize() > 0)
+		//			Inputs[Delete]->randomizeValue();
+		//		else
+		//			Inputs[Delete]->clear();
+	});
+	mActionsHub.addOption(Search, "Search", [&]() {
+		mActionsHub.setCurrentOption(Search);
+		mPlayer.reset();
+		mPlayer.callInfo("Search for a value in hash table");
+	});
+}
 
 void HashState::initDetails() {}
 
