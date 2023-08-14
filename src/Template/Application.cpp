@@ -121,6 +121,7 @@ void Application::registerStates() {
 	mStateStack.registerState<VisualState>(States::VisualTemplate);
 	mStateStack.registerState<MaxHeapState>(States::VisualMaxHeap);
 	mStateStack.registerState<MinHeapState>(States::VisualMinHeap);
+	mStateStack.registerState<HashState>(States::VisualHash);
 }
 
 void Application::loadIcon() {

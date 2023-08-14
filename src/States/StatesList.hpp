@@ -7,6 +7,7 @@
 
 #include "AboutState.hpp"
 #include "DataState.hpp"
+#include "HashState.hpp"
 #include "MaxHeapState.hpp"
 #include "MenuState.hpp"
 #include "MinHeapState.hpp"
