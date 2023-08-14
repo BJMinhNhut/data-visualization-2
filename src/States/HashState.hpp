@@ -24,6 +24,7 @@ class HashState : public VisualState {
    private:
 	void initOptions();
 	void initCreate();
+	void initInsert();
 
    private:
 	enum Option {

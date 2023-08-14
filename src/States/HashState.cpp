@@ -11,6 +11,7 @@ HashState::HashState(StateStack& stack, State::Context context)
       mHashTable(*context.fonts, *context.colors) {
 	initOptions();
 	initCreate();
+	initInsert();
 
 	mHashTable.setTargetPosition(500.f, 200.f, SceneNode::None);
 }
@@ -26,7 +27,7 @@ void HashState::initOptions() {
 		mActionsHub.setCurrentOption(Insert);
 		mPlayer.reset();
 		mPlayer.callInfo("Push a new value to hash table");
-		//		Inputs[Insert]->randomizeValue();
+		Inputs[Insert]->randomizeValue();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
@@ -98,6 +99,21 @@ void HashState::initCreate() {
 	mActionsHub.packOptionGUI(Create, fileButton);
 }
 
+void HashState::initInsert() {
+	// Insert
+	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Value", *getContext().fonts,
+	                                               *getContext().colors);
+	valueLabel->setPosition(250.f, 555.f);
+	valueLabel->alignCenter();
+	mActionsHub.packOptionGUI(Insert, valueLabel);
+
+	Inputs[Insert] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
+	                                              *getContext().colors);
+	Inputs[Insert]->setPosition(250.f, 590.f);
+	Inputs[Insert]->setRange(HashTable::MIN_VALUE, HashTable::MAX_VALUE);
+	mActionsHub.packOptionGUI(Insert, Inputs[Insert]);
+}
+
 void HashState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mHashTable);
@@ -116,5 +132,21 @@ bool HashState::handleEvent(const sf::Event& event) {
 }
 
 std::pair<std::vector<Animation>, std::string> HashState::getSteps(unsigned int option) {
+	try {
+		mHashTable.clearHighlight();
+		switch (option) {
+			case Insert:
+				if (Inputs[Insert]->validate() != GUI::Input::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Insert]->getStringRange());
+				return mHashTable.insertAnimation(Inputs[Insert]->getValue());
+			case Delete:
+			case Search:
+			default:
+				return VisualState::getSteps(option);
+		}
+	} catch (const std::exception& err) {
+		mPlayer.callError(err.what());
+	}
 	return VisualState::getSteps(option);
 }

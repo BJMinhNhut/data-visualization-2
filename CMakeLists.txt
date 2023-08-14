@@ -41,6 +41,7 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/States/HashState.hpp
         src/DataStructures/HashTable/HashTable.cpp
         src/DataStructures/HashTable/HashTable.hpp
+        src/DataStructures/HashTable/HashCode.hpp
 )
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)

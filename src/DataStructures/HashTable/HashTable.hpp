@@ -28,6 +28,7 @@ class HashTable : public SceneNode {
 	void clearHighlight();
 
 	unsigned int getSize() const;
+	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
 
    private:
 	void loadArray(const std::vector<int>& array);
@@ -41,6 +42,7 @@ class HashTable : public SceneNode {
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 	std::vector<PolyNode*> mNodes;
+	int mUsed;
 };
 
 #endif  //DATAVISUALIZATION2_HASHTABLE_HPP
