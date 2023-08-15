@@ -35,7 +35,7 @@ void HashTable::setSize(const unsigned int& size) {
 }
 
 void HashTable::randomize() {
-	loadArray(Random::getArray(1, getSize() / 2, MIN_VALUE, MAX_VALUE));
+	loadArray(Random::getArray(1, getSize() / 3 * 2, MIN_VALUE, MAX_VALUE));
 }
 
 void HashTable::loadArray(const std::vector<int>& array) {
@@ -71,12 +71,13 @@ unsigned int HashTable::getSize() const {
 std::pair<std::vector<Animation>, std::string> HashTable::insertAnimation(const int& value) {
 	const std::string& code = HashCode::Insert;
 	std::vector<Animation> list;
-	if (mUsed == mNodes.size()) {
+	if (mUsed + 1 == mNodes.size()) {
 		list.push_back(Animation(
 		    {0}, "Hash table is filled up, so stop inserting new values.",
 		    [&]() {
 			    for (auto& node : mNodes)
-				    node->highlight(PolyNode::Primary);
+				    if (!node->getData().empty())
+					    node->highlight(PolyNode::Primary);
 		    },
 		    [&]() {
 			    for (auto& node : mNodes)

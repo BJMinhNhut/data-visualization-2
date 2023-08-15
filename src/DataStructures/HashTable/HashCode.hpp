@@ -9,11 +9,11 @@
 
 namespace HashCode {
 const std::string Insert(
-    "if full, return\n"
+    "if used+1 == size, return\n"
     "id = value % size\n"
     "while (hash[id] != EMPTY)\n"
     "	id = (id+1) % size\n"
-    "hash[id] = value");
+    "hash[id] = value, used++");
 }
 
 #endif  //DATAVISUALIZATION2_HASHCODE_HPP
