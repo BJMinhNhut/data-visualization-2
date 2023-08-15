@@ -35,7 +35,7 @@ void HashTable::setSize(const unsigned int& size) {
 }
 
 void HashTable::randomize() {
-	loadArray(Random::getArray(1, getSize() / 3 * 2, MIN_VALUE, MAX_VALUE));
+	loadArray(Random::getArray(1, std::max(1, (int)getSize() / 3 * 2), MIN_VALUE, MAX_VALUE));
 }
 
 void HashTable::loadArray(const std::vector<int>& array) {
@@ -49,7 +49,7 @@ void HashTable::loadFromFile(const std::string& fileDir) {
 	std::vector<int> elements;
 	std::string token;
 	int value;
-	while (fileStream >> token && elements.size() < mNodes.size()) {
+	while (fileStream >> token && elements.size() + 1 < mNodes.size()) {
 		try {
 			value = std::stoi(token);
 			if (value < MIN_VALUE || value > MAX_VALUE)
