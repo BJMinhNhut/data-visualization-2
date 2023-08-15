@@ -20,7 +20,7 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Light theme
   - [x] Dark theme
 - [ ] Code highlight
-  - [ ] Hash table
+  - [x] Hash table
   - [ ] AVL tree
   - [ ] 2-3-4 tree
   - [x] Min/Max MaxHeap
@@ -32,8 +32,8 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 - [ ] Hash table
   - [x] Create
   - [x] Insert
-  - [ ] Delete 
-  - [ ] Search
+  - [ ] Delete
+  - [x] Search
 - [ ] AVL tree
   - [ ] Create
   - [ ] Insert
