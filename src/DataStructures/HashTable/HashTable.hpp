@@ -31,6 +31,7 @@ class HashTable : public SceneNode {
 	int getRandomElement() const;
 	int getUsed() const;
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
+	std::pair<std::vector<Animation>, std::string> deleteAnimation(const int& value);
 	std::pair<std::vector<Animation>, std::string> searchAnimation(const int& value);
 
    private:

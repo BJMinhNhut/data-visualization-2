@@ -148,6 +148,74 @@ std::pair<std::vector<Animation>, std::string> HashTable::insertAnimation(const 
 	return std::make_pair(list, code);
 }
 
+std::pair<std::vector<Animation>, std::string> HashTable::deleteAnimation(const int& value) {
+	const std::string& code = HashCode::Delete;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Search for " + std::to_string(value) + " in the hash table."));
+	int id = value % (int)mNodes.size();
+	list.push_back(Animation(
+	    {0}, "id = value % size = " + std::to_string(id),
+	    [&, id]() { mNodes[id]->highlight(PolyNode::Primary); },
+	    [&, id]() { mNodes[id]->highlight(PolyNode::None); }));
+	int last = -1;
+	while (!mNodes[id]->getData().empty()) {
+		if (mNodes[id]->getIntData() != value) {
+			list.push_back(Animation(
+			    {1, 5},
+			    "hash[" + std::to_string(id) + "] != " + std::to_string(value) +
+			        ", so check the next index.\n",
+			    [&, id, last]() {
+				    mNodes[id]->highlight(PolyNode::Primary);
+				    if (last != -1)
+					    mNodes[last]->highlight(PolyNode::None);
+			    },
+			    [&, id, last]() {
+				    mNodes[id]->highlight(PolyNode::None);
+				    if (last != -1)
+					    mNodes[last]->highlight(PolyNode::Primary);
+			    }));
+			last = id;
+			id = (id + 1) % (int)mNodes.size();
+		} else {
+			list.push_back(Animation(
+			    {1, 2}, "Found " + std::to_string(value) + " at index " + std::to_string(id) + ".",
+			    [&, id, last]() {
+				    mNodes[id]->highlight(PolyNode::Primary);
+				    if (last != -1)
+					    mNodes[last]->highlight(PolyNode::None);
+			    },
+			    [&, id, last]() {
+				    mNodes[id]->highlight(PolyNode::None);
+				    if (last != -1)
+					    mNodes[last]->highlight(PolyNode::Primary);
+			    }));
+			list.push_back(Animation(
+			    {3, 4},
+			    "Remove the value at " + std::to_string(id) + ". Worst case complexity is O(n).",
+			    [&, id]() { mNodes[id]->setData(""); },
+			    [&, id, value]() { mNodes[id]->setData(value); }));
+			mUsed--;
+			return std::make_pair(list, code);
+		}
+	}
+	list.push_back(Animation(
+	    {},
+	    "hash[" + std::to_string(id) + "] is empty, hence " + std::to_string(id) +
+	        " is not found! Worst case complexity is O(n).",
+	    [&, id, last]() {
+		    mNodes[id]->highlight(PolyNode::Primary);
+		    if (last != -1)
+			    mNodes[last]->highlight(PolyNode::None);
+	    },
+	    [&, id, last]() {
+		    mNodes[id]->highlight(PolyNode::None);
+		    if (last != -1)
+			    mNodes[last]->highlight(PolyNode::Primary);
+	    }));
+
+	return std::make_pair(list, code);
+}
+
 std::pair<std::vector<Animation>, std::string> HashTable::searchAnimation(const int& value) {
 	const std::string& code = HashCode::Search;
 	std::vector<Animation> list;

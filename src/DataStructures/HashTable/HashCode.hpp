@@ -16,6 +16,14 @@ const std::string Insert(
     "	id = (id+1) % size\n"
     "hash[id] = value, used++");
 
+const std::string Delete(
+    "id = value % size\n"
+    "while (hash[id] != EMPTY)\n"
+    "	if (hash[id] == value)\n"
+    "		hash[id] = EMPTY\n"
+    "		used--\n"
+    "	else id = (id+1) % size\n");
+
 const std::string Search(
     "id = value % size\n"
     "while (hash[id] != EMPTY)\n"
