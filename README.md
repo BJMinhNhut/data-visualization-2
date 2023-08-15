@@ -29,10 +29,10 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 
 ### Data structures
 
-- [ ] Hash table
+- [x] Hash table
   - [x] Create
   - [x] Insert
-  - [ ] Delete
+  - [x] Delete
   - [x] Search
 - [ ] AVL tree
   - [ ] Create
