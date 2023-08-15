@@ -12,6 +12,7 @@ HashState::HashState(StateStack& stack, State::Context context)
 	initOptions();
 	initCreate();
 	initInsert();
+	initSearch();
 
 	mHashTable.setTargetPosition(500.f, 200.f, SceneNode::None);
 }
@@ -114,6 +115,21 @@ void HashState::initInsert() {
 	mActionsHub.packOptionGUI(Insert, Inputs[Insert]);
 }
 
+void HashState::initSearch() {
+	// Search
+	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Value", *getContext().fonts,
+	                                               *getContext().colors);
+	valueLabel->setPosition(250.f, 555.f);
+	valueLabel->alignCenter();
+	mActionsHub.packOptionGUI(Search, valueLabel);
+
+	Inputs[Search] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
+	                                              *getContext().colors);
+	Inputs[Search]->setPosition(250.f, 590.f);
+	Inputs[Search]->setRange(HashTable::MIN_VALUE, HashTable::MAX_VALUE);
+	mActionsHub.packOptionGUI(Search, Inputs[Search]);
+}
+
 void HashState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mHashTable);
@@ -141,7 +157,12 @@ std::pair<std::vector<Animation>, std::string> HashState::getSteps(unsigned int 
 					                        Inputs[Insert]->getStringRange());
 				return mHashTable.insertAnimation(Inputs[Insert]->getValue());
 			case Delete:
+				break;
 			case Search:
+				if (Inputs[Search]->validate() != GUI::Input::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Search]->getStringRange());
+				return mHashTable.searchAnimation(Inputs[Search]->getValue());
 			default:
 				return VisualState::getSteps(option);
 		}

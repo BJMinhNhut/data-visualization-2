@@ -29,6 +29,7 @@ class HashTable : public SceneNode {
 
 	unsigned int getSize() const;
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
+	std::pair<std::vector<Animation>, std::string> searchAnimation(const int& value);
 
    private:
 	void loadArray(const std::vector<int>& array);
