@@ -4,6 +4,7 @@
 
 #include "HashState.hpp"
 #include "GUI/Panel.hpp"
+#include "Template/Random.hpp"
 
 HashState::HashState(StateStack& stack, State::Context context)
     : VisualState(stack, context, "Hash Table - Linear Probing"),
@@ -44,6 +45,10 @@ void HashState::initOptions() {
 		mActionsHub.setCurrentOption(Search);
 		mPlayer.reset();
 		mPlayer.callInfo("Search for a value in hash table");
+		if (mHashTable.getUsed() > 0 && Random::getInt(0, 4) > 0)
+			Inputs[Search]->setValue(mHashTable.getRandomElement());
+		else
+			Inputs[Search]->randomizeValue();
 	});
 }
 

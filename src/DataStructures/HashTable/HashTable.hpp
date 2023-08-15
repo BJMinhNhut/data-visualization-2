@@ -28,6 +28,8 @@ class HashTable : public SceneNode {
 	void clearHighlight();
 
 	unsigned int getSize() const;
+	int getRandomElement() const;
+	int getUsed() const;
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
 	std::pair<std::vector<Animation>, std::string> searchAnimation(const int& value);
 

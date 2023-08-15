@@ -68,6 +68,19 @@ unsigned int HashTable::getSize() const {
 	return mNodes.size();
 }
 
+int HashTable::getUsed() const {
+	return mUsed;
+}
+
+int HashTable::getRandomElement() const {
+	std::vector<int> values;
+	for (auto& node : mNodes)
+		if (!node->getData().empty())
+			values.push_back(node->getIntData());
+	assert(!values.empty());
+	return values[Random::getInt(0, (int)values.size() - 1)];
+}
+
 std::pair<std::vector<Animation>, std::string> HashTable::insertAnimation(const int& value) {
 	const std::string& code = HashCode::Insert;
 	std::vector<Animation> list;
