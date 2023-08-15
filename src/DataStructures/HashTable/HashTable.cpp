@@ -107,7 +107,7 @@ std::pair<std::vector<Animation>, std::string> HashTable::insertAnimation(const 
 		int last = -1;
 		while (!mNodes[id]->getData().empty()) {
 			list.push_back(Animation(
-			    {2},
+			    {2, 3},
 			    "hash[" + std::to_string(id) +
 			        "] already contained a value, so check the next index.\n",
 			    [&, id, last]() {
