@@ -54,7 +54,7 @@ DataState::DataState(StateStack& stack, Context context)
 	AVLButton->setPosition(context.window->getSize().x / 2.f, 460.f);
 	AVLButton->setCallback([this]() {
 		requestStackPop();
-		requestStackPush(States::VisualTemplate);
+		requestStackPush(States::VisualAVL);
 	});
 	mGUIContainer.pack(AVLButton);
 	//
