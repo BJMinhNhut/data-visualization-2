@@ -6,14 +6,15 @@
 #define NATUREOFCODE_STATEIDENTIFIERS_HPP
 
 namespace States {
-    enum ID {
-        None,
-        Menu,
-        Settings,
-        About,
-        DataMenu,
-        VisualTemplate,
-        VisualMaxHeap,
+enum ID {
+	None,
+	Menu,
+	Settings,
+	About,
+	DataMenu,
+	VisualTemplate,
+	VisualHash,
+	VisualMaxHeap,
 	VisualMinHeap,
 };
 }

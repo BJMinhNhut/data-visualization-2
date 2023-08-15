@@ -8,6 +8,7 @@
 #include "Animation.hpp"
 #include "GUI/CodeBlock.hpp"
 #include "GUI/Console.hpp"
+#include "GUI/ProgressBar.hpp"
 
 #include <vector>
 
@@ -25,6 +26,8 @@ class AnimationList {
 
 	void push(const Animation& animation);
 	void clear();
+
+	void setProgressBar(std::shared_ptr<GUI::ProgressBar>& progress);
 
 	void play();
 	void pause();
@@ -44,6 +47,7 @@ class AnimationList {
    private:
 	const GUI::CodeBlock::Ptr& mCodeBlock;
 	const GUI::Console::Ptr& mConsole;
+	GUI::ProgressBar::Ptr mProgress;
 
 	sf::Time mCoolDown;
 	float mSpeed;

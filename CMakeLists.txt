@@ -34,7 +34,15 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/States/MinHeapState.cpp
         src/States/MinHeapState.hpp
         src/DataStructures/Heap/MinHeap.cpp
-        src/DataStructures/Heap/MinHeap.hpp)
+        src/DataStructures/Heap/MinHeap.hpp
+        src/GUI/ProgressBar.cpp
+        src/GUI/ProgressBar.hpp
+        src/States/HashState.cpp
+        src/States/HashState.hpp
+        src/DataStructures/HashTable/HashTable.cpp
+        src/DataStructures/HashTable/HashTable.hpp
+        src/DataStructures/HashTable/HashCode.hpp
+)
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
 target_compile_features(DataVisualization2 PRIVATE cxx_std_17)
@@ -42,6 +50,6 @@ target_compile_features(DataVisualization2 PRIVATE cxx_std_17)
 if (WIN32 AND BUILD_SHARED_LIBS)
     add_custom_command(TARGET DataVisualization2 POST_BUILD
             COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:DataVisualization2> $<TARGET_FILE_DIR:DataVisualization2> COMMAND_EXPAND_LISTS)
-endif()
+endif ()
 
 install(TARGETS DataVisualization2)
