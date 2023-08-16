@@ -3,6 +3,7 @@
 //
 
 #include "AVLTree.hpp"
+#include "AVLCode.hpp"
 #include "Template/Random.hpp"
 
 #include <algorithm>
