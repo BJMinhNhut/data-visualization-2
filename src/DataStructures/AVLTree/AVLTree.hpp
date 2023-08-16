@@ -18,13 +18,20 @@ class AVLTree : public SceneNode {
 	AVLTree(const FontHolder& fonts, const ColorHolder& colors);
 
 	void insert(const int& value);
+	void rotateLeft();
+	void rotateRight();
 
    private:
 	void loadArray(const std::vector<int>& array);
 
+	AVLNode* rotateLeft(AVLNode* root);
+	AVLNode* rotateRight(AVLNode* root);
 	AVLNode* pureInsert(AVLNode* root, const int& value);
+
 	void alignAsTree();
 	std::vector<AVLNode*> getInOrder(AVLNode* root);
+	void calculateDepth();
+	void calculateDepth(AVLNode* root);
 
    private:
 	const ColorHolder& mColors;

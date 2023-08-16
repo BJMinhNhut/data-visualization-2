@@ -25,10 +25,34 @@ void AVLTree::insert(const int& value) {
 	alignAsTree();
 }
 
+void AVLTree::rotateLeft() {
+	mRoot = rotateLeft(mRoot);
+	alignAsTree();
+}
+
+void AVLTree::rotateRight() {
+	mRoot = rotateRight(mRoot);
+	alignAsTree();
+}
+
 void AVLTree::loadArray(const std::vector<int>& array) {
 	for (auto& value : array) {
 		mRoot = pureInsert(mRoot, value);
 	}
+}
+
+AVLNode* AVLTree::rotateLeft(AVLNode* root) {
+	AVLNode* newRoot = root->getRight();
+	root->attachRight(newRoot->getLeft());
+	newRoot->attachLeft(root);
+	return newRoot;
+}
+
+AVLNode* AVLTree::rotateRight(AVLNode* root) {
+	AVLNode* newRoot = root->getLeft();
+	root->attachLeft(newRoot->getRight());
+	newRoot->attachRight(root);
+	return newRoot;
 }
 
 AVLNode* AVLTree::pureInsert(AVLNode* root, const int& value) {
@@ -45,13 +69,23 @@ AVLNode* AVLTree::pureInsert(AVLNode* root, const int& value) {
 	return root;
 }
 
+void AVLTree::calculateDepth() {
+	mRoot->setDepth(0);
+	calculateDepth(mRoot);
+}
+
 void AVLTree::alignAsTree() {
 	if (mRoot == nullptr)
 		return;
+
+	calculateDepth();
+
 	std::vector<AVLNode*> inOrder(getInOrder(mRoot));
-	int mid = (int)inOrder.size() / 2;
+
+	int rootID =
+	    static_cast<int>(std::find(inOrder.begin(), inOrder.end(), mRoot) - inOrder.begin());
 	for (int i = 0; i < inOrder.size(); ++i) {
-		float x = float(i - mid) * TREE_OFF_SET.x;
+		float x = float(i - rootID) * TREE_OFF_SET.x;
 		float y = (float)inOrder[i]->getDepth() * TREE_OFF_SET.y;
 		inOrder[i]->setTargetPosition(x, y, Smooth);
 	}
@@ -73,4 +107,19 @@ std::vector<AVLNode*> AVLTree::getInOrder(AVLNode* root) {
 		}
 	}
 	return inOrder;
+}
+
+void AVLTree::calculateDepth(AVLNode* root) {
+	if (root == nullptr)
+		return;
+
+	if (AVLNode* mLeft = root->getLeft()) {
+		mLeft->setDepth(root->getDepth() + 1);
+		calculateDepth(mLeft);
+	}
+
+	if (AVLNode* mRight = root->getRight()) {
+		mRight->setDepth(root->getDepth() + 1);
+		calculateDepth(mRight);
+	}
 }
