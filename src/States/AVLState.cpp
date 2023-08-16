@@ -13,6 +13,7 @@ AVLState::AVLState(StateStack& stack, State::Context context)
 	                        AVLNode::Transition::None);
 	initOptions();
 	initCreate();
+	initSearch();
 }
 
 void AVLState::initOptions() {
@@ -36,7 +37,11 @@ void AVLState::initOptions() {
 	mActionsHub.addOption(Search, "Search", [&]() {
 		mActionsHub.setCurrentOption(Search);
 		mPlayer.reset();
-		mPlayer.callInfo("Search for a value in hash table");
+		mPlayer.callInfo("Search for a value in AVL tree");
+		if (mTree.getSize() > 0)
+			Inputs[Search]->setValue(mTree.getRandomElement());
+		else
+			Inputs[Search]->randomizeValue();
 	});
 }
 
@@ -67,6 +72,21 @@ void AVLState::initCreate() {
 	mActionsHub.packOptionGUI(Create, fileButton);
 }
 
+void AVLState::initSearch() {
+	// Search
+	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Value", *getContext().fonts,
+	                                               *getContext().colors);
+	valueLabel->setPosition(250.f, 555.f);
+	valueLabel->alignCenter();
+	mActionsHub.packOptionGUI(Search, valueLabel);
+
+	Inputs[Search] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
+	                                              *getContext().colors);
+	Inputs[Search]->setPosition(250.f, 590.f);
+	Inputs[Search]->setRange(AVLTree::MIN_VALUE, AVLTree::MAX_VALUE);
+	mActionsHub.packOptionGUI(Search, Inputs[Search]);
+}
+
 void AVLState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mTree);
@@ -81,14 +101,33 @@ bool AVLState::update(sf::Time dt) {
 
 bool AVLState::handleEvent(const sf::Event& event) {
 	VisualState::handleEvent(event);
-
-	if (event.type == sf::Event::KeyReleased) {
-		if (event.key.code == sf::Keyboard::I)
-			mTree.insert(Random::getInt(AVLTree::MIN_VALUE, AVLTree::MAX_VALUE));
-		else if (event.key.code == sf::Keyboard::Left)
-			mTree.rotateLeft();
-		else if (event.key.code == sf::Keyboard::Right)
-			mTree.rotateRight();
-	}
 	return false;
+}
+
+std::pair<std::vector<Animation>, std::string> AVLState::getSteps(unsigned int option) {
+	try {
+		mTree.clearHighlight();
+		switch (option) {
+				//			case Insert:
+				//				if (Inputs[Insert]->validate() != GUI::Input::Success)
+				//					throw std::out_of_range("Value must be in range " +
+				//					                        Inputs[Insert]->getStringRange());
+				//				return mHashTable.insertAnimation(Inputs[Insert]->getValue());
+				//			case Delete:
+				//				if (Inputs[Delete]->validate() != GUI::Input::Success)
+				//					throw std::out_of_range("Value must be in range " +
+				//					                        Inputs[Delete]->getStringRange());
+				//				return mHashTable.deleteAnimation(Inputs[Delete]->getValue());
+			case Search:
+				if (Inputs[Search]->validate() != GUI::Input::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Search]->getStringRange());
+				return mTree.searchAnimation(Inputs[Search]->getValue());
+			default:
+				return VisualState::getSteps(option);
+		}
+	} catch (const std::exception& err) {
+		mPlayer.callError(err.what());
+	}
+	return VisualState::getSteps(option);
 }

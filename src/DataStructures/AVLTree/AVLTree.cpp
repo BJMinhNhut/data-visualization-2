@@ -10,7 +10,7 @@
 #include <fstream>
 #include <iostream>
 
-const int AVLTree::MAX_SIZE = 32;
+const int AVLTree::MAX_SIZE = 31;
 const int AVLTree::MIN_VALUE = 0;
 const int AVLTree::MAX_VALUE = 999;
 const sf::Vector2f AVLTree::TREE_OFF_SET(35.f, 100.f);
@@ -22,6 +22,65 @@ AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
 
 unsigned int AVLTree::getSize() const {
 	return mSize;
+}
+
+int AVLTree::getRandomElement() const {
+	auto elements = getInOrder(mRoot);
+	return elements[Random::getInt(0, (int)elements.size() - 1)]->getIntData();
+}
+
+std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const int& value) {
+	const std::string& code = AVLCode::Search;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Search for " + std::to_string(value) + " in AVL tree."));
+	AVLNode* cur = mRoot;
+	AVLNode* last = nullptr;
+	while (true) {
+		if (cur == nullptr) {
+			list.push_back(Animation(
+			    {0, 1}, "Current node is null, hence " + std::to_string(value) + " is NOT FOUND!",
+			    [&, last]() {
+				    if (last)
+					    last->highlight(PolyNode::None);
+			    },
+			    [&, last]() {
+				    if (last)
+					    last->highlight(PolyNode::Primary);
+			    }));
+			break;
+		} else {
+			list.push_back(Animation(
+			    {0}, "Current node is not null, continue searching",
+			    [&, cur, last]() {
+				    cur->highlight(PolyNode::Primary);
+				    if (last)
+					    last->highlight(PolyNode::None);
+			    },
+			    [&, cur, last]() {
+				    cur->highlight(PolyNode::None);
+				    if (last)
+					    last->highlight(PolyNode::Primary);
+			    }));
+		}
+		if (cur->getIntData() == value) {
+			list.push_back(
+			    Animation({2, 3}, std::to_string(value) + " is FOUND. Complexity is O(logn)."));
+			break;
+		} else if (value < cur->getIntData()) {
+			list.push_back(Animation(
+			    {4, 5}, std::to_string(value) +
+			                " < current node data. Proceed to search on the left child."));
+			last = cur;
+			cur = cur->getLeft();
+		} else {
+			list.push_back(Animation(
+			    {6, 7}, std::to_string(value) +
+			                " > current node data. Proceed to search on the right child."));
+			last = cur;
+			cur = cur->getRight();
+		}
+	}
+	return std::make_pair(list, code);
 }
 
 void AVLTree::randomize() {
@@ -46,6 +105,10 @@ void AVLTree::loadFromFile(const std::string& fileDir) {
 	}
 	fileStream.close();
 	loadArray(elements);
+}
+
+void AVLTree::clearHighlight() {
+	clearHighlight(mRoot);
 }
 
 void AVLTree::insert(const int& value) {
@@ -106,6 +169,14 @@ AVLNode* AVLTree::rotateRight(AVLNode* root) {
 	return newRoot;
 }
 
+void AVLTree::clearHighlight(AVLNode* root) {
+	if (root == nullptr)
+		return;
+	root->highlight(PolyNode::None);
+	clearHighlight(root->getLeft());
+	clearHighlight(root->getRight());
+}
+
 AVLNode* AVLTree::pureInsert(AVLNode* root, const int& value) {
 	if (root == nullptr) {
 		auto* newNode = new AVLNode(mFonts, mColors);
@@ -142,7 +213,7 @@ void AVLTree::alignAsTree() {
 	}
 }
 
-std::vector<AVLNode*> AVLTree::getInOrder(AVLNode* root) {
+std::vector<AVLNode*> AVLTree::getInOrder(AVLNode* root) const {
 	std::vector<AVLNode*> inOrder;
 	if (root) {
 		if (root->getLeft()) {

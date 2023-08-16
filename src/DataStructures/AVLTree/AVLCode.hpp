@@ -25,12 +25,14 @@ const std::string Delete(
     "	RL case: rotateRight, rotateLeft");
 
 const std::string Search(
-    "cur = root\n"
-    "while (cur != null)\n"
-    "	if (cur.data == value) return FOUND\n"
-    "	if (value < cur.data) cur = cur.left\n"
-    "	if (value > cur.data) cur = cur.right\n"
-    "return NOT_FOUND");
+    "if this == null\n"
+    "	return NOT_FOUND\n"
+    "if this.data == value\n"
+    "	return FOUND\n"
+    "if value < this.data\n"
+    "	searchLeft\n"
+    "if value > this.data\n"
+    "	searchRight");
 }  // namespace AVLCode
 
 #endif  //DATAVISUALIZATION2_AVLCODE_HPP
