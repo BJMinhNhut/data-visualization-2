@@ -6,16 +6,41 @@
 #include "Template/Random.hpp"
 
 #include <algorithm>
+#include <fstream>
 #include <iostream>
 
 const int AVLTree::MAX_SIZE = 32;
 const int AVLTree::MIN_VALUE = 0;
 const int AVLTree::MAX_VALUE = 999;
-const sf::Vector2f AVLTree::TREE_OFF_SET(35.f, 80.f);
+const sf::Vector2f AVLTree::TREE_OFF_SET(35.f, 100.f);
 
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
     : mFonts(fonts), mColors(colors), mRoot(nullptr) {
-	loadArray(Random::getArray(10, 20, MIN_VALUE, MAX_VALUE));
+	randomize();
+}
+
+void AVLTree::randomize() {
+	loadArray(Random::getArray(10, MAX_SIZE, MIN_VALUE, MAX_VALUE));
+}
+
+void AVLTree::loadFromFile(const std::string& fileDir) {
+	std::ifstream fileStream(fileDir);
+	std::vector<int> elements;
+	std::string token;
+	int value;
+	while (fileStream >> token && elements.size() < MAX_SIZE) {
+		try {
+			value = std::stoi(token);
+			if (value < MIN_VALUE || value > MAX_VALUE)
+				throw std::exception();
+			std::cout << "Token [" << token << "] read\n";
+			elements.push_back(value);
+		} catch (std::exception& e) {
+			std::cerr << "Token [" << token << "] is not convertible\n";
+		}
+	}
+	fileStream.close();
+	loadArray(elements);
 }
 
 void AVLTree::insert(const int& value) {

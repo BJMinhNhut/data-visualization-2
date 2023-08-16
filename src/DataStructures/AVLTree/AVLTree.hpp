@@ -17,6 +17,8 @@ class AVLTree : public SceneNode {
    public:
 	AVLTree(const FontHolder& fonts, const ColorHolder& colors);
 
+	void randomize();
+	void loadFromFile(const std::string& fileDir);
 	void insert(const int& value);
 	void rotateLeft();
 	void rotateRight();
