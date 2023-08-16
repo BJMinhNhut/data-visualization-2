@@ -27,6 +27,7 @@ class PolyNode : public SceneNode {
 
 	[[nodiscard]] std::string getData() const;
 	[[nodiscard]] int getIntData() const;
+	[[nodiscard]] float getRadius() const;
 
 	void setData(const std::string& data);
 	void setData(const int& data);

@@ -54,6 +54,10 @@ int PolyNode::getIntData() const {
 	return stoi(data);
 }
 
+float PolyNode::getRadius() const {
+	return mPolygon.getRadius();
+}
+
 void PolyNode::setData(const std::string& data) {
 	mText.setString(data);
 	mText.setScale(0.f, 0.f);
