@@ -10,25 +10,41 @@ AVLNode::AVLNode(const FontHolder& fonts, const ColorHolder& colors)
     : PolyNode(fonts, colors), mLeft(nullptr), mRight(nullptr), mHeight(0), mDepth(0) {}
 
 void AVLNode::attachLeft(AVLNode* node) {
-	if (mLeft == nullptr) {
-		mLeft = node;
-		mLeft->setPosition(getPosition());
-		mLeft->setDepth(mDepth + 1);
-		mHeight = mLeft->getHeight() + 1;
-		addEdgeOut(mLeft);
-	} else
-		assert(mLeft == node);
+	if (mLeft == node)
+		return;
+	if (mLeft)
+		detachLeft();
+	if (node == nullptr)
+		return;
+
+	mLeft = node;
+	mHeight = std::max(mHeight, mLeft->getHeight() + 1);
+	addEdgeOut(mLeft);
 }
 
 void AVLNode::attachRight(AVLNode* node) {
-	if (mRight == nullptr) {
-		mRight = node;
-		mRight->setPosition(getPosition());
-		mRight->setDepth(mDepth + 1);
-		mHeight = mRight->getHeight() + 1;
-		addEdgeOut(mRight);
-	} else
-		assert(mRight == node);
+	if (mRight == node)
+		return;
+	if (mRight)
+		detachRight();
+	if (node == nullptr)
+		return;
+
+	mRight = node;
+	updateHeight();
+	addEdgeOut(mRight);
+}
+
+void AVLNode::detachLeft() {
+	removeEdgeOut(mLeft);
+	mLeft = nullptr;
+	updateHeight();
+}
+
+void AVLNode::detachRight() {
+	removeEdgeOut(mRight);
+	mRight = nullptr;
+	updateHeight();
 }
 
 void AVLNode::setDepth(int depth) {
@@ -49,4 +65,12 @@ int AVLNode::getHeight() const {
 
 int AVLNode::getDepth() const {
 	return mDepth;
+}
+
+void AVLNode::updateHeight() {
+	mHeight = 0;
+	if (mLeft)
+		mHeight = std::max(mHeight, mLeft->getHeight() + 1);
+	if (mRight)
+		mHeight = std::max(mHeight, mRight->getHeight() + 1);
 }

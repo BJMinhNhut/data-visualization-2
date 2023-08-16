@@ -16,12 +16,17 @@ class AVLNode : public PolyNode {
 
 	void attachLeft(AVLNode* node);
 	void attachRight(AVLNode* node);
+	void detachLeft();
+	void detachRight();
 	void setDepth(int depth);
 
 	AVLNode* getLeft() const;
 	AVLNode* getRight() const;
 	int getHeight() const;
 	int getDepth() const;
+
+   private:
+	void updateHeight();
 
    private:
 	AVLNode *mLeft, *mRight;
