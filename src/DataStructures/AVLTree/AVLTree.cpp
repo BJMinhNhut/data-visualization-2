@@ -5,6 +5,7 @@
 #include "AVLTree.hpp"
 #include "Template/Random.hpp"
 
+#include <algorithm>
 #include <iostream>
 
 const int AVLTree::MAX_SIZE = 32;
@@ -14,10 +15,7 @@ const sf::Vector2f AVLTree::TREE_OFF_SET(35.f, 80.f);
 
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
     : mFonts(fonts), mColors(colors), mRoot(nullptr) {
-	for (int i = 0; i < 10; ++i) {
-		int value = Random::getInt(MIN_VALUE, MAX_VALUE);
-		insert(value);
-	}
+	loadArray(Random::getArray(10, 20, MIN_VALUE, MAX_VALUE));
 }
 
 void AVLTree::insert(const int& value) {
@@ -35,10 +33,31 @@ void AVLTree::rotateRight() {
 	alignAsTree();
 }
 
-void AVLTree::loadArray(const std::vector<int>& array) {
-	for (auto& value : array) {
-		mRoot = pureInsert(mRoot, value);
-	}
+void AVLTree::clear(AVLNode* root) {
+	if (root == nullptr)
+		return;
+	clear(root->getLeft());
+	clear(root->getRight());
+	detachChild(*root);
+}
+
+void AVLTree::loadArray(std::vector<int> array) {
+	clear(mRoot);
+	std::sort(array.begin(), array.end());
+	mRoot = create(array, 0, (int)array.size() - 1);
+	alignAsTree();
+}
+
+AVLNode* AVLTree::create(const std::vector<int>& array, int left, int right) {
+	if (left > right)
+		return nullptr;
+	auto* root = new AVLNode(mFonts, mColors);
+	attachChild(AVLNode::Ptr(root));
+	int mid = (left + right) >> 1;
+	root->setData(array[mid]);
+	root->attachLeft(create(array, left, mid - 1));
+	root->attachRight(create(array, mid + 1, right));
+	return root;
 }
 
 AVLNode* AVLTree::rotateLeft(AVLNode* root) {

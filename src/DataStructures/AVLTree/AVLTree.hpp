@@ -22,8 +22,10 @@ class AVLTree : public SceneNode {
 	void rotateRight();
 
    private:
-	void loadArray(const std::vector<int>& array);
+	void clear(AVLNode* root);
+	void loadArray(std::vector<int> array);
 
+	AVLNode* create(const std::vector<int>& array, int left, int right);
 	AVLNode* rotateLeft(AVLNode* root);
 	AVLNode* rotateRight(AVLNode* root);
 	AVLNode* pureInsert(AVLNode* root, const int& value);
