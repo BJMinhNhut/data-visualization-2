@@ -15,8 +15,12 @@ const int AVLTree::MAX_VALUE = 999;
 const sf::Vector2f AVLTree::TREE_OFF_SET(35.f, 100.f);
 
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
-    : mFonts(fonts), mColors(colors), mRoot(nullptr) {
+    : mFonts(fonts), mColors(colors), mRoot(nullptr), mSize(0) {
 	randomize();
+}
+
+unsigned int AVLTree::getSize() const {
+	return mSize;
 }
 
 void AVLTree::randomize() {
@@ -45,6 +49,7 @@ void AVLTree::loadFromFile(const std::string& fileDir) {
 
 void AVLTree::insert(const int& value) {
 	mRoot = pureInsert(mRoot, value);
+	mSize++;
 	alignAsTree();
 }
 
@@ -69,6 +74,7 @@ void AVLTree::clear(AVLNode* root) {
 void AVLTree::loadArray(std::vector<int> array) {
 	clear(mRoot);
 	std::sort(array.begin(), array.end());
+	mSize = array.size();
 	mRoot = create(array, 0, (int)array.size() - 1);
 	alignAsTree();
 }

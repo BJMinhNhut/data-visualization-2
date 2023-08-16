@@ -17,6 +17,8 @@ class AVLTree : public SceneNode {
    public:
 	AVLTree(const FontHolder& fonts, const ColorHolder& colors);
 
+	unsigned int getSize() const;
+
 	void randomize();
 	void loadFromFile(const std::string& fileDir);
 	void insert(const int& value);
@@ -42,6 +44,7 @@ class AVLTree : public SceneNode {
 	const FontHolder& mFonts;
 
 	AVLNode* mRoot;
+	int mSize;
 };
 
 #endif  //DATAVISUALIZATION2_AVLTREE_HPP
