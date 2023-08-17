@@ -23,11 +23,20 @@ class AVLTree : public SceneNode {
 
 	std::pair<std::vector<Animation>, std::string> searchAnimation(const int& value);
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
+	void rotateRightAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list);
+	void rotateLeftAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list);
+	void rotateLRAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list);
+	void rotateRLAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list);
 
 	void randomize();
 	void loadFromFile(const std::string& fileDir);
 	void clearHighlight();
 	void insert(const int& value);
+
+#ifdef SFML_DEBUG
+	void rotateLeft();
+	void rotateRight();
+#endif
 
    private:
 	AVLNode* traverseAnimation(const int& value, std::vector<Animation>& list);
@@ -39,8 +48,8 @@ class AVLTree : public SceneNode {
 	void loadArray(std::vector<int> array);
 
 	AVLNode* create(const std::vector<int>& array, int left, int right);
-	AVLNode* rotateLeft(AVLNode* root);
-	AVLNode* rotateRight(AVLNode* root);
+	void rotateLeft(AVLNode* root);
+	void rotateRight(AVLNode* root);
 	AVLNode* pureInsert(AVLNode* root, const int& value);
 
 	void alignAsTree();

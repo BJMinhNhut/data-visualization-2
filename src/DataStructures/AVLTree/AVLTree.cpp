@@ -29,10 +29,22 @@ int AVLTree::getRandomElement() const {
 	return elements[Random::getInt(0, (int)elements.size() - 1)]->getIntData();
 }
 
+#ifdef SFML_DEBUG
+void AVLTree::rotateLeft() {
+	rotateLeft(mRoot->getLeft());
+}
+
+void AVLTree::rotateRight() {
+	rotateRight(mRoot->getLeft());
+}
+
+#endif
+
 std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const int& value) {
 	const std::string& code = AVLCode::Insert;
 	std::vector<Animation> list;
-	list.push_back(Animation({}, "Insert " + std::to_string(value) + " to AVL tree."));
+	list.push_back(Animation({}, "Insert " + std::to_string(value) + " to AVL tree.",
+	                         [&]() { clearHighlight(mRoot); }));
 
 	if (mRoot == nullptr) {
 		list.push_back(Animation(
@@ -90,7 +102,7 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 	    }));
 	list.back().play();
 
-	//	balanceAnimation(newNode, list);
+	balanceAnimation(newNode, list);
 
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
@@ -131,10 +143,175 @@ AVLNode* AVLTree::traverseAnimation(const int& value, std::vector<Animation>& li
 }
 
 void AVLTree::balanceAnimation(AVLNode* node, std::vector<Animation>& list) {
+	const int value = node->getIntData();
+	AVLNode* last = node;
+	node = node->getParent();
+
 	while (node != nullptr) {
 		AVLNode* parent = node->getParent();
+		AVLNode* mLeft = node->getLeft();
+		AVLNode* mRight = node->getRight();
+
+		const int bf = node->getBalanceFactor();
+
+		if (bf > 1) {
+			if (value < mLeft->getIntData()) {  // LL case
+				rotateRightAnimation(node, last, list);
+			} else {  // LR case
+				rotateLRAnimation(node, last, list);
+			}
+		} else if (bf < -1) {
+			if (value >= mRight->getIntData()) {  // RR case
+				rotateLeftAnimation(node, last, list);
+			} else {  // RL case
+				rotateRLAnimation(node, last, list);
+			}
+		} else {
+			list.push_back(Animation(
+			    {1}, "Subtree is balanced, go to parent.",
+			    [&, last, node, bf]() {
+				    if (last) {
+					    last->highlight(PolyNode::None);
+					    last->setLabel("");
+				    }
+				    node->highlight(PolyNode::Primary);
+				    node->setLabel("bf = " + std::to_string(bf));
+			    },
+			    [&, last, node]() {
+				    if (last)
+					    last->highlight(PolyNode::Primary);
+				    node->highlight(PolyNode::None);
+				    node->setLabel("");
+			    }));
+			list.back().play();
+		}
+
+		last = node;
 		node = parent;
 	}
+
+	list.push_back(Animation({}, "Tree is balanced. Time complexity is O(logn).",
+	                         [&]() { clearHighlight(mRoot); }));
+}
+
+void AVLTree::rotateRightAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
+	AVLNode* mLeft = node->getLeft();
+	list.push_back(Animation(
+	    {1, 2}, "Left-left case: rotate right.",
+	    [&, node, last]() {
+		    if (last) {
+			    last->highlight(PolyNode::None);
+			    last->setLabel("");
+		    }
+		    node->highlight(PolyNode::Primary);
+		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+		    rotateRight(node);
+	    },
+	    [&, node, last, mLeft]() {
+		    if (last)
+			    last->highlight(PolyNode::Primary);
+		    node->highlight(PolyNode::None);
+		    node->setLabel("");
+		    rotateLeft(mLeft);
+	    }));
+	list.back().play();
+}
+
+void AVLTree::rotateRLAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
+	AVLNode* mRight = node->getRight();
+	assert(mRight != nullptr);
+	AVLNode* RLNode = mRight->getLeft();
+	assert(RLNode != nullptr);
+
+	list.push_back(Animation(
+	    {1, 5}, "Right-Left case: rotate right the right child, then rotate left.",
+	    [&, node, last, mRight]() {
+		    if (last) {
+			    last->highlight(PolyNode::None);
+			    last->setLabel("");
+		    }
+		    node->highlight(PolyNode::Primary);
+		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+		    rotateRight(mRight);
+	    },
+	    [&, node, last, RLNode]() {
+		    if (last)
+			    last->highlight(PolyNode::Primary);
+		    node->highlight(PolyNode::None);
+		    node->setLabel("");
+		    rotateLeft(RLNode);
+	    }));
+	list.back().play();
+
+	list.push_back(Animation(
+	    {1, 5}, "Right-Left case: Rotate right the right child, then rotate left.",
+	    [&, node]() {
+		    node->highlight(PolyNode::Primary);
+		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+		    rotateLeft(node);
+	    },
+	    [&, RLNode]() { rotateRight(RLNode); }));
+	list.back().play();
+}
+
+void AVLTree::rotateLeftAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
+	AVLNode* mRight = node->getRight();
+	list.push_back(Animation(
+	    {1, 4}, "Right-Right case: rotate left.",
+	    [&, node, last]() {
+		    if (last) {
+			    last->highlight(PolyNode::None);
+			    last->setLabel("");
+		    }
+		    node->highlight(PolyNode::Primary);
+		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+		    rotateLeft(node);
+	    },
+	    [&, node, last, mRight]() {
+		    if (last)
+			    last->highlight(PolyNode::Primary);
+		    node->highlight(PolyNode::None);
+		    node->setLabel("");
+		    rotateRight(mRight);
+	    }));
+	list.back().play();
+}
+
+void AVLTree::rotateLRAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
+	AVLNode* mLeft = node->getLeft();
+	assert(mLeft != nullptr);
+	AVLNode* LRNode = mLeft->getRight();
+	assert(LRNode != nullptr);
+
+	list.push_back(Animation(
+	    {1, 3}, "Right-Left case: rotate left the left child, then rotate right.",
+	    [&, node, last, mLeft]() {
+		    if (last) {
+			    last->highlight(PolyNode::None);
+			    last->setLabel("");
+		    }
+		    node->highlight(PolyNode::Primary);
+		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+		    rotateLeft(mLeft);
+	    },
+	    [&, node, last, LRNode]() {
+		    if (last)
+			    last->highlight(PolyNode::Primary);
+		    node->highlight(PolyNode::None);
+		    node->setLabel("");
+		    rotateRight(LRNode);
+	    }));
+	list.back().play();
+
+	list.push_back(Animation(
+	    {1, 3}, "Right-Left case: rotate left the left child, then rotate right",
+	    [&, node]() {
+		    node->highlight(PolyNode::Primary);
+		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+		    rotateRight(node);
+	    },
+	    [&, LRNode]() { rotateLeft(LRNode); }));
+	list.back().play();
 }
 
 std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const int& value) {
@@ -192,7 +369,7 @@ std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const in
 }
 
 void AVLTree::randomize() {
-	loadArray(Random::getArray(10, MAX_SIZE, MIN_VALUE, MAX_VALUE));
+	loadArray(Random::getArray(3, 15, MIN_VALUE, MAX_VALUE));
 }
 
 void AVLTree::loadFromFile(const std::string& fileDir) {
@@ -260,24 +437,53 @@ AVLNode* AVLTree::create(const std::vector<int>& array, int left, int right) {
 	return root;
 }
 
-AVLNode* AVLTree::rotateLeft(AVLNode* root) {
+void AVLTree::rotateLeft(AVLNode* root) {
+	AVLNode* parent = root->getParent();
 	AVLNode* newRoot = root->getRight();
+	assert(newRoot != nullptr);
+
+	if (parent) {
+		if (root == parent->getLeft())
+			parent->attachLeft(newRoot);
+		else
+			parent->attachRight(newRoot);
+	} else
+		mRoot = newRoot;
+
 	root->attachRight(newRoot->getLeft());
 	newRoot->attachLeft(root);
-	return newRoot;
+	alignAsTree();
+
+	assert(newRoot->getParent() == parent);
+	assert(root->getParent() == newRoot);
 }
 
-AVLNode* AVLTree::rotateRight(AVLNode* root) {
+void AVLTree::rotateRight(AVLNode* root) {
+	AVLNode* parent = root->getParent();
 	AVLNode* newRoot = root->getLeft();
+	assert(newRoot != nullptr);
+
+	if (parent) {
+		if (root == parent->getLeft())
+			parent->attachLeft(newRoot);
+		else
+			parent->attachRight(newRoot);
+	} else
+		mRoot = newRoot;
+
 	root->attachLeft(newRoot->getRight());
 	newRoot->attachRight(root);
-	return newRoot;
+	alignAsTree();
+
+	assert(newRoot->getParent() == parent);
+	assert(root->getParent() == newRoot);
 }
 
 void AVLTree::clearHighlight(AVLNode* root) {
 	if (root == nullptr)
 		return;
 	root->highlight(PolyNode::None);
+	root->setLabel("");
 	clearHighlight(root->getLeft());
 	clearHighlight(root->getRight());
 }
