@@ -10,10 +10,10 @@
 #include <fstream>
 #include <iostream>
 
-const int AVLTree::MAX_SIZE = 31;
+const int AVLTree::MAX_SIZE = 42;
 const int AVLTree::MIN_VALUE = 0;
 const int AVLTree::MAX_VALUE = 999;
-const sf::Vector2f AVLTree::TREE_OFF_SET(35.f, 100.f);
+const sf::Vector2f AVLTree::TREE_OFF_SET(27.f, 90.f);
 
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
     : mFonts(fonts), mColors(colors), mRoot(nullptr), mSize(0), mBin(nullptr) {
@@ -399,10 +399,11 @@ std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const in
 
 void AVLTree::clear() {
 	clear(mRoot);
+	mSize = 0;
 }
 
 void AVLTree::randomize() {
-	loadArray(Random::getArray(1, 15, MIN_VALUE, MAX_VALUE));
+	loadArray(Random::getArray(1, MAX_SIZE, MIN_VALUE, MAX_VALUE));
 }
 
 void AVLTree::loadFromFile(const std::string& fileDir) {
