@@ -73,7 +73,7 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 	}
 
 	/* insert phase */
-	AVLNode* last = traverseAnimation(value, list);
+	AVLNode* last = traverseToLeafAnimation(value, list);
 	bool goLeft = value < last->getIntData();
 
 	list.push_back(Animation(
@@ -107,7 +107,6 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
-
 	mSize++;
 	return std::make_pair(list, code);
 }
@@ -117,10 +116,66 @@ std::pair<std::vector<Animation>, std::string> AVLTree::deleteAnimation(const in
 	std::vector<Animation> list;
 	list.push_back(Animation({}, "Delete " + std::to_string(value) + " from AVL tree.",
 	                         [&]() { clearHighlight(mRoot); }));
+
+	AVLNode* deleteNode = traverseSearchingAnimation(value, list);
+
+	if (deleteNode == nullptr) {
+		for (auto itr = list.rbegin(); itr != list.rend(); itr++)
+			itr->revert();
+		return std::make_pair(list, code);
+	}
+
+	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
+		itr->revert();
+	mSize--;
 	return std::make_pair(list, code);
 }
 
-AVLNode* AVLTree::traverseAnimation(const int& value, std::vector<Animation>& list) {
+AVLNode* AVLTree::traverseSearchingAnimation(const int& value, std::vector<Animation>& list) {
+	AVLNode* cur = mRoot;
+	AVLNode* last = nullptr;
+	while (cur != nullptr) {
+		std::string log = std::to_string(value);
+
+		if (value == cur->getIntData())
+			log += " found";
+		else if (value < cur->getIntData())
+			log += " < current node data, go to left child";
+		else
+			log += " >= current node data, go to right child";
+
+		list.push_back(Animation(
+		    {0}, log,
+		    [&, cur, last]() {
+			    if (last)
+				    last->highlight(PolyNode::None);
+			    cur->highlight(PolyNode::Primary);
+		    },
+		    [&, cur, last]() {
+			    if (last)
+				    last->highlight(PolyNode::Primary);
+			    cur->highlight(PolyNode::None);
+		    }));
+		list.back().play();
+
+		last = cur;
+		if (value == cur->getIntData())
+			return cur;
+		else if (value < cur->getIntData()) {
+			cur = cur->getLeft();
+		} else {
+			cur = cur->getRight();
+		}
+	}
+	list.push_back(Animation(
+	    {0},
+	    "Null node reached, hence " + std::to_string(value) +
+	        " doesn't exist in AVL tree. Stop deletion, complexity O(logn).",
+	    [&]() { clearHighlight(); }, [&, last]() { last->highlight(PolyNode::Primary); }));
+	return nullptr;
+}
+
+AVLNode* AVLTree::traverseToLeafAnimation(const int& value, std::vector<Animation>& list) {
 	AVLNode* cur = mRoot;
 	AVLNode* last = nullptr;
 	while (cur != nullptr) {
@@ -389,15 +444,15 @@ std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const in
 			    Animation({2, 3}, std::to_string(value) + " is FOUND. Complexity is O(logn)."));
 			break;
 		} else if (value < cur->getIntData()) {
-			list.push_back(Animation(
-			    {4, 5}, std::to_string(value) +
-			                " < current node data. Proceed to search on the left child."));
+			list.push_back(Animation({4, 5}, std::to_string(value) +
+			                                     " < current node data. Proceed "
+			                                     "to search on the left child."));
 			last = cur;
 			cur = cur->getLeft();
 		} else {
-			list.push_back(Animation(
-			    {6, 7}, std::to_string(value) +
-			                " > current node data. Proceed to search on the right child."));
+			list.push_back(Animation({6, 7}, std::to_string(value) +
+			                                     " > current node data. Proceed to search "
+			                                     "on the right child."));
 			last = cur;
 			cur = cur->getRight();
 		}

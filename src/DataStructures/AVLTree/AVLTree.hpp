@@ -41,7 +41,8 @@ class AVLTree : public SceneNode {
 #endif
 
    private:
-	AVLNode* traverseAnimation(const int& value, std::vector<Animation>& list);
+	AVLNode* traverseToLeafAnimation(const int& value, std::vector<Animation>& list);
+	AVLNode* traverseSearchingAnimation(const int& value, std::vector<Animation>& list);
 	void balanceAnimation(AVLNode* node, std::vector<Animation>& list);
 
 	void dump(AVLNode* node, Transition type = Smooth);
