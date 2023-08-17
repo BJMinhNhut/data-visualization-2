@@ -15,6 +15,7 @@ AVLState::AVLState(StateStack& stack, State::Context context)
 	initCreate();
 	initInsert();
 	initSearch();
+	initDelete();
 }
 
 void AVLState::initOptions() {
@@ -33,7 +34,10 @@ void AVLState::initOptions() {
 		mActionsHub.setCurrentOption(Delete);
 		mPlayer.reset();
 		mPlayer.callInfo("Delete a value from heap");
-		//		Inputs[Delete]->setRange(AVLTree::MIN_VALUE, AVLTree::MAX_VALUE);
+		if (mTree.getSize() > 0)
+			Inputs[Delete]->setValue(mTree.getRandomElement());
+		else
+			Inputs[Delete]->randomizeValue();
 	});
 	mActionsHub.addOption(Search, "Search", [&]() {
 		mActionsHub.setCurrentOption(Search);
@@ -113,6 +117,21 @@ void AVLState::initSearch() {
 	mActionsHub.packOptionGUI(Search, Inputs[Search]);
 }
 
+void AVLState::initDelete() {
+	// Search
+	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Value", *getContext().fonts,
+	                                               *getContext().colors);
+	valueLabel->setPosition(250.f, 555.f);
+	valueLabel->alignCenter();
+	mActionsHub.packOptionGUI(Delete, valueLabel);
+
+	Inputs[Delete] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
+	                                              *getContext().colors);
+	Inputs[Delete]->setPosition(250.f, 590.f);
+	Inputs[Delete]->setRange(AVLTree::MIN_VALUE, AVLTree::MAX_VALUE);
+	mActionsHub.packOptionGUI(Delete, Inputs[Delete]);
+}
+
 void AVLState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mTree);
@@ -139,11 +158,11 @@ std::pair<std::vector<Animation>, std::string> AVLState::getSteps(unsigned int o
 					throw std::out_of_range("Value must be in range " +
 					                        Inputs[Insert]->getStringRange());
 				return mTree.insertAnimation(Inputs[Insert]->getValue());
-				//			case Delete:
-				//				if (Inputs[Delete]->validate() != GUI::Input::Success)
-				//					throw std::out_of_range("Value must be in range " +
-				//					                        Inputs[Delete]->getStringRange());
-				//				return mHashTable.deleteAnimation(Inputs[Delete]->getValue());
+			case Delete:
+				if (Inputs[Delete]->validate() != GUI::Input::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Delete]->getStringRange());
+				return mTree.deleteAnimation(Inputs[Delete]->getValue());
 			case Search:
 				if (Inputs[Search]->validate() != GUI::Input::Success)
 					throw std::out_of_range("Value must be in range " +

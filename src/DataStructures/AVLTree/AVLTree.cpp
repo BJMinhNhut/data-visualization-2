@@ -112,6 +112,14 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 	return std::make_pair(list, code);
 }
 
+std::pair<std::vector<Animation>, std::string> AVLTree::deleteAnimation(const int& value) {
+	const std::string& code = AVLCode::Delete;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Delete " + std::to_string(value) + " from AVL tree.",
+	                         [&]() { clearHighlight(mRoot); }));
+	return std::make_pair(list, code);
+}
+
 AVLNode* AVLTree::traverseAnimation(const int& value, std::vector<Animation>& list) {
 	AVLNode* cur = mRoot;
 	AVLNode* last = nullptr;

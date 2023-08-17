@@ -23,6 +23,7 @@ class AVLTree : public SceneNode {
 
 	std::pair<std::vector<Animation>, std::string> searchAnimation(const int& value);
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
+	std::pair<std::vector<Animation>, std::string> deleteAnimation(const int& value);
 	AVLNode* rotateRightAnimation(AVLNode* node, std::vector<Animation>& list);
 	AVLNode* rotateLeftAnimation(AVLNode* node, std::vector<Animation>& list);
 	AVLNode* rotateLRAnimation(AVLNode* node, std::vector<Animation>& list);
