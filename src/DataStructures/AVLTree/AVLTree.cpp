@@ -55,38 +55,45 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 	}
 
 	/* insert phase */
-	{
-		AVLNode* last = traverseAnimation(value, list);
-		bool goLeft = value < last->getIntData();
-		list.push_back(Animation(
-		    {0}, "Null node reached, insert " + std::to_string(value),
-		    [&, value, last, goLeft]() {
-			    auto* newNode = new AVLNode(mFonts, mColors);
-			    newNode->setData(value);
-			    newNode->highlight(PolyNode::Primary);
+	AVLNode* last = traverseAnimation(value, list);
+	bool goLeft = value < last->getIntData();
 
-			    if (goLeft)
-				    last->attachLeft(newNode);
-			    else
-				    last->attachRight(newNode);
-			    last->highlight(PolyNode::None);
-			    attachChild(AVLNode::Ptr(newNode));
+	auto* newNode = new AVLNode(mFonts, mColors);
+	newNode->setData(value);
+	newNode->setTargetScale(0.f, 0.f, None);
+	attachChild(AVLNode::Ptr(newNode));
 
-			    alignAsTree();
-			    newNode->setPosition(last->getPosition());
-		    },
-		    [&, last, goLeft]() {
-			    if (goLeft) {
-				    dump(last->getLeft());
-				    last->detachLeft();
-			    } else {
-				    dump(last->getRight());
-				    last->detachRight();
-			    }
-			    last->highlight(PolyNode::Primary);
-			    alignAsTree();
-		    }));
-	}
+	list.push_back(Animation(
+	    {0}, "Null node reached, insert " + std::to_string(value),
+	    [&, newNode, last, goLeft]() {
+		    newNode->highlight(PolyNode::Primary);
+
+		    if (goLeft)
+			    last->attachLeft(newNode);
+		    else
+			    last->attachRight(newNode);
+		    last->highlight(PolyNode::None);
+
+		    alignAsTree();
+		    newNode->setPosition(last->getPosition());
+		    newNode->setTargetScale(1.f, 1.f, None);
+	    },
+	    [&, newNode, last, goLeft]() {
+		    newNode->setTargetScale(0.f, 0.f, None);
+		    if (goLeft) {
+			    last->detachLeft();
+		    } else {
+			    last->detachRight();
+		    }
+		    last->highlight(PolyNode::Primary);
+		    alignAsTree();
+	    }));
+	list.back().play();
+
+	//	balanceAnimation(newNode, list);
+
+	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
+		itr->revert();
 
 	return std::make_pair(list, code);
 }
@@ -111,6 +118,7 @@ AVLNode* AVLTree::traverseAnimation(const int& value, std::vector<Animation>& li
 				    last->highlight(PolyNode::Primary);
 			    cur->highlight(PolyNode::None);
 		    }));
+		list.back().play();
 
 		last = cur;
 		if (value < cur->getIntData()) {
@@ -120,6 +128,13 @@ AVLNode* AVLTree::traverseAnimation(const int& value, std::vector<Animation>& li
 		}
 	}
 	return last;
+}
+
+void AVLTree::balanceAnimation(AVLNode* node, std::vector<Animation>& list) {
+	while (node != nullptr) {
+		AVLNode* parent = node->getParent();
+		node = parent;
+	}
 }
 
 std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const int& value) {
@@ -210,10 +225,10 @@ void AVLTree::insert(const int& value) {
 	alignAsTree();
 }
 
-void AVLTree::dump(AVLNode* node) {
+void AVLTree::dump(AVLNode* node, Transition type) {
 	// TODO: handle dumping new node when mBin is not null
 	assert(node != nullptr);
-	node->setTargetScale(0.f, 0.f, Transition::Smooth);
+	node->setTargetScale(0.f, 0.f, type);
 	mBin = node;
 }
 
