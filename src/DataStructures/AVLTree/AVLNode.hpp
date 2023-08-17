@@ -19,7 +19,9 @@ class AVLNode : public PolyNode {
 	void detachLeft();
 	void detachRight();
 	void setDepth(int depth);
+	void setParent(AVLNode* node);
 
+	AVLNode* getParent() const;
 	AVLNode* getLeft() const;
 	AVLNode* getRight() const;
 	int getHeight() const;
@@ -30,6 +32,7 @@ class AVLNode : public PolyNode {
 
    private:
 	AVLNode *mLeft, *mRight;
+	AVLNode* mParent;
 	int mHeight, mDepth;
 };
 

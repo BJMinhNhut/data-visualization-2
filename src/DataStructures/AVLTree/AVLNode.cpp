@@ -18,6 +18,7 @@ void AVLNode::attachLeft(AVLNode* node) {
 		return;
 
 	mLeft = node;
+	node->setParent(this);
 	mHeight = std::max(mHeight, mLeft->getHeight() + 1);
 	addEdgeOut(mLeft);
 }
@@ -31,6 +32,7 @@ void AVLNode::attachRight(AVLNode* node) {
 		return;
 
 	mRight = node;
+	node->setParent(this);
 	updateHeight();
 	addEdgeOut(mRight);
 }
@@ -49,6 +51,14 @@ void AVLNode::detachRight() {
 
 void AVLNode::setDepth(int depth) {
 	mDepth = depth;
+}
+
+void AVLNode::setParent(AVLNode* node) {
+	mParent = node;
+}
+
+AVLNode* AVLNode::getParent() const {
+	return mParent;
 }
 
 AVLNode* AVLNode::getLeft() const {
