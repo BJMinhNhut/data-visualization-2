@@ -154,17 +154,36 @@ void AVLTree::balanceAnimation(AVLNode* node, std::vector<Animation>& list) {
 
 		const int bf = node->getBalanceFactor();
 
-		if (bf > 1) {
-			if (value < mLeft->getIntData()) {  // LL case
-				rotateRightAnimation(node, last, list);
-			} else {  // LR case
-				rotateLRAnimation(node, last, list);
-			}
-		} else if (bf < -1) {
-			if (value >= mRight->getIntData()) {  // RR case
-				rotateLeftAnimation(node, last, list);
-			} else {  // RL case
-				rotateRLAnimation(node, last, list);
+		if (abs(bf) > 1) {
+			list.push_back(Animation(
+			    {1}, "Subtree is unbalanced, start rotating...",
+			    [&, last, node, bf]() {
+				    if (last) {
+					    last->highlight(PolyNode::None);
+					    last->setLabel("");
+				    }
+				    node->highlight(PolyNode::Primary);
+				    node->setLabel("bf = " + std::to_string(bf));
+			    },
+			    [&, last, node]() {
+				    if (last)
+					    last->highlight(PolyNode::Primary);
+				    node->highlight(PolyNode::None);
+				    node->setLabel("");
+			    }));
+
+			if (bf > 1) {
+				if (value < mLeft->getIntData()) {  // LL case
+					node = rotateRightAnimation(node, list);
+				} else {  // LR case
+					node = rotateLRAnimation(node, list);
+				}
+			} else if (bf < -1) {
+				if (value >= mRight->getIntData()) {  // RR case
+					node = rotateLeftAnimation(node, list);
+				} else {  // RL case
+					node = rotateRLAnimation(node, list);
+				}
 			}
 		} else {
 			list.push_back(Animation(
@@ -194,30 +213,30 @@ void AVLTree::balanceAnimation(AVLNode* node, std::vector<Animation>& list) {
 	                         [&]() { clearHighlight(mRoot); }));
 }
 
-void AVLTree::rotateRightAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
+AVLNode* AVLTree::rotateRightAnimation(AVLNode* node, std::vector<Animation>& list) {
 	AVLNode* mLeft = node->getLeft();
 	list.push_back(Animation(
 	    {1, 2}, "Left-left case: rotate right.",
-	    [&, node, last]() {
-		    if (last) {
-			    last->highlight(PolyNode::None);
-			    last->setLabel("");
-		    }
-		    node->highlight(PolyNode::Primary);
-		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+	    [&, node, mLeft]() {
 		    rotateRight(node);
-	    },
-	    [&, node, last, mLeft]() {
-		    if (last)
-			    last->highlight(PolyNode::Primary);
 		    node->highlight(PolyNode::None);
 		    node->setLabel("");
+		    mLeft->highlight(PolyNode::Primary);
+		    mLeft->setLabel("bf = " + std::to_string(mLeft->getBalanceFactor()));
+	    },
+	    [&, node, mLeft]() {
 		    rotateLeft(mLeft);
+		    node->highlight(PolyNode::Primary);
+		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+		    mLeft->highlight(PolyNode::None);
+		    mLeft->setLabel("");
 	    }));
 	list.back().play();
+
+	return mLeft;
 }
 
-void AVLTree::rotateRLAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
+AVLNode* AVLTree::rotateRLAnimation(AVLNode* node, std::vector<Animation>& list) {
 	AVLNode* mRight = node->getRight();
 	assert(mRight != nullptr);
 	AVLNode* RLNode = mRight->getLeft();
@@ -225,18 +244,12 @@ void AVLTree::rotateRLAnimation(AVLNode* node, AVLNode* last, std::vector<Animat
 
 	list.push_back(Animation(
 	    {1, 5}, "Right-Left case: rotate right the right child, then rotate left.",
-	    [&, node, last, mRight]() {
-		    if (last) {
-			    last->highlight(PolyNode::None);
-			    last->setLabel("");
-		    }
+	    [&, node, mRight]() {
 		    node->highlight(PolyNode::Primary);
 		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
 		    rotateRight(mRight);
 	    },
-	    [&, node, last, RLNode]() {
-		    if (last)
-			    last->highlight(PolyNode::Primary);
+	    [&, node, RLNode]() {
 		    node->highlight(PolyNode::None);
 		    node->setLabel("");
 		    rotateLeft(RLNode);
@@ -245,39 +258,49 @@ void AVLTree::rotateRLAnimation(AVLNode* node, AVLNode* last, std::vector<Animat
 
 	list.push_back(Animation(
 	    {1, 5}, "Right-Left case: Rotate right the right child, then rotate left.",
-	    [&, node]() {
+	    [&, node, RLNode]() {
+		    rotateLeft(node);
+		    node->highlight(PolyNode::None);
+		    node->setLabel("");
+		    RLNode->highlight(PolyNode::Primary);
+		    RLNode->setLabel("bf = " + std::to_string(RLNode->getBalanceFactor()));
+	    },
+	    [&, node, RLNode]() {
+		    rotateRight(RLNode);
 		    node->highlight(PolyNode::Primary);
 		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
-		    rotateLeft(node);
-	    },
-	    [&, RLNode]() { rotateRight(RLNode); }));
+		    RLNode->setLabel("");
+		    RLNode->highlight(PolyNode::None);
+	    }));
 	list.back().play();
+
+	return RLNode;
 }
 
-void AVLTree::rotateLeftAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
+AVLNode* AVLTree::rotateLeftAnimation(AVLNode* node, std::vector<Animation>& list) {
 	AVLNode* mRight = node->getRight();
 	list.push_back(Animation(
 	    {1, 4}, "Right-Right case: rotate left.",
-	    [&, node, last]() {
-		    if (last) {
-			    last->highlight(PolyNode::None);
-			    last->setLabel("");
-		    }
-		    node->highlight(PolyNode::Primary);
-		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+	    [&, node, mRight]() {
 		    rotateLeft(node);
-	    },
-	    [&, node, last, mRight]() {
-		    if (last)
-			    last->highlight(PolyNode::Primary);
 		    node->highlight(PolyNode::None);
 		    node->setLabel("");
+		    mRight->highlight(PolyNode::Primary);
+		    mRight->setLabel("bf = " + std::to_string(mRight->getBalanceFactor()));
+	    },
+	    [&, node, mRight]() {
 		    rotateRight(mRight);
+		    node->highlight(PolyNode::Primary);
+		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
+		    mRight->highlight(PolyNode::None);
+		    mRight->setLabel("");
 	    }));
 	list.back().play();
+
+	return mRight;
 }
 
-void AVLTree::rotateLRAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
+AVLNode* AVLTree::rotateLRAnimation(AVLNode* node, std::vector<Animation>& list) {
 	AVLNode* mLeft = node->getLeft();
 	assert(mLeft != nullptr);
 	AVLNode* LRNode = mLeft->getRight();
@@ -285,18 +308,12 @@ void AVLTree::rotateLRAnimation(AVLNode* node, AVLNode* last, std::vector<Animat
 
 	list.push_back(Animation(
 	    {1, 3}, "Right-Left case: rotate left the left child, then rotate right.",
-	    [&, node, last, mLeft]() {
-		    if (last) {
-			    last->highlight(PolyNode::None);
-			    last->setLabel("");
-		    }
+	    [&, node, mLeft]() {
+		    rotateLeft(mLeft);
 		    node->highlight(PolyNode::Primary);
 		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
-		    rotateLeft(mLeft);
 	    },
-	    [&, node, last, LRNode]() {
-		    if (last)
-			    last->highlight(PolyNode::Primary);
+	    [&, node, LRNode]() {
 		    node->highlight(PolyNode::None);
 		    node->setLabel("");
 		    rotateRight(LRNode);
@@ -305,13 +322,23 @@ void AVLTree::rotateLRAnimation(AVLNode* node, AVLNode* last, std::vector<Animat
 
 	list.push_back(Animation(
 	    {1, 3}, "Right-Left case: rotate left the left child, then rotate right",
-	    [&, node]() {
+	    [&, node, LRNode]() {
+		    rotateRight(node);
+		    node->highlight(PolyNode::None);
+		    node->setLabel("");
+		    LRNode->highlight(PolyNode::Primary);
+		    LRNode->setLabel("bf = " + std::to_string(LRNode->getBalanceFactor()));
+	    },
+	    [&, node, LRNode]() {
+		    rotateLeft(LRNode);
 		    node->highlight(PolyNode::Primary);
 		    node->setLabel("bf = " + std::to_string(node->getBalanceFactor()));
-		    rotateRight(node);
-	    },
-	    [&, LRNode]() { rotateLeft(LRNode); }));
+		    LRNode->setLabel("");
+		    LRNode->highlight(PolyNode::None);
+	    }));
 	list.back().play();
+
+	return LRNode;
 }
 
 std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const int& value) {
@@ -369,7 +396,7 @@ std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const in
 }
 
 void AVLTree::randomize() {
-	loadArray(Random::getArray(3, 15, MIN_VALUE, MAX_VALUE));
+	loadArray(Random::getArray(1, 15, MIN_VALUE, MAX_VALUE));
 }
 
 void AVLTree::loadFromFile(const std::string& fileDir) {
