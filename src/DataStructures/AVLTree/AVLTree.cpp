@@ -168,10 +168,12 @@ AVLNode* AVLTree::traverseSearchingAnimation(const int& value, std::vector<Anima
 		}
 	}
 	list.push_back(Animation(
-	    {0},
-	    "Null node reached, hence " + std::to_string(value) +
-	        " doesn't exist in AVL tree. Stop deletion, complexity O(logn).",
-	    [&]() { clearHighlight(); }, [&, last]() { last->highlight(PolyNode::Primary); }));
+	    {0}, "Null node reached. Cancel deletion, worst-case complexity O(logn).",
+	    [&]() { clearHighlight(); },
+	    [&, last]() {
+		    if (last)
+			    last->highlight(PolyNode::Primary);
+	    }));
 	return nullptr;
 }
 
