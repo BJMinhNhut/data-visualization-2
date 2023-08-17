@@ -41,6 +41,9 @@ void AVLTree::rotateRight() {
 #endif
 
 std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const int& value) {
+	if (mSize == MAX_SIZE)
+		throw std::out_of_range("Maximum size reached, you are not allowed to insert more values.");
+
 	const std::string& code = AVLCode::Insert;
 	std::vector<Animation> list;
 	list.push_back(Animation({}, "Insert " + std::to_string(value) + " to AVL tree.",
@@ -105,6 +108,7 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
 
+	mSize++;
 	return std::make_pair(list, code);
 }
 
