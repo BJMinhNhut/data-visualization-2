@@ -16,7 +16,7 @@ const int AVLTree::MAX_VALUE = 999;
 const sf::Vector2f AVLTree::TREE_OFF_SET(35.f, 100.f);
 
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
-    : mFonts(fonts), mColors(colors), mRoot(nullptr), mSize(0) {
+    : mFonts(fonts), mColors(colors), mRoot(nullptr), mSize(0), mBin(nullptr) {
 	randomize();
 }
 
@@ -27,6 +27,99 @@ unsigned int AVLTree::getSize() const {
 int AVLTree::getRandomElement() const {
 	auto elements = getInOrder(mRoot);
 	return elements[Random::getInt(0, (int)elements.size() - 1)]->getIntData();
+}
+
+std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const int& value) {
+	const std::string& code = AVLCode::Insert;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Insert " + std::to_string(value) + " to AVL tree."));
+
+	if (mRoot == nullptr) {
+		list.push_back(Animation(
+		    {0},
+		    "Tree is empty, insert " + std::to_string(value) +
+		        ". Tree is balanced, complexity O(1).",
+		    [&, value]() {
+			    mRoot = new AVLNode(mFonts, mColors);
+			    mRoot->setData(value);
+			    mRoot->highlight(PolyNode::Primary);
+			    attachChild(AVLNode::Ptr(mRoot));
+			    alignAsTree();
+		    },
+		    [&]() {
+			    dump(mRoot);
+			    mRoot = nullptr;
+			    alignAsTree();
+		    }));
+		return std::make_pair(list, code);
+	}
+
+	/* insert phase */
+	{
+		AVLNode* last = traverseAnimation(value, list);
+		bool goLeft = value < last->getIntData();
+		list.push_back(Animation(
+		    {0}, "Null node reached, insert " + std::to_string(value),
+		    [&, value, last, goLeft]() {
+			    auto* newNode = new AVLNode(mFonts, mColors);
+			    newNode->setData(value);
+			    newNode->highlight(PolyNode::Primary);
+
+			    if (goLeft)
+				    last->attachLeft(newNode);
+			    else
+				    last->attachRight(newNode);
+			    last->highlight(PolyNode::None);
+			    attachChild(AVLNode::Ptr(newNode));
+
+			    alignAsTree();
+			    newNode->setPosition(last->getPosition());
+		    },
+		    [&, last, goLeft]() {
+			    if (goLeft) {
+				    dump(last->getLeft());
+				    last->detachLeft();
+			    } else {
+				    dump(last->getRight());
+				    last->detachRight();
+			    }
+			    last->highlight(PolyNode::Primary);
+			    alignAsTree();
+		    }));
+	}
+
+	return std::make_pair(list, code);
+}
+
+AVLNode* AVLTree::traverseAnimation(const int& value, std::vector<Animation>& list) {
+	AVLNode* cur = mRoot;
+	AVLNode* last = nullptr;
+	while (cur != nullptr) {
+		std::string log =
+		    std::to_string(value) + ((value < cur->getIntData())
+		                                 ? " < current node data, go to left child"
+		                                 : " >= current node data, go to right child");
+		list.push_back(Animation(
+		    {0}, log,
+		    [&, cur, last]() {
+			    if (last)
+				    last->highlight(PolyNode::None);
+			    cur->highlight(PolyNode::Primary);
+		    },
+		    [&, cur, last]() {
+			    if (last)
+				    last->highlight(PolyNode::Primary);
+			    cur->highlight(PolyNode::None);
+		    }));
+
+		last = cur;
+		if (value < cur->getIntData()) {
+			cur = cur->getLeft();
+		} else {
+			cur = cur->getRight();
+		}
+	}
+	return last;
 }
 
 std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const int& value) {
@@ -117,14 +210,11 @@ void AVLTree::insert(const int& value) {
 	alignAsTree();
 }
 
-void AVLTree::rotateLeft() {
-	mRoot = rotateLeft(mRoot);
-	alignAsTree();
-}
-
-void AVLTree::rotateRight() {
-	mRoot = rotateRight(mRoot);
-	alignAsTree();
+void AVLTree::dump(AVLNode* node) {
+	// TODO: handle dumping new node when mBin is not null
+	assert(node != nullptr);
+	node->setTargetScale(0.f, 0.f, Transition::Smooth);
+	mBin = node;
 }
 
 void AVLTree::clear(AVLNode* root) {
@@ -243,5 +333,12 @@ void AVLTree::calculateDepth(AVLNode* root) {
 	if (AVLNode* mRight = root->getRight()) {
 		mRight->setDepth(root->getDepth() + 1);
 		calculateDepth(mRight);
+	}
+}
+
+void AVLTree::updateCurrent(sf::Time dt) {
+	if (mBin != nullptr && mBin->getScale().x < SceneNode::EPS) {
+		detachChild(*mBin);
+		mBin = nullptr;
 	}
 }

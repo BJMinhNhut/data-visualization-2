@@ -22,15 +22,17 @@ class AVLTree : public SceneNode {
 	int getRandomElement() const;
 
 	std::pair<std::vector<Animation>, std::string> searchAnimation(const int& value);
+	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
 
 	void randomize();
 	void loadFromFile(const std::string& fileDir);
 	void clearHighlight();
 	void insert(const int& value);
-	void rotateLeft();
-	void rotateRight();
 
    private:
+	AVLNode* traverseAnimation(const int& value, std::vector<Animation>& list);
+
+	void dump(AVLNode* node);
 	void clear(AVLNode* root);
 	void clearHighlight(AVLNode* root);
 	void loadArray(std::vector<int> array);
@@ -45,12 +47,14 @@ class AVLTree : public SceneNode {
 	void calculateDepth();
 	void calculateDepth(AVLNode* root);
 
+	void updateCurrent(sf::Time dt) override;
+
    private:
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 
-	AVLNode* mRoot;
-	int mSize;
+	AVLNode *mRoot, *mBin;
+	unsigned int mSize;
 };
 
 #endif  //DATAVISUALIZATION2_AVLTREE_HPP

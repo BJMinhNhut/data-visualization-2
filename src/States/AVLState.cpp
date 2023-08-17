@@ -13,6 +13,7 @@ AVLState::AVLState(StateStack& stack, State::Context context)
 	                        AVLNode::Transition::None);
 	initOptions();
 	initCreate();
+	initInsert();
 	initSearch();
 }
 
@@ -26,7 +27,7 @@ void AVLState::initOptions() {
 		mActionsHub.setCurrentOption(Insert);
 		mPlayer.reset();
 		mPlayer.callInfo("Insert a new value to heap");
-		//		Inputs[Insert]->randomizeValue();
+		Inputs[Insert]->randomizeValue();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
@@ -72,6 +73,21 @@ void AVLState::initCreate() {
 	mActionsHub.packOptionGUI(Create, fileButton);
 }
 
+void AVLState::initInsert() {
+	// Insert
+	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Value", *getContext().fonts,
+	                                               *getContext().colors);
+	valueLabel->setPosition(250.f, 555.f);
+	valueLabel->alignCenter();
+	mActionsHub.packOptionGUI(Insert, valueLabel);
+
+	Inputs[Insert] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
+	                                              *getContext().colors);
+	Inputs[Insert]->setPosition(250.f, 590.f);
+	Inputs[Insert]->setRange(AVLTree::MIN_VALUE, AVLTree::MAX_VALUE);
+	mActionsHub.packOptionGUI(Insert, Inputs[Insert]);
+}
+
 void AVLState::initSearch() {
 	// Search
 	auto valueLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "Value", *getContext().fonts,
@@ -108,11 +124,11 @@ std::pair<std::vector<Animation>, std::string> AVLState::getSteps(unsigned int o
 	try {
 		mTree.clearHighlight();
 		switch (option) {
-				//			case Insert:
-				//				if (Inputs[Insert]->validate() != GUI::Input::Success)
-				//					throw std::out_of_range("Value must be in range " +
-				//					                        Inputs[Insert]->getStringRange());
-				//				return mHashTable.insertAnimation(Inputs[Insert]->getValue());
+			case Insert:
+				if (Inputs[Insert]->validate() != GUI::Input::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Insert]->getStringRange());
+				return mTree.insertAnimation(Inputs[Insert]->getValue());
 				//			case Delete:
 				//				if (Inputs[Delete]->validate() != GUI::Input::Success)
 				//					throw std::out_of_range("Value must be in range " +
