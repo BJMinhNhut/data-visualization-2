@@ -26,6 +26,7 @@ class AVLNode : public PolyNode {
 	AVLNode* getRight() const;
 	int getHeight() const;
 	int getDepth() const;
+	int getBalanceFactor();
 
    private:
 	void updateHeight();
