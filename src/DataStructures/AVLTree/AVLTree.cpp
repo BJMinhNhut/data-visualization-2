@@ -46,21 +46,24 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 	list.push_back(Animation({}, "Insert " + std::to_string(value) + " to AVL tree.",
 	                         [&]() { clearHighlight(mRoot); }));
 
+	auto* newNode = new AVLNode(mFonts, mColors);
+	newNode->setData(value);
+	newNode->setTargetScale(0.f, 0.f, None);
+	attachChild(AVLNode::Ptr(newNode));
+
 	if (mRoot == nullptr) {
+		mRoot = newNode;
 		list.push_back(Animation(
 		    {0},
 		    "Tree is empty, insert " + std::to_string(value) +
-		        ". Tree is balanced, complexity O(1).",
-		    [&, value]() {
-			    mRoot = new AVLNode(mFonts, mColors);
-			    mRoot->setData(value);
-			    mRoot->highlight(PolyNode::Primary);
-			    attachChild(AVLNode::Ptr(mRoot));
+		        ". Tree is balanced, complexity is O(1).",
+		    [&, newNode]() {
+			    newNode->setTargetScale(1.f, 1.f, Smooth);
+			    newNode->highlight(PolyNode::Primary);
 			    alignAsTree();
 		    },
-		    [&]() {
-			    dump(mRoot);
-			    mRoot = nullptr;
+		    [&, newNode]() {
+			    newNode->setTargetScale(0.f, 0.f, Smooth);
 			    alignAsTree();
 		    }));
 		return std::make_pair(list, code);
@@ -69,11 +72,6 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 	/* insert phase */
 	AVLNode* last = traverseAnimation(value, list);
 	bool goLeft = value < last->getIntData();
-
-	auto* newNode = new AVLNode(mFonts, mColors);
-	newNode->setData(value);
-	newNode->setTargetScale(0.f, 0.f, None);
-	attachChild(AVLNode::Ptr(newNode));
 
 	list.push_back(Animation(
 	    {0}, "Null node reached, insert " + std::to_string(value),
@@ -445,6 +443,8 @@ void AVLTree::clear(AVLNode* root) {
 		return;
 	clear(root->getLeft());
 	clear(root->getRight());
+	if (root == mRoot)
+		mRoot = nullptr;
 	detachChild(*root);
 }
 
