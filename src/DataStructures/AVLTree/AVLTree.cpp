@@ -550,10 +550,9 @@ void AVLTree::alignAsTree() {
 
 	std::vector<AVLNode*> inOrder(getInOrder(mRoot));
 
-	int rootID =
-	    static_cast<int>(std::find(inOrder.begin(), inOrder.end(), mRoot) - inOrder.begin());
+	int mid = (int)inOrder.size() / 2;
 	for (int i = 0; i < inOrder.size(); ++i) {
-		float x = float(i - rootID) * TREE_OFF_SET.x;
+		float x = float(i - mid) * TREE_OFF_SET.x;
 		float y = (float)inOrder[i]->getDepth() * TREE_OFF_SET.y;
 		inOrder[i]->setTargetPosition(x, y, Smooth);
 	}
