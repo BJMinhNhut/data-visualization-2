@@ -11,18 +11,18 @@ namespace AVLCode {
 const std::string Insert(
     "Insert v\n"
     "Check balance factor (bf):\n"
-    "	LL: rotateRight\n"
-    "	LR: rotateLeft, rotateRight\n"
-    "	RR: rotateLeft\n"
-    "	RL: rotateRight, rotateLeft");
+    "  LL: rt_Right\n"
+    "  LR: left.rt_Left, rt_Right\n"
+    "  RR: rt_Left\n"
+    "  RL: right.rt_Right, rt_Left");
 
 const std::string Delete(
     "Delete v\n"
     "Check balance factor (bf):\n"
-    "	LL: rotateRight\n"
-    "	LR: rotateLeft, rotateRight\n"
-    "	RR: rotateLeft\n"
-    "	RL: rotateRight, rotateLeft");
+    "  LL: rt_Right\n"
+    "  LR: left.rt_Left, rt_Right\n"
+    "  RR: rt_Left\n"
+    "  RL: right.rt_Right, rt_Left");
 
 const std::string Search(
     "if this == null\n"
