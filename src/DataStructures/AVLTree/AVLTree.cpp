@@ -395,6 +395,10 @@ std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const in
 	return std::make_pair(list, code);
 }
 
+void AVLTree::clear() {
+	clear(mRoot);
+}
+
 void AVLTree::randomize() {
 	loadArray(Random::getArray(1, 15, MIN_VALUE, MAX_VALUE));
 }

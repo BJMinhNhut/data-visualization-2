@@ -48,6 +48,16 @@ void AVLState::initOptions() {
 
 void AVLState::initCreate() {
 	// Create
+	auto emptyButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
+	                                                 *getContext().textures, *getContext().colors);
+	emptyButton->setCallback([&]() {
+		mTree.clear();
+		mPlayer.callInfo("Created an empty AVL tree.");
+	});
+	emptyButton->setPosition(250.f, 590.f - 60.f);
+	emptyButton->setText("Empty");
+	mActionsHub.packOptionGUI(Create, emptyButton);
+
 	auto randomButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                  *getContext().textures, *getContext().colors);
 	randomButton->setCallback([&]() {
@@ -55,7 +65,7 @@ void AVLState::initCreate() {
 		mPlayer.callInfo("Created an AVL tree with random elements, size = " +
 		                 std::to_string(mTree.getSize()));
 	});
-	randomButton->setPosition(250.f, 590.f - 30.f);
+	randomButton->setPosition(250.f, 590.f);
 	randomButton->setText("Random");
 	mActionsHub.packOptionGUI(Create, randomButton);
 
@@ -68,7 +78,7 @@ void AVLState::initCreate() {
 		mPlayer.callInfo("Created an AVL tree with elements loaded from file, size = " +
 		                 std::to_string(mTree.getSize()));
 	});
-	fileButton->setPosition(250.f, 590.f + 30.f);
+	fileButton->setPosition(250.f, 590.f + 60.f);
 	fileButton->setText("Load file");
 	mActionsHub.packOptionGUI(Create, fileButton);
 }

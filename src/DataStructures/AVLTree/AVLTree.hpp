@@ -28,6 +28,7 @@ class AVLTree : public SceneNode {
 	AVLNode* rotateLRAnimation(AVLNode* node, std::vector<Animation>& list);
 	AVLNode* rotateRLAnimation(AVLNode* node, std::vector<Animation>& list);
 
+	void clear();
 	void randomize();
 	void loadFromFile(const std::string& fileDir);
 	void clearHighlight();
