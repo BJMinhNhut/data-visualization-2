@@ -106,6 +106,10 @@ void PolyNode::highlight(Highlight type) {
 	}
 }
 
+void PolyNode::resetDataScale() {
+	mText.setScale(1.f, 1.f);
+}
+
 void PolyNode::addEdgeOut(PolyNode* to) {
 	auto edge = std::make_shared<Edge>(this, to, Edge::EdgeType::Undirected, mColors);
 	outEdges.push_back(edge);
