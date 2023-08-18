@@ -17,7 +17,7 @@ const std::vector<std::pair<std::string, float>> Player::mSpeedMap({{"x0.25", 0.
                                                                     {"x1.0", 2.f},
                                                                     {"x2.0", 4.f},
                                                                     {"x5.0", 10.f},
-                                                                    {"x10", 20.f}});
+                                                                    {"Skip", 2000.f}});
 
 Player::Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors,
                const std::function<void()>& playCallback)
