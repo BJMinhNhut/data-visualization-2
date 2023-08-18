@@ -105,7 +105,7 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 	    }));
 	list.back().play();
 
-	balanceAnimation(newNode, list);
+	balanceAnimation(newNode, nullptr, list);
 
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
@@ -128,7 +128,7 @@ std::pair<std::vector<Animation>, std::string> AVLTree::deleteAnimation(const in
 
 	AVLNode* balanceStart = deleteNodeAnimation(deleteNode, list);
 
-	balanceAnimation(balanceStart, list);
+	balanceAnimation(balanceStart, deleteNode, list);
 
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
@@ -182,7 +182,8 @@ AVLNode* AVLTree::traverseSearchingAnimation(const int& value, std::vector<Anima
 }
 
 AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& list) {
-	if (node->isLeaf()) {  // node is Leaf
+	int numChild = (node->getLeft() ? 1 : 0) + (node->getRight() ? 1 : 0);
+	if (numChild == 0) {  // node is Leaf
 		bool isRoot = node == mRoot;
 		AVLNode* mParent = node->getParent();
 		list.push_back(Animation(
@@ -203,27 +204,10 @@ AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& lis
 		    }));
 		list.back().play();
 		return mParent;
-	} else if (node->getLeft() || node->getRight()) {  // node has one child
+	} else if (numChild == 1) {  // node has one child
 		return deleteOneChildNodeAnimation(node, list);
 	} else {  // node has two child
-		AVLNode* successor = findSuccessorAnimation(node, list);
-		assert(successor != nullptr);
-		AVLNode* mParent = successor->getParent();
-		assert(successor->isLeaf());
-		list.push_back(Animation(
-		    {0}, "Swap data of " + node->getData() + " with its successor. Delete the successor.",
-		    [&, node, successor]() {
-			    node->swapData(successor);
-			    successor->fakeDetach();
-			    alignAsTree();
-		    },
-		    [&, node, successor]() {
-			    node->swapData(successor);
-			    successor->revertFakeDetach();
-			    alignAsTree();
-		    }));
-		list.back().play();
-		return mParent;
+		return deleteTwoChildNodeAnimation(node, list);
 	}
 }
 
@@ -281,6 +265,49 @@ AVLNode* AVLTree::deleteOneChildNodeAnimation(AVLNode* node, std::vector<Animati
 	return mParent;
 }
 
+AVLNode* AVLTree::deleteTwoChildNodeAnimation(AVLNode* node, std::vector<Animation>& list) {
+	AVLNode* successor = findSuccessorAnimation(node, list);
+	assert(successor != nullptr);
+	assert(successor->getLeft() == nullptr);
+	AVLNode* mParent = successor->getParent();
+	bool isSuccessorLeft = mParent->getLeft() == successor;
+	AVLNode* successorRight = successor->getRight();
+	list.push_back(Animation(
+	    {0}, "Swap data of " + node->getData() + " with its successor. Delete the successor.",
+	    [&, node, successor, isSuccessorLeft, successorRight, mParent]() {
+		    node->swapData(successor);
+		    node->highlight(PolyNode::Primary);
+
+		    if (isSuccessorLeft) {
+			    mParent->detachLeft();
+			    if (successorRight)
+				    mParent->attachLeft(successorRight);
+		    } else {
+			    mParent->detachRight();
+			    if (successorRight)
+				    mParent->attachRight(successorRight);
+		    }
+
+		    successor->setTargetScale(0.f, 0.f, Smooth);
+		    alignAsTree();
+	    },
+	    [&, node, successor, isSuccessorLeft, mParent, successorRight]() {
+		    node->swapData(successor);
+		    node->highlight(PolyNode::None);
+		    successor->setTargetScale(1.f, 1.f, Smooth);
+		    if (isSuccessorLeft) {
+			    mParent->attachLeft(successor);
+		    } else {
+			    mParent->attachRight(successor);
+		    }
+		    if (successorRight)
+			    successor->attachRight(successorRight);
+		    alignAsTree();
+	    }));
+	list.back().play();
+	return mParent;
+}
+
 AVLNode* AVLTree::findSuccessorAnimation(AVLNode* node, std::vector<Animation>& list) {
 	if (node->getRight() == nullptr) {
 		return nullptr;
@@ -302,9 +329,10 @@ AVLNode* AVLTree::findSuccessorAnimation(AVLNode* node, std::vector<Animation>& 
 		    },
 		    [&, cur, last]() {
 			    if (last)
-				    last->highlight(PolyNode::Primary);
-			    cur->highlight(PolyNode::Secondary);
+				    last->highlight(PolyNode::Secondary);
+			    cur->highlight(PolyNode::None);
 		    }));
+		list.back().play();
 
 		if (cur->getLeft() == nullptr)
 			break;
@@ -347,14 +375,13 @@ AVLNode* AVLTree::traverseToLeafAnimation(const int& value, std::vector<Animatio
 	return last;
 }
 
-void AVLTree::balanceAnimation(AVLNode* node, std::vector<Animation>& list) {
-	AVLNode* last = nullptr;
+void AVLTree::balanceAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list) {
 
 	while (node != nullptr) {
 		AVLNode* parent = node->getParent();
 
 		const int bf = node->getBalanceFactor();
-		std::cout << "Node: " << ' ' << node->getData() << ' ' << bf << '\n';
+		//		std::cout << "Node: " << ' ' << node->getData() << ' ' << bf << '\n';
 		if (abs(bf) > 1) {
 			list.push_back(Animation(
 			    {1}, "Subtree is unbalanced, start rotating...",

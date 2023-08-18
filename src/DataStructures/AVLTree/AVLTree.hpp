@@ -45,8 +45,9 @@ class AVLTree : public SceneNode {
 	AVLNode* traverseSearchingAnimation(const int& value, std::vector<Animation>& list);
 	AVLNode* deleteNodeAnimation(AVLNode* node, std::vector<Animation>& list);
 	AVLNode* deleteOneChildNodeAnimation(AVLNode* node, std::vector<Animation>& list);
+	AVLNode* deleteTwoChildNodeAnimation(AVLNode* node, std::vector<Animation>& list);
 	AVLNode* findSuccessorAnimation(AVLNode* node, std::vector<Animation>& list);
-	void balanceAnimation(AVLNode* node, std::vector<Animation>& list);
+	void balanceAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list);
 
 	void dump(AVLNode* node, Transition type = Smooth);
 	void clear(AVLNode* root);
