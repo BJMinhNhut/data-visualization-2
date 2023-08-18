@@ -5,17 +5,22 @@
 #include "TrieState.hpp"
 
 TrieState::TrieState(StateStack& stack, State::Context context)
-    : VisualState(stack, context, "Trie"), Inputs(NumOptions) {}
+    : VisualState(stack, context, "Trie"),
+      Inputs(NumOptions),
+      mTrie(*context.fonts, *context.colors) {
+	mTrie.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 180.f,
+	                        Trie::Transition::None);
+}
 
 void TrieState::draw() {
 	VisualState::draw();
-	//	getContext().window->draw(mTree);
+	getContext().window->draw(mTrie);
 }
 
 bool TrieState::update(sf::Time dt) {
 	bool result = true;
 	result |= VisualState::update(dt);
-	//	mTree.update(dt);
+	mTrie.update(dt);
 	return result;
 }
 
