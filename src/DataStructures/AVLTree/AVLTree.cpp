@@ -15,8 +15,6 @@ const int AVLTree::MIN_VALUE = 0;
 const int AVLTree::MAX_VALUE = 999;
 const sf::Vector2f AVLTree::TREE_OFF_SET(27.f, 90.f);
 
-// TODO: Flush bin when load new animation
-
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
     : mFonts(fonts), mColors(colors), mRoot(nullptr), mInOrder(), mBin() {
 	randomize();
@@ -670,7 +668,6 @@ void AVLTree::insert(const int& value) {
 }
 
 void AVLTree::dump(AVLNode* node) {
-	// TODO: handle dumping new node when mBin is not null
 	assert(node != nullptr);
 	mBin.push_back(node);
 }
