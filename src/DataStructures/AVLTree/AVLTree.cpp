@@ -15,6 +15,8 @@ const int AVLTree::MIN_VALUE = 0;
 const int AVLTree::MAX_VALUE = 999;
 const sf::Vector2f AVLTree::TREE_OFF_SET(27.f, 90.f);
 
+// TODO: Flush bin when load new animation
+
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
     : mFonts(fonts), mColors(colors), mRoot(nullptr), mSize(0), mBin(nullptr) {
 	randomize();
@@ -125,6 +127,11 @@ std::pair<std::vector<Animation>, std::string> AVLTree::deleteAnimation(const in
 		return std::make_pair(list, code);
 	}
 
+	AVLNode* balanceStart = deleteNodeAnimation(deleteNode, list);
+
+	list.push_back(
+	    Animation({}, "Finished deletion. Complexity is O(logn).", [&]() { clearHighlight(); }));
+
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
 	mSize--;
@@ -168,12 +175,42 @@ AVLNode* AVLTree::traverseSearchingAnimation(const int& value, std::vector<Anima
 		}
 	}
 	list.push_back(Animation(
-	    {0}, "Null node reached. Cancel deletion, worst-case complexity O(logn).",
+	    {}, "Null node reached. Cancel deletion, worst-case complexity O(logn).",
 	    [&]() { clearHighlight(); },
 	    [&, last]() {
 		    if (last)
 			    last->highlight(PolyNode::Primary);
 	    }));
+	return nullptr;
+}
+
+AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& list) {
+	if (node->isLeaf()) {
+		AVLNode* parent = node->getParent();
+		bool goLeft = parent && parent->getLeft() == node;
+		list.push_back(Animation(
+		    {0}, "Node is leaf, just delete it from tree",
+		    [&, node, parent, goLeft]() {
+			    node->setTargetScale(0.f, 0.f, Smooth);
+			    if (parent) {
+				    if (goLeft)
+					    parent->detachLeft();
+				    else
+					    parent->detachRight();
+			    }
+		    },
+		    [&, node, parent, goLeft]() {
+			    node->setTargetScale(1.f, 1.f, Smooth);
+			    if (parent) {
+				    if (goLeft)
+					    parent->attachLeft(node);
+				    else
+					    parent->attachRight(node);
+			    }
+		    }));
+		list.back().play();
+		return nullptr;
+	}
 	return nullptr;
 }
 

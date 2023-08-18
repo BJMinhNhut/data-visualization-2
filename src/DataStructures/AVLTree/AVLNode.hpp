@@ -27,6 +27,7 @@ class AVLNode : public PolyNode {
 	int getHeight() const;
 	int getDepth() const;
 	int getBalanceFactor();
+	bool isLeaf() const;
 
    private:
 	void updateHeight();

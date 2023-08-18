@@ -107,6 +107,10 @@ int AVLNode::getBalanceFactor() {
 	return (mLeft ? mLeft->getHeight() : -1) - (mRight ? mRight->getHeight() : -1);
 }
 
+bool AVLNode::isLeaf() const {
+	return mLeft == nullptr && mRight == nullptr;
+}
+
 void AVLNode::updateHeight() {
 	mHeight = 0;
 	if (mLeft) {
