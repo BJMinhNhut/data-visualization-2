@@ -77,7 +77,9 @@ void AVLNode::detachRight() {
 }
 
 void AVLNode::fakeDetach() {
-	assert(isLeaf() && mParent != nullptr && visualBackupParent == nullptr);
+	assert(isLeaf());
+	assert(mParent != nullptr);
+	assert(visualBackupParent == nullptr);
 	visualBackupParent = mParent;
 	if (mParent->getLeft() == this) {
 		visualLeftChild = true;
