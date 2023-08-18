@@ -27,6 +27,7 @@ class PolyNode : public SceneNode {
 
 	[[nodiscard]] std::string getData() const;
 	[[nodiscard]] int getIntData() const;
+	[[nodiscard]] float getRadius() const;
 
 	void setData(const std::string& data);
 	void setData(const int& data);
@@ -35,6 +36,7 @@ class PolyNode : public SceneNode {
 	void setLabel(const int& label);
 	void setPoint(const int& points);
 	void highlight(Highlight type);
+	void resetDataScale();
 
 	void addEdgeOut(PolyNode* to);
 	void addEdgeIn(const Edge::Ptr& edge);

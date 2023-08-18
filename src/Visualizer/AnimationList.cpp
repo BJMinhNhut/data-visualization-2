@@ -120,12 +120,17 @@ void AnimationList::setSpeed(const float& speed) {
 
 void AnimationList::update(sf::Time dt) {
 	if (isPlaying()) {
-		if (mCoolDown <= sf::milliseconds(0.f)) {
-			playNext();
-			if (currentAnimation == mList.size())
-				pause();
+		if (mSpeed >= 1000.f) {
+			goToBack();
+			pause();
 		} else {
-			mCoolDown -= dt;
+			if (mCoolDown <= sf::milliseconds(0.f)) {
+				playNext();
+				if (currentAnimation == mList.size())
+					pause();
+			} else {
+				mCoolDown -= dt;
+			}
 		}
 	}
 }

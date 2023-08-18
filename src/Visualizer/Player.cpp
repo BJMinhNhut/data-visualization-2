@@ -12,13 +12,17 @@
 #include <cmath>
 #include <iostream>
 
-const std::vector<std::pair<std::string, float>> Player::mSpeedMap(
-    {{"x0.5", 0.5f}, {"x1.0", 1.f}, {"x2.0", 2.f}, {"x5.0", 5.f}, {"x10", 10.f}});
+const std::vector<std::pair<std::string, float>> Player::mSpeedMap({{"x0.25", 0.25f},
+                                                                    {"x0.5", 0.1f},
+                                                                    {"x1.0", 2.f},
+                                                                    {"x2.0", 4.f},
+                                                                    {"x5.0", 10.f},
+                                                                    {"Skip", 2000.f}});
 
 Player::Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors,
                const std::function<void()>& playCallback)
     : mGUIContainer(),
-      mSpeedID(1),
+      mSpeedID(2),
       ControllerGUI(numStates),
       playButtons(numStates),
       mConsole(std::make_shared<GUI::Console>(fonts, colors, 30)),

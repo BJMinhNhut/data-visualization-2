@@ -29,11 +29,11 @@ SceneNode::Ptr SceneNode::detachChild(const SceneNode& node) {
 }
 
 void SceneNode::update(sf::Time dt) {
-	sf::Vector2f deltaPosition = (targetPosition - getPosition()) * 0.1f;
+	sf::Vector2f deltaPosition = (targetPosition - getPosition()) * 0.075f;
 	if (fmax(fabs(deltaPosition.x), fabs(deltaPosition.y)) > EPS)
 		setPosition(getPosition() + deltaPosition);
 
-	sf::Vector2f deltaScale = (targetScale - getScale()) * 0.1f;
+	sf::Vector2f deltaScale = (targetScale - getScale()) * 0.075f;
 	if (fmax(fabs(deltaScale.x), fabs(deltaScale.y)) > EPS)
 		setScale(getScale() + deltaScale);
 

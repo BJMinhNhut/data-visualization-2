@@ -33,8 +33,8 @@ void Edge::draw(sf::RenderTarget &target, sf::RenderStates states) const {
 }
 
 sf::RectangleShape Edge::getLineShape(sf::Vector2f line) {
-    float lineLength = sqrt(line.x * line.x + line.y * line.y);
-    sf::RectangleShape rect(sf::Vector2f(lineLength, THICKNESS));
+	float lineLength = sqrt(line.x * line.x + line.y * line.y) - mTo->getRadius();
+	sf::RectangleShape rect(sf::Vector2f(lineLength, THICKNESS));
     sf::FloatRect bounds = rect.getLocalBounds();
     rect.setOrigin(0, std::floor(bounds.top + bounds.height / 2.f));
 

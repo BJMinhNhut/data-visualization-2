@@ -54,6 +54,10 @@ int PolyNode::getIntData() const {
 	return stoi(data);
 }
 
+float PolyNode::getRadius() const {
+	return mPolygon.getRadius();
+}
+
 void PolyNode::setData(const std::string& data) {
 	mText.setString(data);
 	mText.setScale(0.f, 0.f);
@@ -100,6 +104,10 @@ void PolyNode::highlight(Highlight type) {
 			mPolygon.setFillColor(mColors.get(Colors::UIPrimary));
 			break;
 	}
+}
+
+void PolyNode::resetDataScale() {
+	mText.setScale(1.f, 1.f);
 }
 
 void PolyNode::addEdgeOut(PolyNode* to) {

@@ -38,7 +38,7 @@ class Edge : public sf::Transformable, public sf::Drawable, private sf::NonCopya
    private:
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	static sf::RectangleShape getLineShape(sf::Vector2f line);
+	sf::RectangleShape getLineShape(sf::Vector2f line);
 
    private:
 	static const float THICKNESS;

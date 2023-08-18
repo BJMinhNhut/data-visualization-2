@@ -35,11 +35,10 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Delete
   - [x] Search
 - [ ] AVL tree
-  - [ ] Create
-  - [ ] Insert
-  - [ ] Update
+  - [x] Create
+  - [x] Insert
   - [ ] Delete
-  - [ ] Search
+  - [x] Search
 - [ ] 2-3-4 tree
   - [ ] Create
   - [ ] Insert

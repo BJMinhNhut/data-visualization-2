@@ -5,6 +5,7 @@
 #ifndef DATAVISUALIZATION2_STATESLIST_HPP
 #define DATAVISUALIZATION2_STATESLIST_HPP
 
+#include "AVLState.hpp"
 #include "AboutState.hpp"
 #include "DataState.hpp"
 #include "HashState.hpp"

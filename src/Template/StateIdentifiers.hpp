@@ -14,6 +14,7 @@ enum ID {
 	DataMenu,
 	VisualTemplate,
 	VisualHash,
+	VisualAVL,
 	VisualMaxHeap,
 	VisualMinHeap,
 };
