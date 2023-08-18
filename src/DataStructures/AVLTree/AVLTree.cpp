@@ -184,30 +184,68 @@ AVLNode* AVLTree::traverseSearchingAnimation(const int& value, std::vector<Anima
 
 AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& list) {
 	if (node->isLeaf()) {
-		AVLNode* parent = node->getParent();
-		bool goLeft = parent && parent->getLeft() == node;
+		bool isRoot = node == mRoot;
+		AVLNode* mParent = node->getParent();
 		list.push_back(Animation(
 		    {0}, "Node is leaf, just delete it from tree",
-		    [&, node, parent, goLeft]() {
-			    node->setTargetScale(0.f, 0.f, Smooth);
-			    if (parent) {
-				    if (goLeft)
-					    parent->detachLeft();
-				    else
-					    parent->detachRight();
-			    }
+		    [&, node, isRoot]() {
+			    if (isRoot)
+				    node->setTargetScale(0.f, 0.f, Smooth);
+			    else
+				    node->fakeDetach();
 		    },
-		    [&, node, parent, goLeft]() {
-			    node->setTargetScale(1.f, 1.f, Smooth);
-			    if (parent) {
-				    if (goLeft)
-					    parent->attachLeft(node);
-				    else
-					    parent->attachRight(node);
-			    }
+		    [&, node, isRoot]() {
+			    if (isRoot)
+				    node->setTargetScale(1.f, 1.f, Smooth);
+			    else
+				    node->revertFakeDetach();
 		    }));
 		list.back().play();
-		return nullptr;
+		return mParent;
+	} else {
+		AVLNode* successor = findSuccessorAnimation(node, list);
+		//		list.push_back(Animation({0}, "Swap data of " + node->getData() + " with its successor. Delete the successor.",
+		//		                         [&, node, successor]() {
+		//			                         node->swapData(successor);
+		//			                         successor->fakeDetach();
+		//		                         }, [&, node, successor](){
+		//			    node->swapData(successor);
+		//				successor->revertFakeDetach();
+		//		    }));
+		if (successor == nullptr) {
+			AVLNode* mLeft = node->getLeft();
+			AVLNode* mParent = node->getParent();
+			bool goLeft = mParent && mParent->getLeft() == node;
+			assert(mLeft != nullptr);
+			list.push_back(Animation(
+			    {0}, "Node doesn't have a successor, so just delete it.",
+			    [&, node, mLeft, mParent, goLeft]() {
+				    node->detachLeft();
+				    if (mParent) {
+					    node->fakeDetach();
+					    if (goLeft)
+						    mParent->attachLeft(mLeft);
+					    else
+						    mParent->attachRight(mLeft);
+				    } else {
+					    mRoot = mLeft;
+					    node->setTargetScale(0.f, 0.f, Smooth);
+				    }
+				    alignAsTree();
+			    },
+			    [&, node, mLeft, mParent]() {
+				    node->attachLeft(mLeft);
+				    if (mParent)
+					    node->revertFakeDetach();
+				    else {
+					    mRoot = node;
+					    node->setTargetScale(1.f, 1.f, Smooth);
+				    }
+				    alignAsTree();
+			    }));
+			list.back().play();
+			return mParent;
+		}
 	}
 	return nullptr;
 }
