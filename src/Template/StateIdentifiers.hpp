@@ -17,6 +17,7 @@ enum ID {
 	VisualAVL,
 	VisualMaxHeap,
 	VisualMinHeap,
+	VisualTrie,
 };
 }
 

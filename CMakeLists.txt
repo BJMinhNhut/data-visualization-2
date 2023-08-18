@@ -49,6 +49,8 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/DataStructures/AVLTree/AVLNode.cpp
         src/DataStructures/AVLTree/AVLNode.hpp
         src/DataStructures/AVLTree/AVLCode.hpp
+        src/States/TrieState.cpp
+        src/States/TrieState.hpp
 )
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)

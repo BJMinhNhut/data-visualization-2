@@ -90,7 +90,7 @@ DataState::DataState(StateStack& stack, Context context)
 	TrieButton->setPosition(context.window->getSize().x / 2.f + 138.f, 640.f);
 	TrieButton->setCallback([this]() {
 		requestStackPop();
-		requestStackPush(States::VisualTemplate);
+		requestStackPush(States::VisualTrie);
 	});
 	mGUIContainer.pack(TrieButton);
 	//

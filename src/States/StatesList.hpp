@@ -13,6 +13,7 @@
 #include "MenuState.hpp"
 #include "MinHeapState.hpp"
 #include "SettingsState.hpp"
+#include "TrieState.hpp"
 #include "VisualState.hpp"
 
 #endif //DATAVISUALIZATION2_STATESLIST_HPP
