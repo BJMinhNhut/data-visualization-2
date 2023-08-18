@@ -128,8 +128,7 @@ std::pair<std::vector<Animation>, std::string> AVLTree::deleteAnimation(const in
 
 	AVLNode* balanceStart = deleteNodeAnimation(deleteNode, list);
 
-	list.push_back(
-	    Animation({}, "Finished deletion. Complexity is O(logn).", [&]() { clearHighlight(); }));
+	balanceAnimation(balanceStart, list);
 
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
@@ -193,12 +192,14 @@ AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& lis
 				    node->setTargetScale(0.f, 0.f, Smooth);
 			    else
 				    node->fakeDetach();
+			    alignAsTree();
 		    },
 		    [&, node, isRoot]() {
 			    if (isRoot)
 				    node->setTargetScale(1.f, 1.f, Smooth);
 			    else
 				    node->revertFakeDetach();
+			    alignAsTree();
 		    }));
 		list.back().play();
 		return mParent;
@@ -250,6 +251,13 @@ AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& lis
 	return nullptr;
 }
 
+AVLNode* AVLTree::findSuccessorAnimation(AVLNode* node, std::vector<Animation>& list) {
+	if (node->getRight() == nullptr) {
+		return nullptr;
+	}
+	return nullptr;
+}
+
 AVLNode* AVLTree::traverseToLeafAnimation(const int& value, std::vector<Animation>& list) {
 	AVLNode* cur = mRoot;
 	AVLNode* last = nullptr;
@@ -283,17 +291,13 @@ AVLNode* AVLTree::traverseToLeafAnimation(const int& value, std::vector<Animatio
 }
 
 void AVLTree::balanceAnimation(AVLNode* node, std::vector<Animation>& list) {
-	const int value = node->getIntData();
-	AVLNode* last = node;
-	node = node->getParent();
+	AVLNode* last = nullptr;
 
 	while (node != nullptr) {
 		AVLNode* parent = node->getParent();
-		AVLNode* mLeft = node->getLeft();
-		AVLNode* mRight = node->getRight();
 
 		const int bf = node->getBalanceFactor();
-
+		std::cout << "Node: " << ' ' << node->getData() << ' ' << bf << '\n';
 		if (abs(bf) > 1) {
 			list.push_back(Animation(
 			    {1}, "Subtree is unbalanced, start rotating...",
@@ -312,18 +316,23 @@ void AVLTree::balanceAnimation(AVLNode* node, std::vector<Animation>& list) {
 				    node->setLabel("");
 			    }));
 
-			if (bf > 1) {
-				if (value < mLeft->getIntData()) {  // LL case
+			AVLNode::BalanceStatus status = node->getBalanceStatus();
+			switch (status) {
+				case AVLNode::Balanced:
+					assert(false);
+					break;
+				case AVLNode::LeftLeft:
 					node = rotateRightAnimation(node, list);
-				} else {  // LR case
+					break;
+				case AVLNode::LeftRight:
 					node = rotateLRAnimation(node, list);
-				}
-			} else if (bf < -1) {
-				if (value >= mRight->getIntData()) {  // RR case
+					break;
+				case AVLNode::RightRight:
 					node = rotateLeftAnimation(node, list);
-				} else {  // RL case
+					break;
+				case AVLNode::RightLeft:
 					node = rotateRLAnimation(node, list);
-				}
+					break;
 			}
 		} else {
 			list.push_back(Animation(
