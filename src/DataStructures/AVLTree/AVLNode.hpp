@@ -20,6 +20,8 @@ class AVLNode : public PolyNode {
 	void detachRight();
 	void setDepth(int depth);
 	void setParent(AVLNode* node);
+	void fakeDetach();
+	void revertFakeDetach();
 
 	AVLNode* getParent() const;
 	AVLNode* getLeft() const;
@@ -36,6 +38,9 @@ class AVLNode : public PolyNode {
 	AVLNode *mLeft, *mRight;
 	AVLNode* mParent;
 	int mHeight, mDepth;
+
+	AVLNode* visualBackupParent;
+	bool visualLeftChild;
 };
 
 #endif  //DATAVISUALIZATION2_AVLNODE_HPP

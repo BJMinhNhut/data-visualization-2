@@ -12,7 +12,9 @@ AVLNode::AVLNode(const FontHolder& fonts, const ColorHolder& colors)
       mRight(nullptr),
       mParent(nullptr),
       mHeight(0),
-      mDepth(0) {}
+      mDepth(0),
+      visualBackupParent(nullptr),
+      visualLeftChild(false) {}
 
 void AVLNode::attachLeft(AVLNode* node) {
 	if (mLeft == node)
@@ -72,6 +74,30 @@ void AVLNode::detachRight() {
 	mRight->setParent(nullptr);
 	mRight = nullptr;
 	updateHeight();
+}
+
+void AVLNode::fakeDetach() {
+	assert(isLeaf() && mParent != nullptr && visualBackupParent == nullptr);
+	visualBackupParent = mParent;
+	if (mParent->getLeft() == this) {
+		visualLeftChild = true;
+		mParent->detachLeft();
+	} else {
+		visualLeftChild = false;
+		mParent->detachRight();
+	}
+	setTargetScale(0.f, 0.f, Smooth);
+}
+
+void AVLNode::revertFakeDetach() {
+	assert(visualBackupParent != nullptr);
+	setTargetScale(1.f, 1.f, Smooth);
+	if (visualLeftChild)
+		visualBackupParent->attachLeft(this);
+	else
+		visualBackupParent->attachRight(this);
+	visualBackupParent = nullptr;
+	visualLeftChild = false;
 }
 
 void AVLNode::setDepth(int depth) {
