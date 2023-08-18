@@ -68,7 +68,7 @@ class AVLTree : public SceneNode {
 	const FontHolder& mFonts;
 
 	AVLNode *mRoot, *mBin;
-	unsigned int mSize;
+	std::vector<AVLNode*> mInOrder;
 };
 
 #endif  //DATAVISUALIZATION2_AVLTREE_HPP

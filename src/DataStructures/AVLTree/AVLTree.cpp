@@ -18,12 +18,12 @@ const sf::Vector2f AVLTree::TREE_OFF_SET(27.f, 90.f);
 // TODO: Flush bin when load new animation
 
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
-    : mFonts(fonts), mColors(colors), mRoot(nullptr), mSize(0), mBin(nullptr) {
+    : mFonts(fonts), mColors(colors), mRoot(nullptr), mInOrder(), mBin(nullptr) {
 	randomize();
 }
 
 unsigned int AVLTree::getSize() const {
-	return mSize;
+	return mInOrder.size();
 }
 
 int AVLTree::getRandomElement() const {
@@ -43,7 +43,7 @@ void AVLTree::rotateRight() {
 #endif
 
 std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const int& value) {
-	if (mSize == MAX_SIZE)
+	if (getSize() == MAX_SIZE)
 		throw std::out_of_range("Maximum size reached, you are not allowed to insert more values.");
 
 	const std::string& code = AVLCode::Insert;
@@ -109,7 +109,6 @@ std::pair<std::vector<Animation>, std::string> AVLTree::insertAnimation(const in
 
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
-	mSize++;
 	return std::make_pair(list, code);
 }
 
@@ -134,7 +133,6 @@ std::pair<std::vector<Animation>, std::string> AVLTree::deleteAnimation(const in
 
 	for (auto itr = list.rbegin(); itr != list.rend(); itr++)
 		itr->revert();
-	mSize--;
 	return std::make_pair(list, code);
 }
 
@@ -501,7 +499,6 @@ std::pair<std::vector<Animation>, std::string> AVLTree::searchAnimation(const in
 
 void AVLTree::clear() {
 	clear(mRoot);
-	mSize = 0;
 }
 
 void AVLTree::randomize() {
@@ -534,7 +531,6 @@ void AVLTree::clearHighlight() {
 
 void AVLTree::insert(const int& value) {
 	mRoot = pureInsert(mRoot, value);
-	mSize++;
 	alignAsTree();
 }
 
@@ -550,15 +546,16 @@ void AVLTree::clear(AVLNode* root) {
 		return;
 	clear(root->getLeft());
 	clear(root->getRight());
-	if (root == mRoot)
+	if (root == mRoot) {
 		mRoot = nullptr;
+		std::vector<AVLNode*>().swap(mInOrder);
+	}
 	detachChild(*root);
 }
 
 void AVLTree::loadArray(std::vector<int> array) {
-	clear(mRoot);
+	clear();
 	std::sort(array.begin(), array.end());
-	mSize = array.size();
 	mRoot = create(array, 0, (int)array.size() - 1);
 	alignAsTree();
 }
@@ -651,13 +648,13 @@ void AVLTree::alignAsTree() {
 
 	calculateDepth();
 
-	std::vector<AVLNode*> inOrder(getInOrder(mRoot));
+	mInOrder = getInOrder(mRoot);
 
-	int mid = (int)inOrder.size() / 2;
-	for (int i = 0; i < inOrder.size(); ++i) {
+	int mid = (int)mInOrder.size() / 2;
+	for (int i = 0; i < mInOrder.size(); ++i) {
 		float x = float(i - mid) * TREE_OFF_SET.x;
-		float y = (float)inOrder[i]->getDepth() * TREE_OFF_SET.y;
-		inOrder[i]->setTargetPosition(x, y, Smooth);
+		float y = (float)mInOrder[i]->getDepth() * TREE_OFF_SET.y;
+		mInOrder[i]->setTargetPosition(x, y, Smooth);
 	}
 }
 
