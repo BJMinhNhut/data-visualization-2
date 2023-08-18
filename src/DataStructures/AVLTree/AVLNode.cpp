@@ -148,3 +148,23 @@ void AVLNode::updateHeight() {
 		mHeight = std::max(mHeight, mRight->getHeight() + 1);
 	}
 }
+AVLNode::BalanceStatus AVLNode::getBalanceStatus() {
+	const int bf = getBalanceFactor();
+	if (abs(bf) <= 1)
+		return Balanced;
+	else if (bf > 1) {
+		assert(mLeft != nullptr);
+		std::cout << "left node bf: " << mLeft->getBalanceFactor() << '\n';
+		if (mLeft->getBalanceFactor() >= 0)
+			return LeftLeft;
+		else
+			return LeftRight;
+	} else {
+		assert(mRight != nullptr);
+		std::cout << "right node bf: " << mRight->getBalanceFactor() << '\n';
+		if (mRight->getBalanceFactor() <= 0)
+			return RightRight;
+		else
+			return RightLeft;
+	}
+}

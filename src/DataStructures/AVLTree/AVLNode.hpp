@@ -10,6 +10,13 @@
 class AVLNode : public PolyNode {
    public:
 	typedef std::unique_ptr<AVLNode> Ptr;
+	enum BalanceStatus {
+		Balanced,
+		LeftLeft,
+		LeftRight,
+		RightRight,
+		RightLeft,
+	};
 
    public:
 	AVLNode(const FontHolder& fonts, const ColorHolder& colors);
@@ -28,8 +35,10 @@ class AVLNode : public PolyNode {
 	AVLNode* getRight() const;
 	int getHeight() const;
 	int getDepth() const;
-	int getBalanceFactor();
 	bool isLeaf() const;
+
+	int getBalanceFactor();
+	BalanceStatus getBalanceStatus();
 
    private:
 	void updateHeight();
