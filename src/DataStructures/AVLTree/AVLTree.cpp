@@ -18,7 +18,7 @@ const sf::Vector2f AVLTree::TREE_OFF_SET(27.f, 90.f);
 // TODO: Flush bin when load new animation
 
 AVLTree::AVLTree(const FontHolder& fonts, const ColorHolder& colors)
-    : mFonts(fonts), mColors(colors), mRoot(nullptr), mInOrder(), mBin(nullptr) {
+    : mFonts(fonts), mColors(colors), mRoot(nullptr), mInOrder(), mBin() {
 	randomize();
 }
 
@@ -184,6 +184,7 @@ AVLNode* AVLTree::traverseSearchingAnimation(const int& value, std::vector<Anima
 AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& list) {
 	int numChild = (node->getLeft() ? 1 : 0) + (node->getRight() ? 1 : 0);
 	if (numChild == 0) {  // node is Leaf
+		dump(node);
 		bool isRoot = node == mRoot;
 		AVLNode* mParent = node->getParent();
 		list.push_back(Animation(
@@ -224,7 +225,7 @@ AVLNode* AVLTree::deleteOneChildNodeAnimation(AVLNode* node, std::vector<Animati
 		mChild = node->getRight();
 		childIsLeft = false;
 	}
-
+	dump(node);
 	assert(mChild != nullptr);
 	list.push_back(Animation(
 	    {0}, "Node has one child, so delete it and assign the child to the parent node.",
@@ -272,6 +273,7 @@ AVLNode* AVLTree::deleteTwoChildNodeAnimation(AVLNode* node, std::vector<Animati
 	AVLNode* mParent = successor->getParent();
 	bool isSuccessorLeft = mParent->getLeft() == successor;
 	AVLNode* successorRight = successor->getRight();
+	dump(successor);
 	list.push_back(Animation(
 	    {0}, "Swap data of " + node->getData() + " with its successor. Delete the successor.",
 	    [&, node, successor, isSuccessorLeft, successorRight, mParent]() {
@@ -665,11 +667,21 @@ void AVLTree::insert(const int& value) {
 	alignAsTree();
 }
 
-void AVLTree::dump(AVLNode* node, Transition type) {
+void AVLTree::dump(AVLNode* node) {
 	// TODO: handle dumping new node when mBin is not null
 	assert(node != nullptr);
-	node->setTargetScale(0.f, 0.f, type);
-	mBin = node;
+	mBin.push_back(node);
+}
+
+void AVLTree::flush() {
+	for (auto& node : mBin) {
+		assert(node->getLeft() == nullptr);
+		assert(node->getRight() == nullptr);
+		assert(node->getParent() == nullptr);
+		std::cout << "flushing: " << node->getData() << '\n';
+		detachChild(*node);
+	}
+	std::vector<AVLNode*>().swap(mBin);
 }
 
 void AVLTree::clear(AVLNode* root) {
@@ -824,8 +836,4 @@ void AVLTree::calculateDepth(AVLNode* root) {
 }
 
 void AVLTree::updateCurrent(sf::Time dt) {
-	if (mBin != nullptr && mBin->getScale().x < SceneNode::EPS) {
-		detachChild(*mBin);
-		mBin = nullptr;
-	}
 }

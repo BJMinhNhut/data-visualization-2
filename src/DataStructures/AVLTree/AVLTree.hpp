@@ -35,6 +35,8 @@ class AVLTree : public SceneNode {
 	void clearHighlight();
 	void insert(const int& value);
 
+	void flush();
+
 #ifdef SFML_DEBUG
 	void rotateLeft();
 	void rotateRight();
@@ -49,7 +51,7 @@ class AVLTree : public SceneNode {
 	AVLNode* findSuccessorAnimation(AVLNode* node, std::vector<Animation>& list);
 	void balanceAnimation(AVLNode* node, AVLNode* last, std::vector<Animation>& list);
 
-	void dump(AVLNode* node, Transition type = Smooth);
+	void dump(AVLNode* node);
 	void clear(AVLNode* root);
 	void clearHighlight(AVLNode* root);
 	void loadArray(std::vector<int> array);
@@ -70,8 +72,8 @@ class AVLTree : public SceneNode {
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 
-	AVLNode *mRoot, *mBin;
-	std::vector<AVLNode*> mInOrder;
+	AVLNode* mRoot;
+	std::vector<AVLNode*> mInOrder, mBin;
 };
 
 #endif  //DATAVISUALIZATION2_AVLTREE_HPP

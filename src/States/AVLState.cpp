@@ -21,17 +21,20 @@ AVLState::AVLState(StateStack& stack, State::Context context)
 void AVLState::initOptions() {
 	mActionsHub.addOption(Create, "Create", [&]() {
 		mActionsHub.setCurrentOption(Create);
+		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Init a new AVL tree");
 	});
 	mActionsHub.addOption(Insert, "Insert", [&]() {
 		mActionsHub.setCurrentOption(Insert);
+		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Insert a new value to heap");
 		Inputs[Insert]->randomizeValue();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
+		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Delete a value from heap");
 		if (mTree.getSize() > 0)
@@ -41,6 +44,7 @@ void AVLState::initOptions() {
 	});
 	mActionsHub.addOption(Search, "Search", [&]() {
 		mActionsHub.setCurrentOption(Search);
+		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Search for a value in AVL tree");
 		if (mTree.getSize() > 0)
