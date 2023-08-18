@@ -190,16 +190,18 @@ AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& lis
 		list.push_back(Animation(
 		    {0}, "Node is leaf, just delete it from tree",
 		    [&, node, isRoot]() {
-			    if (isRoot)
+			    if (isRoot) {
 				    node->setTargetScale(0.f, 0.f, Smooth);
-			    else
+				    mRoot = nullptr;
+			    } else
 				    node->fakeDetach();
 			    alignAsTree();
 		    },
 		    [&, node, isRoot]() {
-			    if (isRoot)
+			    if (isRoot) {
 				    node->setTargetScale(1.f, 1.f, Smooth);
-			    else
+				    mRoot = node;
+			    } else
 				    node->revertFakeDetach();
 			    alignAsTree();
 		    }));
@@ -787,13 +789,11 @@ void AVLTree::calculateDepth() {
 }
 
 void AVLTree::alignAsTree() {
+	mInOrder = getInOrder(mRoot);
 	if (mRoot == nullptr)
 		return;
 
 	calculateDepth();
-
-	mInOrder = getInOrder(mRoot);
-
 	int mid = (int)mInOrder.size() / 2;
 	for (int i = 0; i < mInOrder.size(); ++i) {
 		float x = float(i - mid) * TREE_OFF_SET.x;
