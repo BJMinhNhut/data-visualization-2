@@ -182,7 +182,7 @@ AVLNode* AVLTree::traverseSearchingAnimation(const int& value, std::vector<Anima
 }
 
 AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& list) {
-	if (node->isLeaf()) {
+	if (node->isLeaf()) {  // node is Leaf
 		bool isRoot = node == mRoot;
 		AVLNode* mParent = node->getParent();
 		list.push_back(Animation(
@@ -203,60 +203,82 @@ AVLNode* AVLTree::deleteNodeAnimation(AVLNode* node, std::vector<Animation>& lis
 		    }));
 		list.back().play();
 		return mParent;
-	} else {
+	} else if (node->getLeft() || node->getRight()) {  // node has one child
+		return deleteOneChildNodeAnimation(node, list);
+	} else {  // node has two child
 		AVLNode* successor = findSuccessorAnimation(node, list);
-		if (successor == nullptr) {  // has only one child
-			AVLNode* mLeft = node->getLeft();
-			AVLNode* mParent = node->getParent();
-			bool goLeft = mParent && mParent->getLeft() == node;
-			assert(mLeft != nullptr);
-			list.push_back(Animation(
-			    {0}, "Node doesn't have a successor, so just delete it.",
-			    [&, node, mLeft, mParent, goLeft]() {
-				    node->detachLeft();
-				    if (mParent) {
-					    node->fakeDetach();
-					    if (goLeft)
-						    mParent->attachLeft(mLeft);
-					    else
-						    mParent->attachRight(mLeft);
-				    } else {
-					    mRoot = mLeft;
-					    node->setTargetScale(0.f, 0.f, Smooth);
-				    }
-				    alignAsTree();
-			    },
-			    [&, node, mLeft, mParent]() {
-				    node->attachLeft(mLeft);
-				    if (mParent)
-					    node->revertFakeDetach();
-				    else {
-					    mRoot = node;
-					    node->setTargetScale(1.f, 1.f, Smooth);
-				    }
-				    alignAsTree();
-			    }));
-			list.back().play();
-			return mParent;
-		} else {
-			AVLNode* mParent = successor->getParent();
-			list.push_back(Animation(
-			    {0},
-			    "Swap data of " + node->getData() + " with its successor. Delete the successor.",
-			    [&, node, successor]() {
-				    node->swapData(successor);
-				    successor->fakeDetach();
-				    alignAsTree();
-			    },
-			    [&, node, successor]() {
-				    node->swapData(successor);
-				    successor->revertFakeDetach();
-				    alignAsTree();
-			    }));
-			list.back().play();
-			return mParent;
-		}
+		assert(successor != nullptr);
+		AVLNode* mParent = successor->getParent();
+		assert(successor->isLeaf());
+		list.push_back(Animation(
+		    {0}, "Swap data of " + node->getData() + " with its successor. Delete the successor.",
+		    [&, node, successor]() {
+			    node->swapData(successor);
+			    successor->fakeDetach();
+			    alignAsTree();
+		    },
+		    [&, node, successor]() {
+			    node->swapData(successor);
+			    successor->revertFakeDetach();
+			    alignAsTree();
+		    }));
+		list.back().play();
+		return mParent;
 	}
+}
+
+AVLNode* AVLTree::deleteOneChildNodeAnimation(AVLNode* node, std::vector<Animation>& list) {
+	AVLNode* mParent = node->getParent();
+	bool goLeft = mParent && mParent->getLeft() == node;
+	bool childIsLeft;
+	AVLNode* mChild;
+
+	if (node->getLeft()) {
+		mChild = node->getLeft();
+		childIsLeft = true;
+	} else {
+		mChild = node->getRight();
+		childIsLeft = false;
+	}
+
+	assert(mChild != nullptr);
+	list.push_back(Animation(
+	    {0}, "Node has one child, so delete it and assign the child to the parent node.",
+	    [&, node, mChild, mParent, goLeft, childIsLeft]() {
+		    if (childIsLeft)
+			    node->detachLeft();
+		    else
+			    node->detachRight();
+
+		    assert(node->isLeaf());
+		    if (mParent) {
+			    node->fakeDetach();
+			    if (goLeft)
+				    mParent->attachLeft(mChild);
+			    else
+				    mParent->attachRight(mChild);
+		    } else {
+			    mRoot = mChild;
+			    node->setTargetScale(0.f, 0.f, Smooth);
+		    }
+		    alignAsTree();
+	    },
+	    [&, node, mChild, mParent, childIsLeft]() {
+		    if (childIsLeft)
+			    node->attachLeft(mChild);
+		    else
+			    node->attachRight(mChild);
+
+		    if (mParent)
+			    node->revertFakeDetach();
+		    else {
+			    mRoot = node;
+			    node->setTargetScale(1.f, 1.f, Smooth);
+		    }
+		    alignAsTree();
+	    }));
+	list.back().play();
+	return mParent;
 }
 
 AVLNode* AVLTree::findSuccessorAnimation(AVLNode* node, std::vector<Animation>& list) {
