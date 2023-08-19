@@ -19,12 +19,12 @@ TrieNode::TrieNode(const FontHolder& fonts, const ColorHolder& colors, char char
 }
 
 TrieNode* TrieNode::addString(const std::string& str, int freq) {
+	mFrequency += freq;
 	if (str.empty()) {
-		mFrequency += freq;
 		if (mFrequency != 0)
-			setLabel(mFrequency);
+			highlight(Secondary);
 		else
-			setLabel("");
+			highlight(PolyNode::None);
 		return this;
 	}
 	char firstCH = str[0];
