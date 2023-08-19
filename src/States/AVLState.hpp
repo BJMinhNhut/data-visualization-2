@@ -6,7 +6,7 @@
 #define DATAVISUALIZATION2_AVLSTATE_HPP
 
 #include "DataStructures/AVLTree/AVLTree.hpp"
-#include "GUI/Input.hpp"
+#include "GUI/InputNum.hpp"
 #include "VisualState.hpp"
 
 class AVLState : public VisualState {
@@ -38,7 +38,7 @@ class AVLState : public VisualState {
 		NumOptions,
 	};
 	AVLTree mTree;
-	std::vector<GUI::Input::Ptr> Inputs;
+	std::vector<GUI::InputNum::Ptr> Inputs;
 };
 
 #endif  //DATAVISUALIZATION2_AVLSTATE_HPP

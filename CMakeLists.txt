@@ -22,8 +22,8 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/GUI/CodeBlock.hpp
         src/Visualizer/ActionsHub.cpp
         src/Visualizer/ActionsHub.hpp
-        src/GUI/Input.cpp
-        src/GUI/Input.hpp
+        src/GUI/InputNum.cpp
+        src/GUI/InputNum.hpp
         src/GUI/Console.cpp
         src/GUI/Console.hpp
         src/Visualizer/Player.cpp

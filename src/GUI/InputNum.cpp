@@ -2,7 +2,7 @@
 // Created by MINH NHUT on 8/3/2023.
 //
 
-#include "Input.hpp"
+#include "InputNum.hpp"
 #include "Template/Random.hpp"
 #include "Template/Utility.hpp"
 
@@ -14,11 +14,12 @@
 #include <iostream>
 
 namespace GUI {
-const sf::Time Input::CURSOR_LIFE = sf::milliseconds(400);
-const int Input::MAX_LENGTH = 1000;
-const int Input::DISPLAY_LENGTH = 9;
+const sf::Time InputNum::CURSOR_LIFE = sf::milliseconds(400);
+const int InputNum::MAX_LENGTH = 1000;
+const int InputNum::DISPLAY_LENGTH = 9;
 
-Input::Input(const FontHolder& fonts, const TextureHolder& textures, const ColorHolder& colors)
+InputNum::InputNum(const FontHolder& fonts, const TextureHolder& textures,
+                   const ColorHolder& colors)
     : mNormalTexture(textures.get(Textures::InputNormal)),
       mSelectedTexture(textures.get(Textures::InputSelected)),
       mPressedTexture(textures.get(Textures::InputActivated)),
@@ -40,7 +41,7 @@ Input::Input(const FontHolder& fonts, const TextureHolder& textures, const Color
 	mCursor.setOrigin(-2.f, 0.f);
 }
 
-void Input::setValue(const int& value) {
+void InputNum::setValue(const int& value) {
 	assert(value >= mMinValue && value <= mMaxValue);
 	mValue = value;
 	buffer = std::to_string(mValue);
@@ -48,59 +49,59 @@ void Input::setValue(const int& value) {
 	alignText();
 }
 
-void Input::setRange(const int& minValue, const int& maxValue) {
+void InputNum::setRange(const int& minValue, const int& maxValue) {
 	assert(minValue <= maxValue);
 	mMinValue = minValue;
 	mMaxValue = maxValue;
 }
 
-void Input::randomizeValue() {
+void InputNum::randomizeValue() {
 	setValue(Random::getInt(mMinValue, mMaxValue));
 }
 
-void Input::clear() {
+void InputNum::clear() {
 	std::string().swap(buffer);
 	mText.setString(buffer);
 	mValue = 0;
 }
 
-std::pair<int, int> Input::getRange() const {
+std::pair<int, int> InputNum::getRange() const {
 	return std::make_pair(mMinValue, mMaxValue);
 }
 
-std::string Input::getStringRange() const {
+std::string InputNum::getStringRange() const {
 	return '[' + std::to_string(mMinValue) + ',' + std::to_string(mMaxValue) + ']';
 }
 
-int Input::getValue() const {
+int InputNum::getValue() const {
 	return mValue;
 }
 
-bool Input::isSelectable() const {
+bool InputNum::isSelectable() const {
 	return true;
 }
 
-void Input::select() {
+void InputNum::select() {
 	Component::select();
 	mSprite.setTexture(mSelectedTexture, true);
 }
 
-void Input::deselect() {
+void InputNum::deselect() {
 	Component::deselect();
 	mSprite.setTexture(mNormalTexture, true);
 }
 
-void Input::activate() {
+void InputNum::activate() {
 	Component::activate();
 #ifdef SFML_DEBUG
-	std::cout << "Input activated\n";
+	std::cout << "InputNum activated\n";
 #endif
 	mSprite.setTexture(mPressedTexture, true);
 }
 
-void Input::deactivate() {
+void InputNum::deactivate() {
 #ifdef SFML_DEBUG
-	std::cout << "Input deactivated\n";
+	std::cout << "InputNum deactivated\n";
 #endif
 	Component::deactivate();
 
@@ -111,7 +112,7 @@ void Input::deactivate() {
 		mSprite.setTexture(mNormalTexture, true);
 }
 
-void Input::update(sf::Time dt) {
+void InputNum::update(sf::Time dt) {
 	if (isActive()) {
 		cursorCountdown += dt;
 
@@ -123,7 +124,7 @@ void Input::update(sf::Time dt) {
 		cursorDrawable = false;
 }
 
-void Input::handleEvent(const sf::Event& event) {
+void InputNum::handleEvent(const sf::Event& event) {
 	if (event.type == sf::Event::KeyPressed || event.type == sf::Event::TextEntered) {
 
 		if (event.type == sf::Event::TextEntered) {
@@ -155,7 +156,7 @@ void Input::handleEvent(const sf::Event& event) {
 	}
 }
 
-bool Input::contains(sf::Vector2i point) const {
+bool InputNum::contains(sf::Vector2i point) const {
 	sf::IntRect bounds(getPosition().x - mSprite.getGlobalBounds().width / 2.f,
 	                   getPosition().y - mSprite.getGlobalBounds().height / 2.f,
 	                   mSprite.getGlobalBounds().width, mSprite.getGlobalBounds().height);
@@ -163,7 +164,7 @@ bool Input::contains(sf::Vector2i point) const {
 	return bounds.contains(point);
 }
 
-void Input::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+void InputNum::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	target.draw(mSprite, states);
 	target.draw(mText, states);
@@ -172,7 +173,7 @@ void Input::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 		target.draw(mCursor, states);
 }
 
-Input::ValidationResult Input::validate() const {
+InputNum::ValidationResult InputNum::validate() const {
 	if (!validateCharacter())
 		return InvalidCharacter;
 	try {
@@ -185,7 +186,7 @@ Input::ValidationResult Input::validate() const {
 	return Success;
 }
 
-bool Input::validateCharacter() const {
+bool InputNum::validateCharacter() const {
 	for (char mChar : buffer)
 		if (!isAllowed(mChar)) {
 			std::cerr << int(mChar) << " is not allowed\n";
@@ -194,11 +195,11 @@ bool Input::validateCharacter() const {
 	return true;
 }
 
-bool Input::isAllowed(const char& ch) {
+bool InputNum::isAllowed(const char& ch) {
 	return std::isdigit(ch);  // positive integer only
 }
 
-void Input::alignText() {
+void InputNum::alignText() {
 	Utility::centerOrigin(mText);
 	unsigned int lastIndex = mText.getString().getSize();
 

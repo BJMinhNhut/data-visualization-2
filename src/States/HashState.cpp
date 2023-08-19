@@ -60,8 +60,8 @@ void HashState::initCreate() {
 	sizeLabel->alignCenter();
 	mActionsHub.packOptionGUI(Create, sizeLabel);
 
-	Inputs[Create] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
-	                                              *getContext().colors);
+	Inputs[Create] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
+	                                                 *getContext().colors);
 	Inputs[Create]->setPosition(250.f, 590.f - 55.f);
 	Inputs[Create]->setRange(2, (int)HashTable::MAX_SIZE);
 	mActionsHub.packOptionGUI(Create, Inputs[Create]);
@@ -75,7 +75,7 @@ void HashState::initCreate() {
 	auto randomButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                  *getContext().textures, *getContext().colors);
 	randomButton->setCallback([&]() {
-		if (Inputs[Create]->validate() == GUI::Input::Success) {
+		if (Inputs[Create]->validate() == GUI::InputNum::Success) {
 			mHashTable.setSize(Inputs[Create]->getValue());
 			mHashTable.randomize();
 			mPlayer.callInfo("Created a hash table with random elements, size = " +
@@ -90,7 +90,7 @@ void HashState::initCreate() {
 	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                *getContext().textures, *getContext().colors);
 	fileButton->setCallback([&]() {
-		if (Inputs[Create]->validate() == GUI::Input::Success) {
+		if (Inputs[Create]->validate() == GUI::InputNum::Success) {
 			std::string fileDir;
 			mHashTable.setSize(Inputs[Create]->getValue());
 			if (selectedTextFile(fileDir))
@@ -113,8 +113,8 @@ void HashState::initInsert() {
 	valueLabel->alignCenter();
 	mActionsHub.packOptionGUI(Insert, valueLabel);
 
-	Inputs[Insert] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
-	                                              *getContext().colors);
+	Inputs[Insert] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
+	                                                 *getContext().colors);
 	Inputs[Insert]->setPosition(250.f, 590.f);
 	Inputs[Insert]->setRange(HashTable::MIN_VALUE, HashTable::MAX_VALUE);
 	mActionsHub.packOptionGUI(Insert, Inputs[Insert]);
@@ -128,8 +128,8 @@ void HashState::initDelete() {
 	valueLabel->alignCenter();
 	mActionsHub.packOptionGUI(Delete, valueLabel);
 
-	Inputs[Delete] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
-	                                              *getContext().colors);
+	Inputs[Delete] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
+	                                                 *getContext().colors);
 	Inputs[Delete]->setPosition(250.f, 590.f);
 	Inputs[Delete]->setRange(HashTable::MIN_VALUE, HashTable::MAX_VALUE);
 	mActionsHub.packOptionGUI(Delete, Inputs[Delete]);
@@ -143,8 +143,8 @@ void HashState::initSearch() {
 	valueLabel->alignCenter();
 	mActionsHub.packOptionGUI(Search, valueLabel);
 
-	Inputs[Search] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
-	                                              *getContext().colors);
+	Inputs[Search] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
+	                                                 *getContext().colors);
 	Inputs[Search]->setPosition(250.f, 590.f);
 	Inputs[Search]->setRange(HashTable::MIN_VALUE, HashTable::MAX_VALUE);
 	mActionsHub.packOptionGUI(Search, Inputs[Search]);
@@ -172,17 +172,17 @@ std::pair<std::vector<Animation>, std::string> HashState::getSteps(unsigned int 
 		mHashTable.clearHighlight();
 		switch (option) {
 			case Insert:
-				if (Inputs[Insert]->validate() != GUI::Input::Success)
+				if (Inputs[Insert]->validate() != GUI::InputNum::Success)
 					throw std::out_of_range("Value must be in range " +
 					                        Inputs[Insert]->getStringRange());
 				return mHashTable.insertAnimation(Inputs[Insert]->getValue());
 			case Delete:
-				if (Inputs[Delete]->validate() != GUI::Input::Success)
+				if (Inputs[Delete]->validate() != GUI::InputNum::Success)
 					throw std::out_of_range("Value must be in range " +
 					                        Inputs[Delete]->getStringRange());
 				return mHashTable.deleteAnimation(Inputs[Delete]->getValue());
 			case Search:
-				if (Inputs[Search]->validate() != GUI::Input::Success)
+				if (Inputs[Search]->validate() != GUI::InputNum::Success)
 					throw std::out_of_range("Value must be in range " +
 					                        Inputs[Search]->getStringRange());
 				return mHashTable.searchAnimation(Inputs[Search]->getValue());

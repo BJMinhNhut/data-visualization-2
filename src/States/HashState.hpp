@@ -6,7 +6,7 @@
 #define DATAVISUALIZATION2_HASHSTATE_HPP
 
 #include "DataStructures/HashTable/HashTable.hpp"
-#include "GUI/Input.hpp"
+#include "GUI/InputNum.hpp"
 #include "VisualState.hpp"
 
 class HashState : public VisualState {
@@ -38,7 +38,7 @@ class HashState : public VisualState {
 		NumOptions,
 	};
 	HashTable mHashTable;
-	std::vector<GUI::Input::Ptr> Inputs;
+	std::vector<GUI::InputNum::Ptr> Inputs;
 };
 
 #endif  //DATAVISUALIZATION2_HASHSTATE_HPP

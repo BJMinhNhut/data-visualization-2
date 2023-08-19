@@ -6,7 +6,7 @@
 #define DATAVISUALIZATION2_MAXHEAPSTATE_HPP
 
 #include "DataStructures/Heap/MaxHeap.hpp"
-#include "GUI/Input.hpp"
+#include "GUI/InputNum.hpp"
 #include "VisualState.hpp"
 
 class MaxHeapState : public VisualState {
@@ -36,7 +36,7 @@ class MaxHeapState : public VisualState {
 		NumOptions,
 	};
 	MaxHeap mHeap;
-	std::vector<GUI::Input::Ptr> Inputs;
+	std::vector<GUI::InputNum::Ptr> Inputs;
 };
 
 #endif  //DATAVISUALIZATION2_MAXHEAPSTATE_HPP
