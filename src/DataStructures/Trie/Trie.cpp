@@ -9,7 +9,7 @@
 
 const int Trie::MAX_SIZE = 40;
 const int Trie::MIN_LENGTH = 1;
-const int Trie::MAX_LENGTH = 5;
+const int Trie::MAX_LENGTH = 6;
 
 Trie::Trie(const FontHolder& fonts, const ColorHolder& colors) : mFonts(fonts), mColors(colors) {
 	mRoot = new TrieNode(fonts, colors, ' ');
