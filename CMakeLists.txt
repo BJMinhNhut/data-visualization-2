@@ -55,6 +55,7 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/DataStructures/Trie/TrieNode.hpp
         src/DataStructures/Trie/Trie.cpp
         src/DataStructures/Trie/Trie.hpp
+        src/DataStructures/Trie/TrieCode.hpp
 )
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
