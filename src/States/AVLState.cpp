@@ -29,14 +29,14 @@ void AVLState::initOptions() {
 		mActionsHub.setCurrentOption(Insert);
 		mTree.flush();
 		mPlayer.reset();
-		mPlayer.callInfo("Insert a new value to heap");
+		mPlayer.callInfo("Insert a new value to AVL tree");
 		Inputs[Insert]->randomizeValue();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
 		mTree.flush();
 		mPlayer.reset();
-		mPlayer.callInfo("Delete a value from heap");
+		mPlayer.callInfo("Delete a value from AVL tree");
 		if (mTree.getSize() > 0)
 			Inputs[Delete]->setValue(mTree.getRandomElement());
 		else
