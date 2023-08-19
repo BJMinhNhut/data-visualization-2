@@ -9,6 +9,7 @@
 #include "Template/ResourceIdentifiers.hpp"
 #include "Template/SceneNode.hpp"
 #include "TrieNode.hpp"
+#include "Visualizer/Animation.hpp"
 
 class Trie : public SceneNode {
    public:
@@ -23,13 +24,18 @@ class Trie : public SceneNode {
 	static std::string getRandString(int minLen, int maxLen);
 	int count() const;
 
+	std::pair<std::vector<Animation>, std::string> insertAnimation(const std::string& str);
+
 	void clear();
+	void clearHighlight();
 	void randomize();
 	void loadFromFile(const std::string& fileDir);
 
 	void push(const std::string& str);
 
    private:
+	int getLCP(const std::string& str) const;
+
 	void format(std::string& str);
 	static bool valid(const std::string& str);
 

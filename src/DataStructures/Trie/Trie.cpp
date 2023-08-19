@@ -4,6 +4,7 @@
 
 #include "Trie.hpp"
 #include "Template/Random.hpp"
+#include "TrieCode.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -35,6 +36,62 @@ int Trie::count() const {
 	return mRoot->count();
 }
 
+std::pair<std::vector<Animation>, std::string> Trie::insertAnimation(const std::string& str) {
+	const std::string code = TrieCode::Insert;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Insert " + str + " to trie."));
+
+	int lcp = getLCP(str);
+	TrieNode* cur = mRoot;
+	list.push_back(Animation(
+	    {0}, "Assign cur = root", [&]() { mRoot->highlight(PolyNode::Primary); },
+	    [&]() { mRoot->highlight(PolyNode::None); }));
+	for (int i = 0; i < lcp; ++i) {
+		cur = cur->getChild(str[i]);
+		std::string ch(1, str[i]);
+		list.push_back(Animation(
+		    {1, 4, 5}, "The " + ch + " child exists, continue",
+		    [&, cur]() {
+			    cur->getParent()->highlightOff();
+			    cur->highlightOn();
+		    },
+		    [&, cur]() {
+			    cur->getParent()->highlightOn();
+			    cur->highlightOff();
+		    }));
+	}
+
+	for (int i = lcp; i < str.size(); ++i) {
+		std::string ch(1, str[i]);
+		list.push_back(Animation(
+		    {1, 2, 3, 4, 5}, "The " + ch + " child doesn't exist, create it",
+		    [&, str, i]() {
+			    TrieNode* newNode = mRoot->addString(str.substr(0, i + 1), 0);
+			    mRoot->align();
+			    newNode->getParent()->highlightOff();
+			    newNode->highlightOn();
+		    },
+		    [&, str, i]() {
+			    mRoot->popNode(str.substr(0, i + 1));
+			    mRoot->align();
+		    }));
+	}
+
+	list.push_back(Animation(
+	    {6}, "Finish insertion, mark the last node as string end. Complexity is O(|s|).",
+	    [&, str]() {
+		    TrieNode* last;
+		    last = mRoot->addString(str, 1);
+		    last->highlightOff();
+	    },
+	    [&, str]() {
+		    TrieNode* last = mRoot->addString(str, -1);
+		    last->highlightOn();
+	    }));
+
+	return std::make_pair(list, code);
+}
+
 void Trie::push(const std::string& str) {
 	mRoot->addString(str, 1);
 	sf::Vector2f width = mRoot->align();
@@ -44,6 +101,10 @@ void Trie::push(const std::string& str) {
 
 void Trie::clear() {
 	mRoot->clear();
+}
+
+void Trie::clearHighlight() {
+	mRoot->clearHighlight();
 }
 
 void Trie::randomize() {
@@ -82,6 +143,18 @@ void Trie::loadFromFile(const std::string& fileDir) {
 		}
 	}
 	fileStream.close();
+}
+
+int Trie::getLCP(const std::string& str) const {
+	TrieNode* cur = mRoot;
+	int ans = 0;
+	for (char ch : str) {
+		cur = cur->getChild(ch);
+		if (cur == nullptr)
+			return ans;
+		++ans;
+	}
+	return ans;
 }
 
 void Trie::format(std::string& str) {

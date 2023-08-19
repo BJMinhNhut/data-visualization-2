@@ -10,10 +10,12 @@ TrieNode::TrieNode(const FontHolder& fonts, const ColorHolder& colors, char char
     : PolyNode(fonts, colors),
       mChar(character),
       mFrequency(0),
-      mDepth(0),
+      mEndString(0),
       mChildren(100, nullptr),
       mFonts(fonts),
-      mColors(colors) {
+      mColors(colors),
+      mParent(nullptr),
+      mBin(nullptr) {
 	assert(isupper(character) || isspace(character));
 	setData(std::string(1, character));
 }
@@ -21,10 +23,8 @@ TrieNode::TrieNode(const FontHolder& fonts, const ColorHolder& colors, char char
 TrieNode* TrieNode::addString(const std::string& str, int freq) {
 	mFrequency += freq;
 	if (str.empty()) {
-		if (mFrequency != 0)
-			highlight(Secondary);
-		else
-			highlight(PolyNode::None);
+		mEndString += freq;
+		highlightOff();
 		return this;
 	}
 	char firstCH = str[0];
@@ -33,11 +33,35 @@ TrieNode* TrieNode::addString(const std::string& str, int freq) {
 	return getChild(firstCH)->addString(str.substr(1, str.size() - 1), freq);
 }
 
+void TrieNode::popNode(const std::string& str) {
+	auto* cur = const_cast<TrieNode*>(this);
+	for (char ch : str) {
+		cur = cur->getChild(ch);
+		assert(cur != nullptr);
+	}
+	assert(cur->getParent() != nullptr);
+	cur->getParent()->removeLeaf(cur->getChar());
+}
+
+void TrieNode::removeLeaf(char character) {
+	const int id = getCharID(character);
+	assert(mChildren[id] != nullptr);
+	assert(mChildren[id]->isLeaf());
+	if (mBin != nullptr)
+		detachChild(*mBin);
+
+	mBin = mChildren[id];
+	mBin->setTargetScale(0.f, 0.f, Smooth);
+	removeEdgeOut(mBin);
+	mChildren[id] = nullptr;
+}
+
 TrieNode* TrieNode::addChild(char character) {
 	assert(!hasChild(character));
 	const int id = getCharID(character);
 	mChildren[id] = new TrieNode(mFonts, mColors, character);
 	addEdgeOut(mChildren[id]);
+	mChildren[id]->setParent(this);
 	attachChild(TrieNode::Ptr(mChildren[id]));
 	return mChildren[id];
 }
@@ -94,14 +118,53 @@ void TrieNode::clear() {
 }
 
 void TrieNode::clearHighlight() {
-	highlight(PolyNode::None);
+	highlightOff();
 	for (auto& node : mChildren)
 		if (node != nullptr)
-			node->clearHighlight();
+			node->highlightOff();
+}
+
+void TrieNode::highlightOn() {
+	highlight(Primary);
+}
+
+void TrieNode::highlightOff() {
+	if (mEndString > 0)
+		highlight(PolyNode::Secondary);
+	else
+		highlight(PolyNode::None);
 }
 
 bool TrieNode::hasChild(char character) const {
 	return mChildren[getCharID(character)] != nullptr;
+}
+
+TrieNode* TrieNode::getNode(const std::string& str) const {
+	auto* cur = const_cast<TrieNode*>(this);
+	for (char ch : str) {
+		cur = cur->getChild(ch);
+		if (cur == nullptr)
+			break;
+	}
+	return cur;
+}
+
+bool TrieNode::hasString(const std::string& str) const {
+	auto* cur = const_cast<TrieNode*>(this);
+	for (char ch : str) {
+		cur = cur->getChild(ch);
+		if (cur == nullptr)
+			return false;
+	}
+	return cur->isStringEnd();
+}
+
+bool TrieNode::isStringEnd() const {
+	return mEndString;
+}
+
+TrieNode* TrieNode::getParent() const {
+	return mParent;
 }
 
 TrieNode* TrieNode::getChild(char character) const {
@@ -110,10 +173,6 @@ TrieNode* TrieNode::getChild(char character) const {
 
 char TrieNode::getChar() const {
 	return mChar;
-}
-
-int TrieNode::depth() const {
-	return mDepth;
 }
 
 int TrieNode::frequency() const {
@@ -128,9 +187,18 @@ int TrieNode::count() const {
 	return ans;
 }
 
+bool TrieNode::isLeaf() const {
+	return std::all_of(mChildren.begin(), mChildren.end(),
+	                   [](TrieNode* a) { return a == nullptr; });
+}
+
 int TrieNode::getCharID(const char& ch) {
 	assert(isupper(ch) || isspace(ch));
 	return (int)ch - (int)'A';
+}
+
+void TrieNode::setParent(TrieNode* parent) {
+	mParent = parent;
 }
 
 void TrieNode::updateCurrent(sf::Time dt) {
