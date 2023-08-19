@@ -5,6 +5,7 @@
 #include "Trie.hpp"
 #include "Template/Random.hpp"
 
+#include <fstream>
 #include <iostream>
 
 const int Trie::MAX_SIZE = 40;
@@ -57,4 +58,38 @@ void Trie::randomize() {
 			str.push_back(seed[Random::getInt(0, (int)seed.size() - 1)]);
 		push(str);
 	}
+}
+
+void Trie::loadFromFile(const std::string& fileDir) {
+	std::ifstream fileStream(fileDir);
+	int numString = 0;
+	std::string token;
+	clear();
+	while (fileStream >> token && numString < MAX_SIZE) {
+		try {
+			format(token);
+			if (!valid(token))
+				throw std::exception();
+#ifdef SFML_DEBUG
+			std::cout << "Token [" << token << "] read\n";
+#endif
+			push(token);
+			numString++;
+		} catch (std::exception& e) {
+#ifdef SFML_DEBUG
+			std::cerr << "Token [" << token << "] is not convertible\n";
+#endif
+		}
+	}
+	fileStream.close();
+}
+
+void Trie::format(std::string& str) {
+	while (!str.empty() && str.back() == ',')
+		str.pop_back();
+}
+
+bool Trie::valid(const std::string& str) {
+	return !str.empty() && str.length() < MAX_LENGTH &&
+	       std::all_of(str.begin(), str.end(), isupper);
 }

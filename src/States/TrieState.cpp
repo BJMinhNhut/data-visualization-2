@@ -69,18 +69,18 @@ void TrieState::initCreate() {
 	randomButton->setText("Random");
 	mActionsHub.packOptionGUI(Create, randomButton);
 
-	//	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
-	//	                                                *getContext().textures, *getContext().colors);
-	//	fileButton->setCallback([&]() {
-	//		std::string fileDir;
-	//		if (selectedTextFile(fileDir))
-	//			mTrie.loadFromFile(fileDir);
-	//		mPlayer.callInfo("Created an AVL tree with elements loaded from file, numString = " +
-	//		                 std::to_string(mTrie.count()));
-	//	});
-	//	fileButton->setPosition(250.f, 590.f + 60.f);
-	//	fileButton->setText("Load file");
-	//	mActionsHub.packOptionGUI(Create, fileButton);
+	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
+	                                                *getContext().textures, *getContext().colors);
+	fileButton->setCallback([&]() {
+		std::string fileDir;
+		if (selectedTextFile(fileDir))
+			mTrie.loadFromFile(fileDir);
+		mPlayer.callInfo("Created a trie with elements loaded from file, numString = " +
+		                 std::to_string(mTrie.count()));
+	});
+	fileButton->setPosition(250.f, 590.f + 60.f);
+	fileButton->setText("Load file");
+	mActionsHub.packOptionGUI(Create, fileButton);
 }
 
 void TrieState::draw() {

@@ -30,6 +30,10 @@ class Trie : public SceneNode {
 	void push(const std::string& str);
 
    private:
+	void format(std::string& str);
+	static bool valid(const std::string& str);
+
+   private:
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 
