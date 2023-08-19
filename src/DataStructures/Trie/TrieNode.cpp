@@ -121,7 +121,7 @@ void TrieNode::clearHighlight() {
 	highlightOff();
 	for (auto& node : mChildren)
 		if (node != nullptr)
-			node->highlightOff();
+			node->clearHighlight();
 }
 
 void TrieNode::highlightOn() {
