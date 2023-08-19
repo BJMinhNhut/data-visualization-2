@@ -18,6 +18,7 @@ class TrieNode : public PolyNode {
 	TrieNode* addString(const std::string& str, int freq);
 	sf::Vector2f align();
 	void clear();
+	void clearHighlight();
 
 	bool hasChild(char character) const;
 	TrieNode* getChild(char character) const;

@@ -93,6 +93,13 @@ void TrieNode::clear() {
 		}
 }
 
+void TrieNode::clearHighlight() {
+	highlight(PolyNode::None);
+	for (auto& node : mChildren)
+		if (node != nullptr)
+			node->clearHighlight();
+}
+
 bool TrieNode::hasChild(char character) const {
 	return mChildren[getCharID(character)] != nullptr;
 }
