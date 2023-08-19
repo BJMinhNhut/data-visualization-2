@@ -81,6 +81,16 @@ sf::Vector2f TrieNode::align() {
 	return width;
 }
 
+void TrieNode::clear() {
+	for (auto& node : mChildren)
+		if (node != nullptr) {
+			node->clear();
+			removeEdgeOut(node);
+			detachChild(*node);
+			node = nullptr;
+		}
+}
+
 bool TrieNode::hasChild(char character) const {
 	return mChildren[getCharID(character)] != nullptr;
 }
@@ -99,6 +109,14 @@ int TrieNode::depth() const {
 
 int TrieNode::frequency() const {
 	return mFrequency;
+}
+
+int TrieNode::count() const {
+	int ans = mFrequency;
+	for (auto& node : mChildren)
+		if (node != nullptr)
+			ans += node->count();
+	return ans;
 }
 
 int TrieNode::getCharID(const char& ch) {

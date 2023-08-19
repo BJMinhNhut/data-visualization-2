@@ -11,6 +11,7 @@ TrieState::TrieState(StateStack& stack, State::Context context)
 	mTrie.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 180.f,
 	                        Trie::Transition::None);
 	initOptions();
+	initCreate();
 }
 
 void TrieState::initOptions() {
@@ -43,6 +44,43 @@ void TrieState::initOptions() {
 		//		else
 		//			Inputs[Search]->randomizeValue();
 	});
+}
+
+void TrieState::initCreate() {
+	// Create
+	auto emptyButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
+	                                                 *getContext().textures, *getContext().colors);
+	emptyButton->setCallback([&]() {
+		mTrie.clear();
+		mPlayer.callInfo("Created an empty trie.");
+	});
+	emptyButton->setPosition(250.f, 590.f - 60.f);
+	emptyButton->setText("Empty");
+	mActionsHub.packOptionGUI(Create, emptyButton);
+
+	auto randomButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
+	                                                  *getContext().textures, *getContext().colors);
+	randomButton->setCallback([&]() {
+		mTrie.randomize();
+		mPlayer.callInfo("Created a trie with random elements, numString = " +
+		                 std::to_string(mTrie.count()));
+	});
+	randomButton->setPosition(250.f, 590.f);
+	randomButton->setText("Random");
+	mActionsHub.packOptionGUI(Create, randomButton);
+
+	//	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
+	//	                                                *getContext().textures, *getContext().colors);
+	//	fileButton->setCallback([&]() {
+	//		std::string fileDir;
+	//		if (selectedTextFile(fileDir))
+	//			mTrie.loadFromFile(fileDir);
+	//		mPlayer.callInfo("Created an AVL tree with elements loaded from file, numString = " +
+	//		                 std::to_string(mTrie.count()));
+	//	});
+	//	fileButton->setPosition(250.f, 590.f + 60.f);
+	//	fileButton->setText("Load file");
+	//	mActionsHub.packOptionGUI(Create, fileButton);
 }
 
 void TrieState::draw() {

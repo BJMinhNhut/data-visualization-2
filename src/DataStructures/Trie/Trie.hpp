@@ -19,7 +19,9 @@ class Trie : public SceneNode {
    public:
 	Trie(const FontHolder& fonts, const ColorHolder& colors);
 
-	std::string getRandomString() const;
+	std::string getRandomElement() const;
+	static std::string getRandString(int minLen, int maxLen);
+	int count() const;
 
 	void clear();
 	void randomize();

@@ -17,12 +17,14 @@ class TrieNode : public PolyNode {
 
 	TrieNode* addString(const std::string& str, int freq);
 	sf::Vector2f align();
+	void clear();
 
 	bool hasChild(char character) const;
 	TrieNode* getChild(char character) const;
 	char getChar() const;
 	int depth() const;
 	int frequency() const;
+	int count() const;
 
    private:
 	TrieNode* addChild(char character);
