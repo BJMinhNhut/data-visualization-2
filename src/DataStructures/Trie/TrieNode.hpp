@@ -34,6 +34,7 @@ class TrieNode : public PolyNode {
 	int frequency() const;
 	int count() const;
 	bool isLeaf() const;
+	std::vector<TrieNode*> getEndNodes() const;
 
    private:
 	void updateCurrent(sf::Time dt) override;

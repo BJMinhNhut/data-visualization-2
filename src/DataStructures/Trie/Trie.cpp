@@ -17,11 +17,13 @@ Trie::Trie(const FontHolder& fonts, const ColorHolder& colors) : mFonts(fonts), 
 	mRoot = new TrieNode(fonts, colors, ' ');
 	attachChild(TrieNode::Ptr(mRoot));
 	randomize();
-	//	push("ABC");
-	//	push("ADB");
-	//	push("ADC");
-	//	push("AXY");
-	//	push("XYZ");
+}
+
+std::string Trie::getRandomElement() const {
+	std::vector<TrieNode*> nodes = mRoot->getEndNodes();
+	assert(!nodes.empty());
+	TrieNode* chosen = nodes[Random::getInt(0, (int)nodes.size() - 1)];
+	return getString(chosen);
 }
 
 std::string Trie::getRandString(int minLen, int maxLen) {
@@ -92,6 +94,46 @@ std::pair<std::vector<Animation>, std::string> Trie::insertAnimation(const std::
 	return std::make_pair(list, code);
 }
 
+std::pair<std::vector<Animation>, std::string> Trie::searchAnimation(const std::string& str) {
+	const std::string code = TrieCode::Search;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Search for " + str + " in trie."));
+
+	int lcp = getLCP(str);
+	TrieNode* cur = mRoot;
+	list.push_back(Animation(
+	    {0}, "Assign cur = root", [&]() { mRoot->highlight(PolyNode::Primary); },
+	    [&]() { mRoot->highlight(PolyNode::None); }));
+	for (int i = 0; i < lcp; ++i) {
+		cur = cur->getChild(str[i]);
+		std::string ch(1, str[i]);
+		list.push_back(Animation(
+		    {1, 4}, "The " + ch + " child exists, continue",
+		    [&, cur]() {
+			    cur->getParent()->highlightOff();
+			    cur->highlightOn();
+		    },
+		    [&, cur]() {
+			    cur->getParent()->highlightOn();
+			    cur->highlightOff();
+		    }));
+	}
+
+	if (lcp == str.size()) {
+		if (mRoot->hasString(str))
+			list.push_back(Animation({5}, "Node is marked string end, hence " + str + " is FOUND"));
+		else
+			list.push_back(Animation({6},
+			                         "Node isn't marked string end, hence " + str + " is NOT_FOUND",
+			                         [&]() { clearHighlight(); }));
+	} else {
+		list.push_back(Animation({1, 2, 3}, "Null node reached, hence " + str + " is NOT_FOUND",
+		                         [&]() { clearHighlight(); }));
+	}
+
+	return std::make_pair(list, code);
+}
+
 void Trie::push(const std::string& str) {
 	mRoot->addString(str, 1);
 	sf::Vector2f width = mRoot->align();
@@ -155,6 +197,16 @@ int Trie::getLCP(const std::string& str) const {
 		++ans;
 	}
 	return ans;
+}
+
+std::string Trie::getString(TrieNode* node) const {
+	std::string str;
+	while (node != mRoot) {
+		str.push_back(node->getChar());
+		node = node->getParent();
+	}
+	std::reverse(str.begin(), str.end());
+	return str;
 }
 
 void Trie::format(std::string& str) {

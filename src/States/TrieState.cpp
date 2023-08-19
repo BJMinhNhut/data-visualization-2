@@ -13,6 +13,7 @@ TrieState::TrieState(StateStack& stack, State::Context context)
 	initOptions();
 	initCreate();
 	initInsert();
+	initSearch();
 }
 
 void TrieState::initOptions() {
@@ -40,10 +41,10 @@ void TrieState::initOptions() {
 		mActionsHub.setCurrentOption(Search);
 		mPlayer.reset();
 		mPlayer.callInfo("Search for a value in trie");
-		//		if (mTree.getSize() > 0)
-		//			Inputs[Search]->setValue(mTree.getRandomElement());
-		//		else
-		//			Inputs[Search]->randomizeValue();
+		if (mTrie.count() > 0)
+			Inputs[Search]->setString(mTrie.getRandomElement());
+		else
+			Inputs[Search]->randomize();
 	});
 }
 
@@ -99,6 +100,21 @@ void TrieState::initInsert() {
 	mActionsHub.packOptionGUI(Insert, Inputs[Insert]);
 }
 
+void TrieState::initSearch() {
+	// Search
+	auto stringLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "String",
+	                                                *getContext().fonts, *getContext().colors);
+	stringLabel->setPosition(250.f, 555.f);
+	stringLabel->alignCenter();
+	mActionsHub.packOptionGUI(Search, stringLabel);
+
+	Inputs[Search] = std::make_shared<GUI::InputStr>(*getContext().fonts, *getContext().textures,
+	                                                 *getContext().colors);
+	Inputs[Search]->setPosition(250.f, 590.f);
+	Inputs[Search]->setLengthLimit(Trie::MAX_LENGTH);
+	mActionsHub.packOptionGUI(Search, Inputs[Search]);
+}
+
 void TrieState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mTrie);
@@ -136,11 +152,17 @@ std::pair<std::vector<Animation>, std::string> TrieState::getSteps(unsigned int 
 				//					throw std::out_of_range("Value must be in range " +
 				//					                        Inputs[Delete]->getStringRange());
 				//				return mTree.deleteAnimation(Inputs[Delete]->getValue());
-				//			case Search:
-				//				if (Inputs[Search]->validate() != GUI::InputNum::Success)
-				//					throw std::out_of_range("Value must be in range " +
-				//					                        Inputs[Search]->getStringRange());
-				//				return mTree.searchAnimation(Inputs[Search]->getValue());
+			case Search:
+				switch (Inputs[Search]->validate()) {
+					case GUI::InputStr::Success:
+						return mTrie.searchAnimation(Inputs[Search]->getString());
+					case GUI::InputStr::InvalidLength:
+						throw std::out_of_range("String too long, maximum length is " +
+						                        std::to_string(Inputs[Search]->getLengthLimit()));
+					case GUI::InputStr::InvalidCharacter:
+						throw std::runtime_error("String characters must be uppercase");
+				}
+				break;
 			default:
 				return VisualState::getSteps(option);
 		}

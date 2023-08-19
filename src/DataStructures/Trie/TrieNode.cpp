@@ -192,6 +192,18 @@ bool TrieNode::isLeaf() const {
 	                   [](TrieNode* a) { return a == nullptr; });
 }
 
+std::vector<TrieNode*> TrieNode::getEndNodes() const {
+	std::vector<TrieNode*> nodes;
+	if (mEndString > 0)
+		nodes.push_back(const_cast<TrieNode*>(this));
+	for (auto& node : mChildren)
+		if (node) {
+			const auto& tempList = node->getEndNodes();
+			nodes.insert(nodes.end(), tempList.begin(), tempList.end());
+		}
+	return nodes;
+}
+
 int TrieNode::getCharID(const char& ch) {
 	assert(isupper(ch) || isspace(ch));
 	return (int)ch - (int)'A';

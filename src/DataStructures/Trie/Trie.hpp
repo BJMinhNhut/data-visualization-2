@@ -25,6 +25,7 @@ class Trie : public SceneNode {
 	int count() const;
 
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const std::string& str);
+	std::pair<std::vector<Animation>, std::string> searchAnimation(const std::string& str);
 
 	void clear();
 	void clearHighlight();
@@ -35,6 +36,7 @@ class Trie : public SceneNode {
 
    private:
 	int getLCP(const std::string& str) const;
+	std::string getString(TrieNode* node) const;
 
 	void format(std::string& str);
 	static bool valid(const std::string& str);
