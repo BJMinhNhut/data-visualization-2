@@ -15,7 +15,6 @@ class Trie : public SceneNode {
 	static const int MAX_SIZE;
 	static const int MIN_LENGTH;
 	static const int MAX_LENGTH;
-	static const sf::Vector2f TREE_OFF_SET;
 
    public:
 	Trie(const FontHolder& fonts, const ColorHolder& colors);
@@ -25,13 +24,13 @@ class Trie : public SceneNode {
 	void clear();
 	void randomize();
 	void loadFromFile(const std::string& fileDir);
-	void flush();
+
+	void push(const std::string& str);
 
    private:
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 
-	int mSize, mNumString;
 	TrieNode* mRoot;
 };
 

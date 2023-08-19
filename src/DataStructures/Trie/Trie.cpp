@@ -7,10 +7,18 @@
 const int Trie::MAX_SIZE = 40;
 const int Trie::MIN_LENGTH = 1;
 const int Trie::MAX_LENGTH = 5;
-const sf::Vector2f Trie::TREE_OFF_SET(27.f, 90.f);
 
-Trie::Trie(const FontHolder& fonts, const ColorHolder& colors)
-    : mSize(0), mNumString(0), mFonts(fonts), mColors(colors) {
-	mRoot = new TrieNode(fonts, colors, 'A');
+Trie::Trie(const FontHolder& fonts, const ColorHolder& colors) : mFonts(fonts), mColors(colors) {
+	mRoot = new TrieNode(fonts, colors, ' ');
 	attachChild(TrieNode::Ptr(mRoot));
+	push("ABC");
+	push("ADB");
+	push("ADC");
+	push("AXY");
+	push("XYZ");
+}
+
+void Trie::push(const std::string& str) {
+	mRoot->addString(str, 1);
+	mRoot->align();
 }
