@@ -6,7 +6,7 @@
 #define DATAVISUALIZATION2_TRIESTATE_HPP
 
 #include "DataStructures/Trie/Trie.hpp"
-#include "GUI/InputNum.hpp"
+#include "GUI/InputStr.hpp"
 #include "VisualState.hpp"
 
 class TrieState : public VisualState {
@@ -37,7 +37,7 @@ class TrieState : public VisualState {
 		Search,
 		NumOptions,
 	};
-	std::vector<GUI::InputNum::Ptr> Inputs;
+	std::vector<GUI::InputStr::Ptr> Inputs;
 	Trie mTrie;
 };
 

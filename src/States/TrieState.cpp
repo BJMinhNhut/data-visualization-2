@@ -12,6 +12,7 @@ TrieState::TrieState(StateStack& stack, State::Context context)
 	                        Trie::Transition::None);
 	initOptions();
 	initCreate();
+	initInsert();
 }
 
 void TrieState::initOptions() {
@@ -24,7 +25,7 @@ void TrieState::initOptions() {
 		mActionsHub.setCurrentOption(Insert);
 		mPlayer.reset();
 		mPlayer.callInfo("Insert a new value to trie");
-		//		Inputs[Insert]->randomizeValue();
+		Inputs[Insert]->randomize();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
@@ -83,6 +84,21 @@ void TrieState::initCreate() {
 	mActionsHub.packOptionGUI(Create, fileButton);
 }
 
+void TrieState::initInsert() {
+	// Insert
+	auto stringLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "String",
+	                                                *getContext().fonts, *getContext().colors);
+	stringLabel->setPosition(250.f, 555.f);
+	stringLabel->alignCenter();
+	mActionsHub.packOptionGUI(Insert, stringLabel);
+
+	Inputs[Insert] = std::make_shared<GUI::InputStr>(*getContext().fonts, *getContext().textures,
+	                                                 *getContext().colors);
+	Inputs[Insert]->setPosition(250.f, 590.f);
+	Inputs[Insert]->setLengthLimit(Trie::MAX_LENGTH);
+	mActionsHub.packOptionGUI(Insert, Inputs[Insert]);
+}
+
 void TrieState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mTrie);
@@ -100,5 +116,36 @@ bool TrieState::handleEvent(const sf::Event& event) {
 	return false;
 }
 std::pair<std::vector<Animation>, std::string> TrieState::getSteps(unsigned int option) {
+	try {
+		mTrie.clearHighlight();
+		switch (option) {
+			case Insert:
+				switch (Inputs[Insert]->validate()) {
+					case GUI::InputStr::Success:
+						return mTrie.insertAnimation(Inputs[Insert]->getString());
+					case GUI::InputStr::InvalidLength:
+						throw std::out_of_range("String too long, maximum length is " +
+						                        std::to_string(Inputs[Insert]->getLengthLimit()));
+					case GUI::InputStr::InvalidCharacter:
+						throw std::runtime_error("String characters must be uppercase");
+				}
+				break;
+
+				//			case Delete:
+				//				if (Inputs[Delete]->validate() != GUI::InputNum::Success)
+				//					throw std::out_of_range("Value must be in range " +
+				//					                        Inputs[Delete]->getStringRange());
+				//				return mTree.deleteAnimation(Inputs[Delete]->getValue());
+				//			case Search:
+				//				if (Inputs[Search]->validate() != GUI::InputNum::Success)
+				//					throw std::out_of_range("Value must be in range " +
+				//					                        Inputs[Search]->getStringRange());
+				//				return mTree.searchAnimation(Inputs[Search]->getValue());
+			default:
+				return VisualState::getSteps(option);
+		}
+	} catch (const std::exception& err) {
+		mPlayer.callError(err.what());
+	}
 	return VisualState::getSteps(option);
 }
