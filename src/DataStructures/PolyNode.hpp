@@ -48,9 +48,10 @@ class PolyNode : public SceneNode {
 	void setPosition(sf::Vector2f position) override;
 
    private:
-	void updateCurrent(sf::Time dt) override;
-
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+   protected:
+	void updateCurrent(sf::Time dt) override;
 
    private:
 	sf::Text mText, mLabel;

@@ -132,3 +132,11 @@ int TrieNode::getCharID(const char& ch) {
 	assert(isupper(ch) || isspace(ch));
 	return (int)ch - (int)'A';
 }
+
+void TrieNode::updateCurrent(sf::Time dt) {
+	PolyNode::updateCurrent(dt);
+	if (mBin != nullptr && mBin->getScale().x < SceneNode::EPS) {
+		detachChild(*mBin);
+		mBin = nullptr;
+	}
+}
