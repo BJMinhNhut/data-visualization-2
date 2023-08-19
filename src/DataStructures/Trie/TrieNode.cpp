@@ -67,7 +67,7 @@ sf::Vector2f TrieNode::align() {
 		availChild[mid2]->setTargetPosition(childWidth[mid2].x + TREE_OFF_SET.x / 2.f,
 		                                    TREE_OFF_SET.y, Smooth);
 		width.x = childWidth[mid1].x + childWidth[mid1].y + TREE_OFF_SET.x / 2.f;
-		width.y = childWidth[mid2].y + childWidth[mid2].y + TREE_OFF_SET.x / 2.f;
+		width.y = childWidth[mid2].x + childWidth[mid2].y + TREE_OFF_SET.x / 2.f;
 	}
 
 	for (int i = mid2 + 1; i < (int)availChild.size(); ++i) {
