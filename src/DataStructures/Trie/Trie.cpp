@@ -36,7 +36,9 @@ int Trie::count() const {
 
 void Trie::push(const std::string& str) {
 	mRoot->addString(str, 1);
-	mRoot->align();
+	sf::Vector2f width = mRoot->align();
+	float mid = (-width.x + width.y) / 2.f;
+	mRoot->setTargetPosition(-mid, 0.f, Smooth);
 }
 
 void Trie::clear() {

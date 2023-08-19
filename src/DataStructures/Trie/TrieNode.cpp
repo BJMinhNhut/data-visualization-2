@@ -62,21 +62,23 @@ sf::Vector2f TrieNode::align() {
 	} else {
 		mid1 = (int)availChild.size() / 2 - 1;
 		mid2 = (int)availChild.size() / 2;
-		availChild[mid1]->setTargetPosition(-childWidth[mid1].y - TREE_OFF_SET.x / 2.f,
+		availChild[mid1]->setTargetPosition(-(childWidth[mid1].y + TREE_OFF_SET.x / 2.f),
 		                                    TREE_OFF_SET.y, Smooth);
-		availChild[mid2]->setTargetPosition(-childWidth[mid2].x + TREE_OFF_SET.x / 2.f,
+		availChild[mid2]->setTargetPosition(childWidth[mid2].x + TREE_OFF_SET.x / 2.f,
 		                                    TREE_OFF_SET.y, Smooth);
-		width.y = childWidth[mid2].y + TREE_OFF_SET.x / 2.f;
-		width.x = childWidth[mid1].x - TREE_OFF_SET.x / 2.f;
+		width.x = childWidth[mid1].x + childWidth[mid1].y + TREE_OFF_SET.x / 2.f;
+		width.y = childWidth[mid2].y + childWidth[mid2].y + TREE_OFF_SET.x / 2.f;
 	}
 
 	for (int i = mid2 + 1; i < (int)availChild.size(); ++i) {
-		width.y += TREE_OFF_SET.x + childWidth[i].x;
-		availChild[i]->setTargetPosition(width.y, TREE_OFF_SET.y, Smooth);
+		availChild[i]->setTargetPosition(width.y + TREE_OFF_SET.x + childWidth[i].x, TREE_OFF_SET.y,
+		                                 Smooth);
+		width.y += TREE_OFF_SET.x + childWidth[i].x + childWidth[i].y;
 	}
 	for (int i = mid1 - 1; i >= 0; --i) {
-		width.x -= TREE_OFF_SET.x + childWidth[i].y;
-		availChild[i]->setTargetPosition(width.x, TREE_OFF_SET.y, Smooth);
+		availChild[i]->setTargetPosition(-width.x - TREE_OFF_SET.x - childWidth[i].y,
+		                                 TREE_OFF_SET.y, Smooth);
+		width.x += TREE_OFF_SET.x + childWidth[i].x + childWidth[i].y;
 	}
 	return width;
 }
