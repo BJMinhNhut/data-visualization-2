@@ -2,8 +2,8 @@
 // Created by MINH NHUT on 8/3/2023.
 //
 
-#ifndef DATAVISUALIZATION2_INPUT_HPP
-#define DATAVISUALIZATION2_INPUT_HPP
+#ifndef DATAVISUALIZATION2_INPUTNUM_HPP
+#define DATAVISUALIZATION2_INPUTNUM_HPP
 
 #include "GUI/Component.hpp"
 #include "Template/ColorHolder.hpp"
@@ -16,16 +16,16 @@
 #include <SFML/Graphics/Text.hpp>
 
 namespace GUI {
-class Input : public Component {
+class InputNum : public Component {
    public:
 	static const sf::Time CURSOR_LIFE;
 	static const int MAX_LENGTH;
 	static const int DISPLAY_LENGTH;
-	typedef std::shared_ptr<Input> Ptr;
+	typedef std::shared_ptr<InputNum> Ptr;
 	enum ValidationResult { Success, InvalidCharacter, InvalidValue, InvalidLength };
 
    public:
-	Input(const FontHolder& fonts, const TextureHolder& textures, const ColorHolder& colors);
+	InputNum(const FontHolder& fonts, const TextureHolder& textures, const ColorHolder& colors);
 
 	void setValue(const int& value);
 	void setRange(const int& minValue, const int& maxValue);
@@ -73,4 +73,4 @@ class Input : public Component {
 };
 }  // namespace GUI
 
-#endif  //DATAVISUALIZATION2_INPUT_HPP
+#endif  //DATAVISUALIZATION2_INPUTNUM_HPP

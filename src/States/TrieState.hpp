@@ -1,17 +1,17 @@
 //
-// Created by MINH NHUT on 8/15/2023.
+// Created by MINH NHUT on 8/18/2023.
 //
 
-#ifndef DATAVISUALIZATION2_AVLSTATE_HPP
-#define DATAVISUALIZATION2_AVLSTATE_HPP
+#ifndef DATAVISUALIZATION2_TRIESTATE_HPP
+#define DATAVISUALIZATION2_TRIESTATE_HPP
 
-#include "DataStructures/AVLTree/AVLTree.hpp"
-#include "GUI/InputNum.hpp"
+#include "DataStructures/Trie/Trie.hpp"
+#include "GUI/InputStr.hpp"
 #include "VisualState.hpp"
 
-class AVLState : public VisualState {
+class TrieState : public VisualState {
    public:
-	AVLState(StateStack& stack, Context context);
+	TrieState(StateStack& stack, Context context);
 
 	void draw() override;
 
@@ -37,8 +37,8 @@ class AVLState : public VisualState {
 		Search,
 		NumOptions,
 	};
-	AVLTree mTree;
-	std::vector<GUI::InputNum::Ptr> Inputs;
+	std::vector<GUI::InputStr::Ptr> Inputs;
+	Trie mTrie;
 };
 
-#endif  //DATAVISUALIZATION2_AVLSTATE_HPP
+#endif  //DATAVISUALIZATION2_TRIESTATE_HPP

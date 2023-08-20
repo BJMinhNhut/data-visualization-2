@@ -22,8 +22,8 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/GUI/CodeBlock.hpp
         src/Visualizer/ActionsHub.cpp
         src/Visualizer/ActionsHub.hpp
-        src/GUI/Input.cpp
-        src/GUI/Input.hpp
+        src/GUI/InputNum.cpp
+        src/GUI/InputNum.hpp
         src/GUI/Console.cpp
         src/GUI/Console.hpp
         src/Visualizer/Player.cpp
@@ -49,6 +49,15 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/DataStructures/AVLTree/AVLNode.cpp
         src/DataStructures/AVLTree/AVLNode.hpp
         src/DataStructures/AVLTree/AVLCode.hpp
+        src/States/TrieState.cpp
+        src/States/TrieState.hpp
+        src/DataStructures/Trie/TrieNode.cpp
+        src/DataStructures/Trie/TrieNode.hpp
+        src/DataStructures/Trie/Trie.cpp
+        src/DataStructures/Trie/Trie.hpp
+        src/DataStructures/Trie/TrieCode.hpp
+        src/GUI/InputStr.cpp
+        src/GUI/InputStr.hpp
 )
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)

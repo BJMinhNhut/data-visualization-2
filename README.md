@@ -7,7 +7,10 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 - [portable-file-dialogs](https://github.com/samhocevar/portable-file-dialogs) by samhocevar for file dialogs calling.
 
 ## Screenshots
-![Option Menu](demo.png)
+
+![Option Menu](demo1.png)
+
+![Visualize State](demo2.png)
 
 ## Features
 
@@ -21,10 +24,10 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Dark theme
 - [ ] Code highlight
   - [x] Hash table
-  - [ ] AVL tree
+  - [x] AVL tree
   - [ ] 2-3-4 tree
   - [x] Min/Max MaxHeap
-  - [ ] Trie
+  - [x] Trie
   - [ ] Graph
 
 ### Data structures
@@ -34,10 +37,10 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Insert
   - [x] Delete
   - [x] Search
-- [ ] AVL tree
+- [x] AVL tree
   - [x] Create
   - [x] Insert
-  - [ ] Delete
+  - [x] Delete
   - [x] Search
 - [ ] 2-3-4 tree
   - [ ] Create
@@ -51,11 +54,11 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Delete
   - [x] Top
   - [x] Size
-- [ ] Trie
-  - [ ] Create
-  - [ ] Insert
-  - [ ] Delete
-  - [ ] Search
+- [x] Trie
+  - [x] Create
+  - [x] Insert
+  - [x] Delete
+  - [x] Search
 - [ ] Graph
   - [ ] Create (from a matrix)
   - [ ] Connected components

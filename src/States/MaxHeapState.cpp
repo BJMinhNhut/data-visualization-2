@@ -79,8 +79,8 @@ void MaxHeapState::initDetails() {
 	valueLabel->alignCenter();
 	mActionsHub.packOptionGUI(Push, valueLabel);
 
-	Inputs[Push] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
-	                                            *getContext().colors);
+	Inputs[Push] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
+	                                               *getContext().colors);
 	Inputs[Push]->setPosition(250.f, 590.f);
 	Inputs[Push]->setRange(MaxHeap::MIN_VALUE, MaxHeap::MAX_VALUE);
 	mActionsHub.packOptionGUI(Push, Inputs[Push]);
@@ -92,8 +92,8 @@ void MaxHeapState::initDetails() {
 	indexLabel->alignCenter();
 	mActionsHub.packOptionGUI(Delete, indexLabel);
 
-	Inputs[Delete] = std::make_shared<GUI::Input>(*getContext().fonts, *getContext().textures,
-	                                              *getContext().colors);
+	Inputs[Delete] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
+	                                                 *getContext().colors);
 	Inputs[Delete]->setPosition(250.f, 590.f);
 	mActionsHub.packOptionGUI(Delete, Inputs[Delete]);
 }
@@ -119,12 +119,12 @@ std::pair<std::vector<Animation>, std::string> MaxHeapState::getSteps(unsigned i
 		mHeap.clearHighlight();
 		switch (option) {
 			case Push:
-				if (Inputs[Push]->validate() != GUI::Input::Success)
+				if (Inputs[Push]->validate() != GUI::InputNum::Success)
 					throw std::out_of_range("Value must be in range " +
 					                        Inputs[Push]->getStringRange());
 				return mHeap.pushAnimation(Inputs[Push]->getValue());
 			case Delete:
-				if (Inputs[Delete]->validate() != GUI::Input::Success)
+				if (Inputs[Delete]->validate() != GUI::InputNum::Success)
 					throw std::out_of_range("Value must be in range " +
 					                        Inputs[Delete]->getStringRange());
 				return mHeap.deleteAnimation(Inputs[Delete]->getValue());
