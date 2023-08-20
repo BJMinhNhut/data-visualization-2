@@ -26,6 +26,7 @@ class Trie : public SceneNode {
 
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const std::string& str);
 	std::pair<std::vector<Animation>, std::string> searchAnimation(const std::string& str);
+	std::pair<std::vector<Animation>, std::string> deleteAnimation(const std::string& str);
 
 	void clear();
 	void clearHighlight();

@@ -40,10 +40,10 @@ void TrieNode::popNode(const std::string& str) {
 		assert(cur != nullptr);
 	}
 	assert(cur->getParent() != nullptr);
-	cur->getParent()->removeLeaf(cur->getChar());
+	cur->getParent()->removeLeafChild(cur->getChar());
 }
 
-void TrieNode::removeLeaf(char character) {
+void TrieNode::removeLeafChild(char character) {
 	const int id = getCharID(character);
 	assert(mChildren[id] != nullptr);
 	assert(mChildren[id]->isLeaf());
@@ -54,6 +54,14 @@ void TrieNode::removeLeaf(char character) {
 	mBin->setTargetScale(0.f, 0.f, Smooth);
 	removeEdgeOut(mBin);
 	mChildren[id] = nullptr;
+}
+
+void TrieNode::addFrequency(int delta) {
+	mFrequency += delta;
+}
+
+void TrieNode::markEndString(int val) {
+	mEndString = val;
 }
 
 TrieNode* TrieNode::addChild(char character) {
@@ -156,10 +164,10 @@ bool TrieNode::hasString(const std::string& str) const {
 		if (cur == nullptr)
 			return false;
 	}
-	return cur->isStringEnd();
+	return cur->numStringEnd() > 0;
 }
 
-bool TrieNode::isStringEnd() const {
+int TrieNode::numStringEnd() const {
 	return mEndString;
 }
 
@@ -180,7 +188,7 @@ int TrieNode::frequency() const {
 }
 
 int TrieNode::count() const {
-	int ans = mFrequency;
+	int ans = mEndString;
 	for (auto& node : mChildren)
 		if (node != nullptr)
 			ans += node->count();

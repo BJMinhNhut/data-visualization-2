@@ -16,8 +16,11 @@ class TrieNode : public PolyNode {
 	TrieNode(const FontHolder& fonts, const ColorHolder& colors, char character);
 
 	TrieNode* addString(const std::string& str, int freq);
+	TrieNode* addChild(char character);
 	void popNode(const std::string& str);
-	void removeLeaf(char character);
+	void removeLeafChild(char character);
+	void addFrequency(int delta);
+	void markEndString(int val);
 	sf::Vector2f align();
 	void clear();
 	void clearHighlight();
@@ -26,7 +29,7 @@ class TrieNode : public PolyNode {
 
 	bool hasChild(char character) const;
 	bool hasString(const std::string& str) const;
-	bool isStringEnd() const;
+	int numStringEnd() const;
 	TrieNode* getChild(char character) const;
 	TrieNode* getParent() const;
 	TrieNode* getNode(const std::string& str) const;
@@ -40,7 +43,6 @@ class TrieNode : public PolyNode {
 	void updateCurrent(sf::Time dt) override;
 
 	void setParent(TrieNode* parent);
-	TrieNode* addChild(char character);
 	static int getCharID(const char& ch);
 
    private:

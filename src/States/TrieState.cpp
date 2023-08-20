@@ -14,6 +14,7 @@ TrieState::TrieState(StateStack& stack, State::Context context)
 	initCreate();
 	initInsert();
 	initSearch();
+	initDelete();
 }
 
 void TrieState::initOptions() {
@@ -32,10 +33,10 @@ void TrieState::initOptions() {
 		mActionsHub.setCurrentOption(Delete);
 		mPlayer.reset();
 		mPlayer.callInfo("Delete a value from trie");
-		//		if (mTree.getSize() > 0)
-		//			Inputs[Delete]->setValue(mTree.getRandomElement());
-		//		else
-		//			Inputs[Delete]->randomizeValue();
+		if (mTrie.count() > 0)
+			Inputs[Delete]->setString(mTrie.getRandomElement());
+		else
+			Inputs[Delete]->randomize();
 	});
 	mActionsHub.addOption(Search, "Search", [&]() {
 		mActionsHub.setCurrentOption(Search);
@@ -100,6 +101,21 @@ void TrieState::initInsert() {
 	mActionsHub.packOptionGUI(Insert, Inputs[Insert]);
 }
 
+void TrieState::initDelete() {
+	// Search
+	auto stringLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "String",
+	                                                *getContext().fonts, *getContext().colors);
+	stringLabel->setPosition(250.f, 555.f);
+	stringLabel->alignCenter();
+	mActionsHub.packOptionGUI(Delete, stringLabel);
+
+	Inputs[Delete] = std::make_shared<GUI::InputStr>(*getContext().fonts, *getContext().textures,
+	                                                 *getContext().colors);
+	Inputs[Delete]->setPosition(250.f, 590.f);
+	Inputs[Delete]->setLengthLimit(Trie::MAX_LENGTH);
+	mActionsHub.packOptionGUI(Delete, Inputs[Delete]);
+}
+
 void TrieState::initSearch() {
 	// Search
 	auto stringLabel = std::make_shared<GUI::Label>(GUI::Label::Small, "String",
@@ -147,11 +163,17 @@ std::pair<std::vector<Animation>, std::string> TrieState::getSteps(unsigned int 
 				}
 				break;
 
-				//			case Delete:
-				//				if (Inputs[Delete]->validate() != GUI::InputNum::Success)
-				//					throw std::out_of_range("Value must be in range " +
-				//					                        Inputs[Delete]->getStringRange());
-				//				return mTree.deleteAnimation(Inputs[Delete]->getValue());
+			case Delete:
+				switch (Inputs[Delete]->validate()) {
+					case GUI::InputStr::Success:
+						return mTrie.deleteAnimation(Inputs[Delete]->getString());
+					case GUI::InputStr::InvalidLength:
+						throw std::out_of_range("String too long, maximum length is " +
+						                        std::to_string(Inputs[Delete]->getLengthLimit()));
+					case GUI::InputStr::InvalidCharacter:
+						throw std::runtime_error("String characters must be uppercase");
+				}
+				break;
 			case Search:
 				switch (Inputs[Search]->validate()) {
 					case GUI::InputStr::Success:

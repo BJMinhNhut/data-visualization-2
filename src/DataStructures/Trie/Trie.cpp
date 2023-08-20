@@ -134,6 +134,90 @@ std::pair<std::vector<Animation>, std::string> Trie::searchAnimation(const std::
 	return std::make_pair(list, code);
 }
 
+std::pair<std::vector<Animation>, std::string> Trie::deleteAnimation(const std::string& str) {
+	const std::string code = TrieCode::Delete;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Delete " + str + " in trie."));
+
+	int lcp = getLCP(str);
+	list.push_back(Animation(
+	    {0}, "Assign cur = root", [&]() { mRoot->highlight(PolyNode::Primary); },
+	    [&]() { clearHighlight(); }));
+	assert(lcp == str.size());
+	for (int i = 0; i < str.size(); ++i) {
+		std::string C(1, str[i]);
+		list.push_back(Animation(
+		    {0}, "The " + C + " child exists, continue",
+		    [&, str, i]() {
+			    TrieNode* cur = mRoot->getNode(str.substr(0, i + 1));
+			    cur->getParent()->highlightOff();
+			    cur->highlightOn();
+		    },
+		    [&, str, i]() {
+			    TrieNode* cur = mRoot->getNode(str.substr(0, i + 1));
+			    cur->getParent()->highlightOn();
+			    cur->highlightOff();
+		    }));
+	}
+
+	if (lcp == str.size()) {
+		TrieNode* cur = mRoot->getNode(str);
+		int freq = cur->numStringEnd();
+		std::cout << " End string count: " << freq << '\n';
+		if (mRoot->hasString(str)) {
+			for (int i = (int)str.size() - 1; i >= 0; --i) {
+				list.push_back(Animation(
+				    {2, 3, 4}, "Update node frequency and go to parent.",
+				    [&, str, i]() {
+					    TrieNode* node = mRoot->getNode(str.substr(0, i + 1));
+					    node->addFrequency(-freq);
+					    if (i + 1 == str.size())
+						    node->markEndString(0);
+					    node->highlightOff();
+					    node->getParent()->highlightOn();
+				    },
+				    [&, str, i]() {
+					    TrieNode* node = mRoot->getNode(str.substr(0, i + 1));
+					    node->addFrequency(freq);
+					    if (i + 1 == str.size())
+						    node->markEndString(freq);
+					    node->highlightOn();
+					    node->getParent()->highlightOff();
+				    }));
+				if (cur->frequency() == freq) {
+					list.push_back(Animation(
+					    {2, 5, 6}, "Child frequency reach 0, delete it",
+					    [&, str, i]() {
+						    TrieNode* node = mRoot->getNode(str.substr(0, i));
+						    node->removeLeafChild(str[i]);
+						    mRoot->align();
+					    },
+					    [&, str, i, freq]() {
+						    TrieNode* node = mRoot->getNode(str.substr(0, i));
+						    node->addChild(str[i]);
+						    node->getChild(str[i])->addFrequency(freq);
+						    if (i + 1 == str.size())
+							    node->getChild(str[i])->markEndString(freq);
+						    mRoot->align();
+					    }));
+				}
+				cur = cur->getParent();
+			}
+			list.push_back(Animation(
+			    {}, "Finish delete " + str + " from trie. Complexity is O(|s|).",
+			    [&]() { clearHighlight(); }, [&]() { mRoot->highlightOn(); }));
+		} else
+			list.push_back(Animation({0},
+			                         "Node isn't marked string end, hence " + str + " is NOT_FOUND",
+			                         [&]() { clearHighlight(); }));
+	} else {
+		list.push_back(Animation({0}, "Null node reached, hence " + str + " is NOT_FOUND",
+		                         [&]() { clearHighlight(); }));
+	}
+
+	return std::make_pair(list, code);
+}
+
 void Trie::push(const std::string& str) {
 	mRoot->addString(str, 1);
 	sf::Vector2f width = mRoot->align();
