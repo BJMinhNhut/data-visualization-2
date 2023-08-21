@@ -58,6 +58,12 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/DataStructures/Trie/TrieCode.hpp
         src/GUI/InputStr.cpp
         src/GUI/InputStr.hpp
+        src/DataStructures/Graph/GraphNode.cpp
+        src/DataStructures/Graph/GraphNode.hpp
+        src/DataStructures/Graph/Graph.cpp
+        src/DataStructures/Graph/Graph.hpp
+        src/States/GraphState.cpp
+        src/States/GraphState.hpp
 )
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)

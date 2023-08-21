@@ -18,6 +18,7 @@ enum ID {
 	VisualMaxHeap,
 	VisualMinHeap,
 	VisualTrie,
+	VisualGraph,
 };
 }
 

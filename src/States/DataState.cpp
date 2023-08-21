@@ -99,7 +99,7 @@ DataState::DataState(StateStack& stack, Context context)
 	GraphButton->setPosition(context.window->getSize().x / 2.f + 413.f, 640.f);
 	GraphButton->setCallback([this]() {
 		requestStackPop();
-		requestStackPush(States::VisualTemplate);
+		requestStackPush(States::VisualGraph);
 	});
 	mGUIContainer.pack(GraphButton);
 }

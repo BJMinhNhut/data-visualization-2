@@ -8,6 +8,7 @@
 #include "AVLState.hpp"
 #include "AboutState.hpp"
 #include "DataState.hpp"
+#include "GraphState.hpp"
 #include "HashState.hpp"
 #include "MaxHeapState.hpp"
 #include "MenuState.hpp"
@@ -16,4 +17,4 @@
 #include "TrieState.hpp"
 #include "VisualState.hpp"
 
-#endif //DATAVISUALIZATION2_STATESLIST_HPP
+#endif  //DATAVISUALIZATION2_STATESLIST_HPP

@@ -125,6 +125,7 @@ void Application::registerStates() {
 	mStateStack.registerState<MaxHeapState>(States::VisualMaxHeap);
 	mStateStack.registerState<MinHeapState>(States::VisualMinHeap);
 	mStateStack.registerState<TrieState>(States::VisualTrie);
+	mStateStack.registerState<GraphState>(States::VisualGraph);
 }
 
 void Application::loadIcon() {
