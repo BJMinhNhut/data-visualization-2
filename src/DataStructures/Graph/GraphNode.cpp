@@ -8,9 +8,9 @@
 #include <cmath>
 #include <iostream>
 
-const float GraphNode::REPULSE = 4000000.f;
+const float GraphNode::REPULSE = 5000000.f;
 const float GraphNode::ATTRACT = 2000.f;
-const float GraphNode::LENGTH_LIMIT = 120.f;
+const float GraphNode::LENGTH_LIMIT = 150.f;
 const float GraphNode::LEFT(-500.f), GraphNode::RIGHT(500.f);
 const float GraphNode::TOP(0.f), GraphNode::BOTTOM(600.f);
 
