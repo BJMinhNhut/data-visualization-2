@@ -14,6 +14,7 @@
 class Graph : public SceneNode {
    public:
 	static const int MAX_SIZE;
+	static const int MAX_EDGES;
 	struct Edge {
 		int from, to, weight;
 
@@ -28,7 +29,8 @@ class Graph : public SceneNode {
 	void build(int nodes);
 	void addEdge(int from, int to);
 
-	int getSize() const;
+	int getNumNodes() const;
+	int getNumEdges() const;
 
    private:
 	void rearrange();
@@ -44,6 +46,7 @@ class Graph : public SceneNode {
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 	std::vector<GraphNode*> mNodes;
+	std::vector<Edge> mEdges;
 };
 
 #endif  //DATAVISUALIZATION2_GRAPH_HPP

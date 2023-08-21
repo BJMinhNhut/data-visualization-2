@@ -6,6 +6,7 @@
 #define DATAVISUALIZATION2_GRAPHSTATE_HPP
 
 #include "DataStructures/Graph/Graph.hpp"
+#include "GUI/InputNum.hpp"
 #include "VisualState.hpp"
 
 class GraphState : public VisualState {

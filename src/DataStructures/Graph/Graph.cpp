@@ -10,9 +10,10 @@
 #include <iostream>
 
 const int Graph::MAX_SIZE = 24;
+const int Graph::MAX_EDGES = 100;
 const int Graph::UPDATE_LOOPS = 10000;
 const float Graph::FORCE_EPSILON = 1e-3;
-const float Graph::COOL_DOWN = 0.9995f;
+const float Graph::COOL_DOWN = 0.999f;
 
 Graph::Edge::Edge(int from, int to, int weight) : from(from), to(to), weight(weight) {}
 
@@ -23,22 +24,7 @@ Graph::Graph(const FontHolder& fonts, const ColorHolder& colors)
       mTime(UPDATE_LOOPS + 1),
       mCoolDown(1.f),
       mMaxForce(100.f) {
-	build(24);
-	addEdge(1, 2);
-	addEdge(2, 3);
-	addEdge(3, 1);
-	addEdge(4, 5);
-	addEdge(1, 5);
-	addEdge(3, 7);
-	addEdge(5, 8);
-	addEdge(3, 7);
-	addEdge(10, 9);
-	addEdge(17, 2);
-	addEdge(5, 6);
-	addEdge(19, 1);
-	addEdge(19, 17);
-	addEdge(18, 17);
-	addEdge(0, 23);
+	randomize(24, 30);
 }
 
 void Graph::clear() {
@@ -50,12 +36,18 @@ void Graph::clear() {
 
 void Graph::randomize(int nodes, int edges) {
 	build(nodes);
-	while (edges--) {
-		int u, v;
-		u = Random::getInt(0, (int)mNodes.size() - 1);
-		do {
-			v = Random::getInt(0, (int)mNodes.size() - 1);
-		} while (u == v);
+	std::vector<Edge>().swap(mEdges);
+	std::vector<std::pair<int, int>> candidates;
+	for (int i = 0; i < mNodes.size(); ++i)
+		for (int j = i + 1; j < mNodes.size(); ++j)
+			if (j != i) {
+				candidates.emplace_back(i, j);
+			}
+	Random::shuffle(candidates);
+	for (int i = 0; i < edges; ++i) {
+		if (i >= candidates.size())
+			break;
+		auto& [u, v] = candidates[i];
 		addEdge(u, v);
 	}
 }
@@ -69,7 +61,8 @@ void Graph::build(int nodes) {
 		mNodes[i] = new GraphNode(mFonts, mColors);
 		mNodes[i]->setData(i);
 		int row = i / mSqrt, col = i % mSqrt;
-		mNodes[i]->setTargetPosition(-300.f + 120.f * (float)row, 50.f + 120.f * (float)col,
+		mNodes[i]->setTargetPosition(-300.f + 120.f * (float)col + (float)Random::getInt(-10, 10),
+		                             50.f + 120.f * (float)row + (float)Random::getInt(-10, 10),
 		                             Transition::None);
 		attachChild(GraphNode::Ptr(mNodes[i]));
 	}
@@ -80,9 +73,11 @@ void Graph::addEdge(int from, int to) {
 	assert(from >= 0 && from < mNodes.size());
 	assert(to >= 0 && to < mNodes.size());
 	assert(from != to);
+	assert(mEdges.size() < MAX_EDGES);
 	mNodes[from]->addEdgeOut(mNodes[to]);
 	mNodes[from]->makeAdjacent(mNodes[to]);
 	mNodes[to]->makeAdjacent(mNodes[from]);
+	mEdges.emplace_back(from, to, 0);
 }
 
 void Graph::rearrange() {
@@ -91,8 +86,12 @@ void Graph::rearrange() {
 	mMaxForce = 100.f;
 }
 
-int Graph::getSize() const {
+int Graph::getNumNodes() const {
 	return (int)mNodes.size();
+}
+
+int Graph::getNumEdges() const {
+	return (int)mEdges.size();
 }
 
 void Graph::updateCurrent(sf::Time dt) {
