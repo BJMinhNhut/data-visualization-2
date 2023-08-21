@@ -8,11 +8,11 @@
 #include <cmath>
 #include <iostream>
 
-const float GraphNode::REPULSE = 7500000.f;
+const float GraphNode::REPULSE = 6000000.f;
 const float GraphNode::ATTRACT = 2500.f;
 const float GraphNode::LENGTH_LIMIT = 150.f;
-const float GraphNode::LEFT(-500.f), GraphNode::RIGHT(500.f);
-const float GraphNode::TOP(0.f), GraphNode::BOTTOM(600.f);
+const float GraphNode::LEFT(-520.f), GraphNode::RIGHT(520.f);
+const float GraphNode::TOP(0.f), GraphNode::BOTTOM(650.f);
 
 GraphNode::GraphNode(const FontHolder& fonts, const ColorHolder& colors)
     : PolyNode(fonts, colors), mVelocity(0.f, 0.f), mAdj() {
