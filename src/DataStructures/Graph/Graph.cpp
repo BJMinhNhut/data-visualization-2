@@ -156,7 +156,7 @@ std::pair<std::vector<Animation>, std::string> Graph::CCAnimation() {
 	    [&, components]() {
 		    for (auto& node : mNodes) {
 			    int id = node->getIntData();
-			    node->setLabel(components[id]);
+			    node->setLabel("Comp. " + std::to_string(components[id]));
 			    if (components[id] % 2)
 				    node->highlight(PolyNode::Secondary);
 		    }
