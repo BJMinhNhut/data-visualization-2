@@ -70,6 +70,11 @@ void PolyNode::setData(const int& data) {
 	Utility::centerOrigin(mText);
 }
 
+void PolyNode::setRadius(const float& radius) {
+	mPolygon.setRadius(radius);
+	Utility::centerOrigin(mPolygon);
+}
+
 void PolyNode::swapData(PolyNode* node) {
 	std::string temp = this->getData();
 	this->setData(node->getData());

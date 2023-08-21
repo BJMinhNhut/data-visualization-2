@@ -36,6 +36,7 @@ class PolyNode : public SceneNode {
 	void setLabel(const int& label);
 	void setPoint(const int& points);
 	void highlight(Highlight type);
+	void setRadius(const float& radius);
 	void resetDataScale();
 
 	void addEdgeOut(PolyNode* to);
