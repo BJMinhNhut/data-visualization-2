@@ -28,7 +28,7 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [ ] 2-3-4 tree
   - [x] Min/Max MaxHeap
   - [x] Trie
-  - [ ] Graph
+  - [x] Graph
 
 ### Data structures
 
@@ -60,8 +60,8 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Delete
   - [x] Search
 - [ ] Graph
-  - [ ] Create (from a matrix)
-  - [ ] Connected components
+  - [x] Create (from a matrix)
+  - [x] Connected components
   - [ ] Minimum spanning tree
   - [ ] Dijkstra
 
