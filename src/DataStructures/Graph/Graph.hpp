@@ -22,10 +22,16 @@ class Graph : public SceneNode {
 
    public:
 	Graph(const FontHolder& fonts, const ColorHolder& colors);
+
+	void clear();
+	void randomize(int nodes, int edges);
 	void build(int nodes);
 	void addEdge(int from, int to);
 
+	int getSize() const;
+
    private:
+	void rearrange();
 	void updateCurrent(sf::Time dt) override;
 
    private:
