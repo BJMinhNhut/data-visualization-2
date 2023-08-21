@@ -7,7 +7,9 @@
 #include "Template/Utility.hpp"
 
 #include <cmath>
+#include <fstream>
 #include <iostream>
+#include <sstream>
 
 const int Graph::MAX_SIZE = 24;
 const int Graph::MAX_EDGES = 100;
@@ -32,11 +34,11 @@ void Graph::clear() {
 		detachChild(*node);
 	}
 	std::vector<GraphNode*>().swap(mNodes);
+	std::vector<Edge>().swap(mEdges);
 }
 
 void Graph::randomize(int nodes, int edges) {
 	build(nodes);
-	std::vector<Edge>().swap(mEdges);
 	std::vector<std::pair<int, int>> candidates;
 	for (int i = 0; i < mNodes.size(); ++i)
 		for (int j = i + 1; j < mNodes.size(); ++j)
@@ -52,8 +54,51 @@ void Graph::randomize(int nodes, int edges) {
 	}
 }
 
+void Graph::loadFromFile(const std::string& fileDir) {
+	std::ifstream fileStream(fileDir);
+	std::vector<int> elements;
+	std::string token;
+	int nodes;
+	std::vector<Edge> edgeList;
+	try {
+		if (!(fileStream >> nodes))
+			throw 1;
+		std::cout << "nodes : " << nodes << '\n';
+		for (int i = 0; i < nodes; ++i) {
+			for (int j = 0; j < nodes; ++j) {
+				int weight;
+				if (!(fileStream >> weight))
+					throw 1;
+				if (weight != 0) {
+					edgeList.emplace_back(i, j, weight);
+				}
+			}
+		}
+	} catch (...) {
+		throw std::logic_error("File format is invalid");
+	}
+	if (nodes <= 0 || nodes > MAX_SIZE)
+		throw std::logic_error("Number of nodes must be in range [2, " + std::to_string(MAX_SIZE) +
+		                       "]");
+	else if (mEdges.size() > MAX_EDGES) {
+		throw std::logic_error("Number of edges must be in range [0, " + std::to_string(MAX_EDGES) +
+		                       "]");
+	} else {
+		for (auto& [from, to, weight] : edgeList) {
+			if (from < 0 || from >= nodes || to < 0 || to >= nodes)
+				throw std::logic_error("Nodes index must be in range [0, " +
+				                       std::to_string(nodes - 1) + "]");
+		}
+		build(nodes);
+		for (auto& [from, to, weight] : edgeList) {
+			addEdge(from, to);
+		}
+	}
+	fileStream.close();
+}
+
 void Graph::build(int nodes) {
-	assert(nodes > 0 && nodes < MAX_SIZE);
+	assert(nodes > 0 && nodes <= MAX_SIZE);
 	clear();
 	mNodes.resize(nodes);
 	int mSqrt = std::max(1, (int)sqrt(nodes));
@@ -72,11 +117,14 @@ void Graph::build(int nodes) {
 void Graph::addEdge(int from, int to) {
 	assert(from >= 0 && from < mNodes.size());
 	assert(to >= 0 && to < mNodes.size());
-	assert(from != to);
 	assert(mEdges.size() < MAX_EDGES);
-	mNodes[from]->addEdgeOut(mNodes[to]);
-	mNodes[from]->makeAdjacent(mNodes[to]);
-	mNodes[to]->makeAdjacent(mNodes[from]);
+
+	if (from != to) {
+		mNodes[from]->addEdgeOut(mNodes[to]);
+		mNodes[from]->makeAdjacent(mNodes[to]);
+		mNodes[to]->makeAdjacent(mNodes[from]);
+	}
+
 	mEdges.emplace_back(from, to, 0);
 }
 

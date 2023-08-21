@@ -25,6 +25,7 @@ class Graph : public SceneNode {
 	Graph(const FontHolder& fonts, const ColorHolder& colors);
 
 	void clear();
+	void loadFromFile(const std::string& fileDir);
 	void randomize(int nodes, int edges);
 	void build(int nodes);
 	void addEdge(int from, int to);

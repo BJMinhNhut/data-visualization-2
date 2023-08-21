@@ -50,8 +50,9 @@ void GraphState::initCreate() {
 			mPlayer.callError("Number of edges must be in range " + edgesInput->getStringRange());
 		} else {
 			mGraph.randomize(nodesInput->getValue(), edgesInput->getValue());
-			mPlayer.callInfo("Created a graph with random elements, size = " +
-			                 std::to_string(mGraph.getNumNodes()));
+			mPlayer.callInfo("Created a graph with random elements, nodes = " +
+			                 std::to_string(mGraph.getNumNodes()) +
+			                 ", edges = " + std::to_string(mGraph.getNumEdges()));
 		}
 	});
 	randomButton->setPosition(250.f, 590.f + 20.f);
@@ -66,12 +67,19 @@ void GraphState::initCreate() {
 
 	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                *getContext().textures, *getContext().colors);
-	fileButton->setCallback([&]() {
-		//			std::string fileDir;
-		//			if (selectedTextFile(fileDir))
-		//				mTree.loadFromFile(fileDir);
-		//			mPlayer.callInfo("Created an AVL tree with elements loaded from file, size = " +
-		//			                 std::to_string(mTree.getNumNodes()));
+	fileButton->setCallback([&, nodesInput, edgesInput]() {
+		std::string fileDir;
+		try {
+			if (selectedTextFile(fileDir))
+				mGraph.loadFromFile(fileDir);
+			mPlayer.callInfo("Created a graph with random elements, nodes = " +
+			                 std::to_string(mGraph.getNumNodes()) +
+			                 ", edges = " + std::to_string(mGraph.getNumEdges()));
+			nodesInput->setValue(mGraph.getNumNodes());
+			edgesInput->setValue(mGraph.getNumEdges());
+		} catch (std::exception& err) {
+			mPlayer.callError(err.what());
+		}
 	});
 	fileButton->setPosition(250.f, 590.f + 85.f);
 	fileButton->setText("Load file");
