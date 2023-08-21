@@ -26,7 +26,7 @@ Graph::Graph(const FontHolder& fonts, const ColorHolder& colors)
       mTime(UPDATE_LOOPS + 1),
       mCoolDown(1.f),
       mMaxForce(100.f) {
-	randomize(24, 30);
+	randomize(15, 20);
 }
 
 void Graph::clear() {
