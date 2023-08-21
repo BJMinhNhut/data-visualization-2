@@ -9,8 +9,8 @@
 #include <iostream>
 
 const float GraphNode::REPULSE = 7500000.f;
-const float GraphNode::ATTRACT = 1250.f;
-const float GraphNode::LENGTH_LIMIT = 175.f;
+const float GraphNode::ATTRACT = 2500.f;
+const float GraphNode::LENGTH_LIMIT = 150.f;
 const float GraphNode::LEFT(-500.f), GraphNode::RIGHT(500.f);
 const float GraphNode::TOP(0.f), GraphNode::BOTTOM(600.f);
 
@@ -30,8 +30,6 @@ void GraphNode::makeAdjacent(GraphNode* node) {
 sf::Vector2f GraphNode::getRepulsion(const GraphNode& node) const {
 	sf::Vector2f delta = getPosition() - node.getPosition();
 	float norm = Utility::getNorm(delta);
-	if (norm > 1.75f * LENGTH_LIMIT)
-		return {0.f, 0.f};
 	return (delta / norm) / (float)pow(norm, 2) * REPULSE;
 }
 

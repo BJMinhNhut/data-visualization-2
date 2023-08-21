@@ -112,5 +112,16 @@ bool GraphState::handleEvent(const sf::Event& event) {
 }
 
 std::pair<std::vector<Animation>, std::string> GraphState::getSteps(unsigned int option) {
+	try {
+		//		mGraph.clearHighlight();
+		//		switch (option) {
+		//			case Component:
+		//				return mGraph.CCAnimation();
+		//			default:
+		//				return VisualState::getSteps(option);
+		//		}
+	} catch (const std::exception& err) {
+		mPlayer.callError(err.what());
+	}
 	return VisualState::getSteps(option);
 }
