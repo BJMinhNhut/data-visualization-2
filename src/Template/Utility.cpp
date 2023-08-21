@@ -70,6 +70,14 @@ namespace Utility {
         }
         return true;
     }
-}
+
+    float getNorm(sf::Vector2f vector) {
+	    return (float)sqrt(vector.x * vector.x + vector.y * vector.y);
+    }
+
+    float getNormSqr(sf::Vector2f vector) {
+	    return vector.x * vector.x + vector.y * vector.y;
+    }
+    }
 
 

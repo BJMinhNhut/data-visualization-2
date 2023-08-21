@@ -28,6 +28,10 @@ namespace Utility {
 
     bool isInt(const std::string &data);
 
+    float getNorm(sf::Vector2f vector);
+
+    float getNormSqr(sf::Vector2f vector);
+
     void loadImages(TextureHolder &textures, const std::string &prefix);
 
     void loadLightTheme(TextureHolder &textures, ColorHolder &colors);
