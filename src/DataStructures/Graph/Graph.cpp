@@ -37,6 +37,13 @@ void Graph::clear() {
 	std::vector<Edge>().swap(mEdges);
 }
 
+void Graph::clearHighlight() {
+	for (auto& node : mNodes) {
+		node->highlight(PolyNode::None);
+		node->setLabel("");
+	}
+}
+
 void Graph::randomize(int nodes, int edges) {
 	build(nodes);
 	std::vector<std::pair<int, int>> candidates;
