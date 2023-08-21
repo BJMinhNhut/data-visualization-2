@@ -13,6 +13,7 @@ class GraphNode : public PolyNode {
 	static const float REPULSE;
 	static const float ATTRACT;
 	static const float LENGTH_LIMIT;
+	static const float LEFT, TOP, BOTTOM, RIGHT;
 
    public:
 	GraphNode(const FontHolder& fonts, const ColorHolder& colors);
