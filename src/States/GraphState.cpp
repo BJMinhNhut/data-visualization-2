@@ -9,11 +9,9 @@ GraphState::GraphState(StateStack& stack, State::Context context)
     : VisualState(stack, context, "Graph"), mGraph(*context.fonts, *context.colors) {
 	mGraph.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 150.f,
 	                         Graph::Transition::None);
-	initOptions();
 	initCreate();
+	initComponent();
 }
-
-void GraphState::initOptions() {}
 
 void GraphState::initCreate() {
 	// Create
@@ -94,6 +92,14 @@ void GraphState::initCreate() {
 	});
 }
 
+void GraphState::initComponent() {
+	mActionsHub.addOption(Component, "C.Component", [&]() {
+		mActionsHub.setCurrentOption(Component);
+		mPlayer.reset();
+		mPlayer.callInfo("Find connected components of the graph.");
+	});
+}
+
 void GraphState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mGraph);
@@ -113,13 +119,13 @@ bool GraphState::handleEvent(const sf::Event& event) {
 
 std::pair<std::vector<Animation>, std::string> GraphState::getSteps(unsigned int option) {
 	try {
-		//		mGraph.clearHighlight();
-		//		switch (option) {
-		//			case Component:
-		//				return mGraph.CCAnimation();
-		//			default:
-		//				return VisualState::getSteps(option);
-		//		}
+		mGraph.clearHighlight();
+		switch (option) {
+			case Component:
+				return mGraph.CCAnimation();
+			default:
+				return VisualState::getSteps(option);
+		}
 	} catch (const std::exception& err) {
 		mPlayer.callError(err.what());
 	}

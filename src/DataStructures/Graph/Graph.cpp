@@ -141,6 +141,42 @@ void Graph::rearrange() {
 	mMaxForce = 100.f;
 }
 
+std::pair<std::vector<Animation>, std::string> Graph::CCAnimation() {
+	std::vector<Animation> list;
+	std::vector<int> components(mNodes.size(), -1);
+	int numCC = 0;
+	for (int i = 0; i < mNodes.size(); ++i) {
+		if (components[i] == -1) {
+			components[i] = numCC++;
+			DFS(*mNodes[i], components);
+		}
+	}
+	list.push_back(Animation(
+	    {}, "Graph contains " + std::to_string(numCC) + " connected components. Complexity O(V+E).",
+	    [&, components]() {
+		    for (auto& node : mNodes) {
+			    int id = node->getIntData();
+			    node->setLabel(components[id]);
+			    if (components[id] % 2)
+				    node->highlight(PolyNode::Secondary);
+		    }
+	    },
+	    [&]() { clearHighlight(); }));
+
+	return std::make_pair(list, "");
+}
+
+void Graph::DFS(const GraphNode& node, std::vector<int>& components) {
+	int curID = node.getIntData();
+	for (auto& next : node.getAdj()) {
+		int id = next->getIntData();
+		if (components[id] == -1) {
+			components[id] = components[curID];
+			DFS(*next, components);
+		}
+	}
+}
+
 int Graph::getNumNodes() const {
 	return (int)mNodes.size();
 }

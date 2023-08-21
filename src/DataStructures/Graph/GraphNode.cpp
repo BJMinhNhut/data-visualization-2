@@ -54,6 +54,10 @@ sf::Vector2f GraphNode::getAttraction(const GraphNode& node) const {
 	return (delta / norm) * std::log(norm / LENGTH_LIMIT) * ATTRACT - getRepulsion(node);
 }
 
+const std::vector<GraphNode*>& GraphNode::getAdj() const {
+	return mAdj;
+}
+
 void GraphNode::updateCurrent(sf::Time dt) {
 	PolyNode::updateCurrent(dt);
 	sf::Vector2f newPosition = getPosition() + mVelocity * dt.asSeconds();

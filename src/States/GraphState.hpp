@@ -22,8 +22,8 @@ class GraphState : public VisualState {
 	std::pair<std::vector<Animation>, std::string> getSteps(unsigned int option) override;
 
    private:
-	void initOptions();
 	void initCreate();
+	void initComponent();
 
    private:
 	enum Option {

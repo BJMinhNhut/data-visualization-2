@@ -31,11 +31,14 @@ class Graph : public SceneNode {
 	void build(int nodes);
 	void addEdge(int from, int to);
 
+	std::pair<std::vector<Animation>, std::string> CCAnimation();
+
 	int getNumNodes() const;
 	int getNumEdges() const;
 
    private:
 	void rearrange();
+	void DFS(const GraphNode& node, std::vector<int>& components);
 	void updateCurrent(sf::Time dt) override;
 
    private:

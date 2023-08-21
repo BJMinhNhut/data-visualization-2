@@ -25,6 +25,7 @@ class GraphNode : public PolyNode {
 	bool isAdjacent(const GraphNode& node) const;
 	sf::Vector2f getTotalAttraction() const;
 	sf::Vector2f getAttraction(const GraphNode& node) const;
+	const std::vector<GraphNode*>& getAdj() const;
 
    private:
 	void updateCurrent(sf::Time dt) override;
