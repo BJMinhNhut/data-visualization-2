@@ -11,6 +11,7 @@ GraphState::GraphState(StateStack& stack, State::Context context)
 	                         Graph::Transition::None);
 	initCreate();
 	initComponent();
+	initSpanning();
 }
 
 void GraphState::initCreate() {
@@ -100,6 +101,14 @@ void GraphState::initComponent() {
 	});
 }
 
+void GraphState::initSpanning() {
+	mActionsHub.addOption(Spanning, "MST (Kruskal)", [&]() {
+		mActionsHub.setCurrentOption(Spanning);
+		mPlayer.reset();
+		mPlayer.callInfo("Find minimum spanning tree of the graph.");
+	});
+}
+
 void GraphState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mGraph);
@@ -123,6 +132,8 @@ std::pair<std::vector<Animation>, std::string> GraphState::getSteps(unsigned int
 		switch (option) {
 			case Component:
 				return mGraph.CCAnimation();
+			case Spanning:
+				return mGraph.MSTAnimation();
 			default:
 				return VisualState::getSteps(option);
 		}

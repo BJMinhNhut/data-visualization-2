@@ -24,14 +24,15 @@ class GraphState : public VisualState {
    private:
 	void initCreate();
 	void initComponent();
+	void initSpanning();
 
    private:
 	enum Option {
 		None,
 		Create,
 		Component,
-		Dijkstra,
 		Spanning,
+		Dijkstra,
 		NumOptions,
 	};
 	Graph mGraph;

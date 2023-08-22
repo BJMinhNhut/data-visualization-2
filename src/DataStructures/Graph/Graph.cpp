@@ -3,6 +3,7 @@
 //
 
 #include "Graph.hpp"
+#include "DisjointSet.hpp"
 #include "Template/Random.hpp"
 #include "Template/Utility.hpp"
 
@@ -18,6 +19,10 @@ const float Graph::FORCE_EPSILON = 1e-3;
 const float Graph::COOL_DOWN = 0.9995f;
 
 Graph::Edge::Edge(int from, int to, int weight) : from(from), to(to), weight(weight) {}
+
+bool Graph::Edge::operator<(const Graph::Edge& edge) const {
+	return this->weight < edge.weight;
+}
 
 Graph::Graph(const FontHolder& fonts, const ColorHolder& colors)
     : mNodes(),
@@ -40,6 +45,7 @@ void Graph::clear() {
 void Graph::clearHighlight() {
 	for (auto& node : mNodes) {
 		node->highlight(PolyNode::None);
+		node->clearEdgeHighlights();
 		node->setLabel("");
 	}
 }
@@ -132,7 +138,7 @@ void Graph::addEdge(int from, int to) {
 		mNodes[to]->makeAdjacent(mNodes[from]);
 	}
 
-	mEdges.emplace_back(from, to, 0);
+	mEdges.emplace_back(from, to, 1);
 }
 
 void Graph::rearrange() {
@@ -175,6 +181,39 @@ void Graph::DFS(const GraphNode& node, std::vector<int>& components) {
 			DFS(*next, components);
 		}
 	}
+}
+
+std::pair<std::vector<Animation>, std::string> Graph::MSTAnimation() {
+	std::vector<Animation> list;
+
+	std::vector<Edge> temp(mEdges);
+	std::vector<Edge> usedEdges;
+	std::sort(temp.begin(), temp.end());
+
+	DisjointSet dsu(mNodes.size());
+	int totalWeight = 0;
+	for (auto& edge : temp) {
+		if (dsu.unite(edge.from, edge.to)) {
+			usedEdges.push_back(edge);
+			totalWeight += edge.weight;
+		}
+	}
+
+	list.push_back(Animation(
+	    {},
+	    "Minimum spanning tree/forest has total weight " + std::to_string(totalWeight) +
+	        ". Complexity O(ElogV).",
+	    [&, usedEdges]() {
+		    for (auto& edge : mEdges) {
+			    mNodes[edge.from]->highlightEdge(mNodes[edge.to], false);
+		    }
+		    for (auto& edge : usedEdges) {
+			    mNodes[edge.from]->highlightEdge(mNodes[edge.to]);
+		    }
+	    },
+	    [&]() { clearHighlight(); }));
+
+	return std::make_pair(list, "");
 }
 
 int Graph::getNumNodes() const {

@@ -19,6 +19,8 @@ class Graph : public SceneNode {
 		int from, to, weight;
 
 		explicit Edge(int from = 0, int to = 0, int weight = 0);
+
+		bool operator<(const Edge& edge) const;
 	};
 
    public:
@@ -32,6 +34,7 @@ class Graph : public SceneNode {
 	void addEdge(int from, int to);
 
 	std::pair<std::vector<Animation>, std::string> CCAnimation();
+	std::pair<std::vector<Animation>, std::string> MSTAnimation();
 
 	int getNumNodes() const;
 	int getNumEdges() const;
