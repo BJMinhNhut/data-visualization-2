@@ -16,15 +16,12 @@ int Random::getInt(int Min, int Max) {
 }
 
 std::vector<int> Random::getArray(int minLength, int maxLength, int minVal, int maxVal) {
-    std::vector<int> result(getInt(minLength, maxLength));
-    for (int &v: result) v = getInt(minVal, maxVal);
-    return result;
+	std::vector<int> result(getInt(minLength, maxLength));
+	for (int& v : result)
+		v = getInt(minVal, maxVal);
+	return result;
 }
 
 void Random::shuffle(std::vector<std::pair<int, int>>& list) {
-	for (int i = 0; i < list.size(); ++i) {
-		int x = getInt(0, (int)list.size() - 1);
-		int y = getInt(0, (int)list.size() - 1);
-		std::reverse(list.begin() + x, list.begin() + y);
-	}
+	std::shuffle(list.begin(), list.end(), std::default_random_engine(rng()));
 }
