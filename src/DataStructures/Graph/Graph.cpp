@@ -13,9 +13,9 @@
 
 const int Graph::MAX_SIZE = 24;
 const int Graph::MAX_EDGES = 100;
-const int Graph::UPDATE_LOOPS = 10000;
+const int Graph::UPDATE_LOOPS = 8000;
 const float Graph::FORCE_EPSILON = 1e-3;
-const float Graph::COOL_DOWN = 0.999f;
+const float Graph::COOL_DOWN = 0.9995f;
 
 Graph::Edge::Edge(int from, int to, int weight) : from(from), to(to), weight(weight) {}
 
