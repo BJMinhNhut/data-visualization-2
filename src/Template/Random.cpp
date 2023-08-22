@@ -25,3 +25,7 @@ std::vector<int> Random::getArray(int minLength, int maxLength, int minVal, int 
 void Random::shuffle(std::vector<std::pair<int, int>>& list) {
 	std::shuffle(list.begin(), list.end(), std::default_random_engine(rng()));
 }
+
+void Random::shuffle(std::vector<int>& list) {
+	std::shuffle(list.begin(), list.end(), std::default_random_engine(rng()));
+}

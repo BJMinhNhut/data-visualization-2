@@ -15,6 +15,7 @@ namespace Random {
     std::vector<int> getArray(int minLength, int maxLength, int minVal, int maxVal);
 
     void shuffle(std::vector<std::pair<int, int>>& list);
+    void shuffle(std::vector<int>& list);
 
     };  // namespace Random
 

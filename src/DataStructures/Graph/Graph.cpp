@@ -115,14 +115,21 @@ void Graph::build(int nodes) {
 	clear();
 	mNodes.resize(nodes);
 	int mSqrt = std::max(1, (int)sqrt(nodes));
+
+	// randomize id
+	std::vector<int> ids(nodes);
+	std::iota(ids.begin(), ids.end(), 0);
+	Random::shuffle(ids);
+
 	for (int i = 0; i < nodes; ++i) {
-		mNodes[i] = new GraphNode(mFonts, mColors);
-		mNodes[i]->setData(i);
+		mNodes[ids[i]] = new GraphNode(mFonts, mColors);
+		mNodes[ids[i]]->setData(ids[i]);
 		int row = i / mSqrt, col = i % mSqrt;
-		mNodes[i]->setTargetPosition(-300.f + 120.f * (float)col + (float)Random::getInt(-10, 10),
-		                             50.f + 120.f * (float)row + (float)Random::getInt(-10, 10),
+		mNodes[ids[i]]->setTargetPosition(
+		    -300.f + 120.f * (float)col + (float)Random::getInt(-10, 10),
+		    50.f + 120.f * (float)row + (float)Random::getInt(-10, 10),
 		                             Transition::None);
-		attachChild(GraphNode::Ptr(mNodes[i]));
+		attachChild(GraphNode::Ptr(mNodes[ids[i]]));
 	}
 	rearrange();
 }
