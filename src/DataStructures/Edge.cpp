@@ -16,13 +16,16 @@ const float Edge::THICKNESS = 2.f;
 
 Edge::Edge(PolyNode *from, PolyNode *to, EdgeType type, const ColorHolder &colors) :
         mFrom(from), mTo(to), mType(type), mUpdate(true), mColors(colors) {
+	mLine.setFillColor(colors.get(Colors::UIBorder));
 }
 
 void Edge::update(sf::Time dt) {
     if (mUpdate) {
-        mLine = getLineShape(mTo->getWorldPosition() - mFrom->getWorldPosition());
-        mLine.setFillColor(mColors.get(Colors::UIBorder));
-        mUpdate = false;
+		sf::RectangleShape newLine =
+		    getLineShape(mTo->getWorldPosition() - mFrom->getWorldPosition());
+		newLine.setFillColor(mLine.getFillColor());
+		mLine = newLine;
+		mUpdate = false;
     }
 }
 
@@ -41,6 +44,10 @@ sf::RectangleShape Edge::getLineShape(sf::Vector2f line) {
     float angle = atan2(line.y, line.x) / Constants::PI * 180.f;
     rect.rotate(angle);
     return rect;
+}
+
+void Edge::setColor(Colors::ID color) {
+	mLine.setFillColor(mColors.get(color));
 }
 
 void Edge::callUpdate() {

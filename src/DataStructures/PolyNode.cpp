@@ -153,6 +153,22 @@ void PolyNode::removeAllEdges() {
 	std::vector<Edge::Ptr>().swap(outEdges);
 }
 
+void PolyNode::highlightEdge(PolyNode* to, bool highlight) {
+	for (auto& edge : outEdges)
+		if (edge->getTo() == to) {
+			if (highlight)
+				edge->setColor(Colors::Text);
+			else
+				edge->setColor(Colors::DimBorder);
+		}
+}
+
+void PolyNode::clearEdgeHighlights() {
+	for (auto& edge : outEdges) {
+		edge->setColor(Colors::UIBorder);
+	}
+}
+
 void PolyNode::setPosition(float pX, float pY) {
 	SceneNode::setPosition(pX, pY);
 	for (auto& edge : inEdges)

@@ -44,6 +44,8 @@ class PolyNode : public SceneNode {
 	void removeEdgeOut(PolyNode* to);
 	void removeEdgeIn(const Edge::Ptr& edge);
 	void removeAllEdges();
+	void highlightEdge(PolyNode* to, bool highlight = true);
+	void clearEdgeHighlights();
 
 	void setPosition(float pX, float pY) override;
 	void setPosition(sf::Vector2f position) override;

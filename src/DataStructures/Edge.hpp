@@ -29,6 +29,8 @@ class Edge : public sf::Transformable, public sf::Drawable, private sf::NonCopya
 
 	void callUpdate();
 
+	void setColor(Colors::ID color);
+
 	[[nodiscard]] PolyNode* getTo() const;
 
 	[[nodiscard]] PolyNode* getFrom() const;
