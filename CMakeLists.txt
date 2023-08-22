@@ -64,6 +64,8 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/DataStructures/Graph/Graph.hpp
         src/States/GraphState.cpp
         src/States/GraphState.hpp
+        src/DataStructures/Graph/DisjointSet.cpp
+        src/DataStructures/Graph/DisjointSet.hpp
 )
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
