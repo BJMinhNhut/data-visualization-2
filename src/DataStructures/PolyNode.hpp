@@ -39,12 +39,14 @@ class PolyNode : public SceneNode {
 	void setRadius(const float& radius);
 	void resetDataScale();
 
-	void addEdgeOut(PolyNode* to);
+	void addEdgeOut(PolyNode* to, int type = Edge::Undirected);
 	void addEdgeIn(const Edge::Ptr& edge);
 	void removeEdgeOut(PolyNode* to);
 	void removeEdgeIn(const Edge::Ptr& edge);
 	void removeAllEdges();
 	void highlightEdge(PolyNode* to, bool highlight = true);
+	void setEdgeWeight(PolyNode* to, int weight);
+	void setEdgeType(PolyNode* to, int type);
 	void clearEdgeHighlights();
 
 	void setPosition(float pX, float pY) override;
@@ -61,6 +63,7 @@ class PolyNode : public SceneNode {
 	sf::CircleShape mPolygon;
 	std::vector<Edge::Ptr> inEdges, outEdges;
 	const ColorHolder& mColors;
+	const FontHolder& mFonts;
 };
 
 #endif  //DATAVISUALIZATION2_POLYNODE_HPP
