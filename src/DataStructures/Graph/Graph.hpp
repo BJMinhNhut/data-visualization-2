@@ -15,12 +15,13 @@ class Graph : public SceneNode {
    public:
 	static const int MAX_SIZE;
 	static const int MAX_EDGES;
-	struct Edge {
+	static const int MAX_WEIGHT;
+	struct EdgeTuple {
 		int from, to, weight;
 
-		explicit Edge(int from = 0, int to = 0, int weight = 0);
+		explicit EdgeTuple(int from = 0, int to = 0, int weight = 0);
 
-		bool operator<(const Edge& edge) const;
+		bool operator<(const EdgeTuple& edge) const;
 	};
 
    public:
@@ -31,7 +32,7 @@ class Graph : public SceneNode {
 	void loadFromFile(const std::string& fileDir);
 	void randomize(int nodes, int edges);
 	void build(int nodes);
-	void addEdge(int from, int to);
+	void addEdge(int from, int to, int weight);
 
 	std::pair<std::vector<Animation>, std::string> CCAnimation();
 	std::pair<std::vector<Animation>, std::string> MSTAnimation();
@@ -54,7 +55,7 @@ class Graph : public SceneNode {
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 	std::vector<GraphNode*> mNodes;
-	std::vector<Edge> mEdges;
+	std::vector<EdgeTuple> mEdges;
 };
 
 #endif  //DATAVISUALIZATION2_GRAPH_HPP

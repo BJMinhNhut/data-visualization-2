@@ -14,13 +14,14 @@
 
 const int Graph::MAX_SIZE = 24;
 const int Graph::MAX_EDGES = 100;
+const int Graph::MAX_WEIGHT = 50;
 const int Graph::UPDATE_LOOPS = 8000;
 const float Graph::FORCE_EPSILON = 1e-3;
 const float Graph::COOL_DOWN = 0.9995f;
 
-Graph::Edge::Edge(int from, int to, int weight) : from(from), to(to), weight(weight) {}
+Graph::EdgeTuple::EdgeTuple(int from, int to, int weight) : from(from), to(to), weight(weight) {}
 
-bool Graph::Edge::operator<(const Graph::Edge& edge) const {
+bool Graph::EdgeTuple::operator<(const Graph::EdgeTuple& edge) const {
 	return this->weight < edge.weight;
 }
 
@@ -39,7 +40,7 @@ void Graph::clear() {
 		detachChild(*node);
 	}
 	std::vector<GraphNode*>().swap(mNodes);
-	std::vector<Edge>().swap(mEdges);
+	std::vector<EdgeTuple>().swap(mEdges);
 }
 
 void Graph::clearHighlight() {
@@ -63,7 +64,7 @@ void Graph::randomize(int nodes, int edges) {
 		if (i >= candidates.size())
 			break;
 		auto& [u, v] = candidates[i];
-		addEdge(u, v);
+		addEdge(u, v, Random::getInt(1, MAX_WEIGHT));
 	}
 }
 
@@ -72,7 +73,7 @@ void Graph::loadFromFile(const std::string& fileDir) {
 	std::vector<int> elements;
 	std::string token;
 	int nodes;
-	std::vector<Edge> edgeList;
+	std::vector<EdgeTuple> edgeList;
 	try {
 		if (!(fileStream >> nodes))
 			throw 1;
@@ -104,7 +105,7 @@ void Graph::loadFromFile(const std::string& fileDir) {
 		}
 		build(nodes);
 		for (auto& [from, to, weight] : edgeList) {
-			addEdge(from, to);
+			addEdge(from, to, weight);
 		}
 	}
 	fileStream.close();
@@ -134,18 +135,20 @@ void Graph::build(int nodes) {
 	rearrange();
 }
 
-void Graph::addEdge(int from, int to) {
+void Graph::addEdge(int from, int to, int weight) {
 	assert(from >= 0 && from < mNodes.size());
 	assert(to >= 0 && to < mNodes.size());
 	assert(mEdges.size() < MAX_EDGES);
+	assert(weight >= 0 && weight <= MAX_WEIGHT);
 
 	if (from != to) {
-		mNodes[from]->addEdgeOut(mNodes[to]);
+		mNodes[from]->addEdgeOut(mNodes[to], Edge::Undirected | Edge::Weighted);
+		mNodes[from]->setEdgeWeight(mNodes[to], weight);
 		mNodes[from]->makeAdjacent(mNodes[to]);
 		mNodes[to]->makeAdjacent(mNodes[from]);
 	}
 
-	mEdges.emplace_back(from, to, 1);
+	mEdges.emplace_back(from, to, weight);
 }
 
 void Graph::rearrange() {
@@ -193,8 +196,8 @@ void Graph::DFS(const GraphNode& node, std::vector<int>& components) {
 std::pair<std::vector<Animation>, std::string> Graph::MSTAnimation() {
 	std::vector<Animation> list;
 
-	std::vector<Edge> temp(mEdges);
-	std::vector<Edge> usedEdges;
+	std::vector<EdgeTuple> temp(mEdges);
+	std::vector<EdgeTuple> usedEdges;
 	std::sort(temp.begin(), temp.end());
 
 	DisjointSet dsu(mNodes.size());
