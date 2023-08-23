@@ -162,6 +162,7 @@ void Graph::setDirected(bool isDirected) {
 			node->setEdgeType(next, mCurrentOptions);
 		}
 	}
+	clearHighlight();
 }
 
 void Graph::setWeighted(bool isWeighted) {
@@ -175,6 +176,7 @@ void Graph::setWeighted(bool isWeighted) {
 			node->setEdgeType(next, mCurrentOptions);
 		}
 	}
+	clearHighlight();
 }
 
 void Graph::rearrange() {
@@ -234,6 +236,9 @@ std::pair<std::vector<Animation>, std::string> Graph::MSTAnimation() {
 			totalWeight += edge.weight;
 		}
 	}
+
+	if (!(mCurrentOptions & Edge::Weighted))
+		totalWeight = (int)mNodes.size() - 1;
 
 	list.push_back(Animation(
 	    {},
