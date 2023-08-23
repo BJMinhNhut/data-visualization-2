@@ -26,7 +26,11 @@ void GraphState::initOptions() {
 	auto undirectedButton = std::make_shared<GUI::Button>(
 	    GUI::Button::Checkbox, *getContext().fonts, *getContext().textures, *getContext().colors);
 	undirectedButton->setToggle(true);
-	undirectedButton->setCallback([this]() { mGraph.setDirected(false); });
+	undirectedButton->setCallback([this]() {
+		mGraph.setDirected(false);
+		mActionsHub.setCurrentOption(None);
+		mPlayer.reset();
+	});
 	undirectedButton->setPosition(150.f, 210.f);
 	mDirect.pack(undirectedButton);
 
@@ -38,7 +42,11 @@ void GraphState::initOptions() {
 	auto directedButton = std::make_shared<GUI::Button>(
 	    GUI::Button::Checkbox, *getContext().fonts, *getContext().textures, *getContext().colors);
 	directedButton->setToggle(true);
-	directedButton->setCallback([this]() { mGraph.setDirected(true); });
+	directedButton->setCallback([this]() {
+		mGraph.setDirected(true);
+		mActionsHub.setCurrentOption(None);
+		mPlayer.reset();
+	});
 	directedButton->setPosition(310.f, 210.f);
 	mDirect.pack(directedButton);
 
@@ -52,7 +60,11 @@ void GraphState::initOptions() {
 	auto unweightedButton = std::make_shared<GUI::Button>(
 	    GUI::Button::Checkbox, *getContext().fonts, *getContext().textures, *getContext().colors);
 	unweightedButton->setToggle(true);
-	unweightedButton->setCallback([this]() { mGraph.setWeighted(false); });
+	unweightedButton->setCallback([this]() {
+		mGraph.setWeighted(false);
+		mActionsHub.setCurrentOption(None);
+		mPlayer.reset();
+	});
 	unweightedButton->setPosition(150.f, 270.f);
 	mWeight.pack(unweightedButton);
 
@@ -64,7 +76,11 @@ void GraphState::initOptions() {
 	auto weightedButton = std::make_shared<GUI::Button>(
 	    GUI::Button::Checkbox, *getContext().fonts, *getContext().textures, *getContext().colors);
 	weightedButton->setToggle(true);
-	weightedButton->setCallback([this]() { mGraph.setWeighted(true); });
+	weightedButton->setCallback([this]() {
+		mGraph.setWeighted(true);
+		mActionsHub.setCurrentOption(None);
+		mPlayer.reset();
+	});
 	weightedButton->setPosition(310.f, 270.f);
 	mWeight.pack(weightedButton);
 
