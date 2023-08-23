@@ -187,6 +187,12 @@ void Graph::rearrange() {
 
 std::pair<std::vector<Animation>, std::string> Graph::CCAnimation() {
 	std::vector<Animation> list;
+
+	if (mCurrentOptions & Edge::Directed) {
+		throw std::logic_error(
+		    "Find connected component in Directed mode is not allowed. Please change edge option "
+		    "to Undirected!");
+	}
 	std::vector<int> components(mNodes.size(), -1);
 	int numCC = 0;
 	for (int i = 0; i < mNodes.size(); ++i) {
@@ -223,6 +229,11 @@ void Graph::DFS(const GraphNode& node, std::vector<int>& components) {
 
 std::pair<std::vector<Animation>, std::string> Graph::MSTAnimation() {
 	std::vector<Animation> list;
+
+	if (mCurrentOptions & Edge::Directed) {
+		throw std::logic_error(
+		    "Cannot find MST in Directed mode. Please change edge option to Undirected!");
+	}
 
 	std::vector<EdgeTuple> temp(mEdges);
 	std::vector<EdgeTuple> usedEdges;
