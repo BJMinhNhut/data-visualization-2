@@ -5,6 +5,7 @@
 #include "Dijkstra.hpp"
 
 #include <cassert>
+#include <iostream>
 #include <queue>
 
 const int Dijkstra::INF = 1e5;
@@ -16,21 +17,24 @@ Dijkstra::Dijkstra(int nodes, int start) : mNodes(nodes), mStart(start), mRun(fa
 }
 
 void Dijkstra::addEdge(int from, int to, int weight) {
+	//	std::cout << "edge: " << from << ' ' << to << ' ' << weight << '\n';
 	mAdj[from].emplace_back(to, weight);
 }
 
 void Dijkstra::run() {
 	std::priority_queue<std::pair<int, int>, std::vector<std::pair<int, int>>, std::greater<>>
 	    mQueue;
-	mDist[mStart] = true;
+	mDist[mStart] = 0;
 	mQueue.emplace(0, mStart);
 	while (!mQueue.empty()) {
-		auto& [dist, node] = mQueue.top();
+		auto [dist, node] = mQueue.top();
 		mQueue.pop();
 		if (dist != mDist[node])
 			continue;
-		for (auto& [next, weight] : mAdj[node]) {
+		//		std::cout << node << " deg: " << mAdj[node].size() << '\n';
+		for (auto [next, weight] : mAdj[node]) {
 			int newDist = mDist[node] + weight;
+			//			std::cout << node << ' ' << dist << ' ' << next << ' ' << newDist << '\n';
 			if (newDist < mDist[next]) {
 				mDist[next] = newDist;
 				mTraverse[next] = node;
@@ -48,5 +52,5 @@ int Dijkstra::getDistance(int node) const {
 
 int Dijkstra::getTraverse(int node) const {
 	assert(mRun == true);
-	return mDist[node];
+	return mTraverse[node];
 }
