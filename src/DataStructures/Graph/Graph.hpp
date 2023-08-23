@@ -34,6 +34,9 @@ class Graph : public SceneNode {
 	void build(int nodes);
 	void addEdge(int from, int to, int weight);
 
+	void setDirected(bool isDirected);
+	void setWeighted(bool isWeighted);
+
 	std::pair<std::vector<Animation>, std::string> CCAnimation();
 	std::pair<std::vector<Animation>, std::string> MSTAnimation();
 
@@ -56,6 +59,7 @@ class Graph : public SceneNode {
 	const FontHolder& mFonts;
 	std::vector<GraphNode*> mNodes;
 	std::vector<EdgeTuple> mEdges;
+	int mCurrentOptions;
 };
 
 #endif  //DATAVISUALIZATION2_GRAPH_HPP

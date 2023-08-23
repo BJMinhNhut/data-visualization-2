@@ -22,6 +22,7 @@ class GraphState : public VisualState {
 	std::pair<std::vector<Animation>, std::string> getSteps(unsigned int option) override;
 
    private:
+	void initOptions();
 	void initCreate();
 	void initComponent();
 	void initSpanning();
@@ -36,6 +37,7 @@ class GraphState : public VisualState {
 		NumOptions,
 	};
 	Graph mGraph;
+	GUI::Container mDirect, mWeight;
 };
 
 #endif  //DATAVISUALIZATION2_GRAPHSTATE_HPP

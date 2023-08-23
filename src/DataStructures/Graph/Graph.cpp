@@ -31,7 +31,8 @@ Graph::Graph(const FontHolder& fonts, const ColorHolder& colors)
       mColors(colors),
       mTime(UPDATE_LOOPS + 1),
       mCoolDown(1.f),
-      mMaxForce(100.f) {
+      mMaxForce(100.f),
+      mCurrentOptions(0) {
 	randomize(15, 20);
 }
 
@@ -128,8 +129,7 @@ void Graph::build(int nodes) {
 		int row = i / mSqrt, col = i % mSqrt;
 		mNodes[ids[i]]->setTargetPosition(
 		    -300.f + 120.f * (float)col + (float)Random::getInt(-10, 10),
-		    50.f + 120.f * (float)row + (float)Random::getInt(-10, 10),
-		                             Transition::None);
+		    50.f + 120.f * (float)row + (float)Random::getInt(-10, 10), Transition::None);
 		attachChild(GraphNode::Ptr(mNodes[ids[i]]));
 	}
 	rearrange();
@@ -142,13 +142,39 @@ void Graph::addEdge(int from, int to, int weight) {
 	assert(weight >= 0 && weight <= MAX_WEIGHT);
 
 	if (from != to) {
-		mNodes[from]->addEdgeOut(mNodes[to], Edge::Undirected | Edge::Weighted);
+		mNodes[from]->addEdgeOut(mNodes[to], mCurrentOptions);
 		mNodes[from]->setEdgeWeight(mNodes[to], weight);
 		mNodes[from]->makeAdjacent(mNodes[to]);
 		mNodes[to]->makeAdjacent(mNodes[from]);
 	}
 
 	mEdges.emplace_back(from, to, weight);
+}
+
+void Graph::setDirected(bool isDirected) {
+	if (mCurrentOptions & Edge::Directed)
+		mCurrentOptions ^= Edge::Directed;
+	if (isDirected)
+		mCurrentOptions ^= Edge::Directed;
+
+	for (auto& node : mNodes) {
+		for (auto& next : node->getAdj()) {
+			node->setEdgeType(next, mCurrentOptions);
+		}
+	}
+}
+
+void Graph::setWeighted(bool isWeighted) {
+	if (mCurrentOptions & Edge::Weighted)
+		mCurrentOptions ^= Edge::Weighted;
+	if (isWeighted) {
+		mCurrentOptions ^= Edge::Weighted;
+	}
+	for (auto& node : mNodes) {
+		for (auto& next : node->getAdj()) {
+			node->setEdgeType(next, mCurrentOptions);
+		}
+	}
 }
 
 void Graph::rearrange() {

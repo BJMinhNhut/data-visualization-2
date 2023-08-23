@@ -3,15 +3,72 @@
 //
 
 #include "GraphState.hpp"
+#include "GUI/Button.hpp"
+#include "GUI/Label.hpp"
 #include "GUI/Panel.hpp"
 
 GraphState::GraphState(StateStack& stack, State::Context context)
     : VisualState(stack, context, "Graph"), mGraph(*context.fonts, *context.colors) {
 	mGraph.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 150.f,
 	                         Graph::Transition::None);
+	initOptions();
 	initCreate();
 	initComponent();
 	initSpanning();
+}
+
+void GraphState::initOptions() {
+	auto undirectedLabel = std::make_shared<GUI::Label>(GUI::Label::Main, "Undirected",
+	                                                    *getContext().fonts, *getContext().colors);
+	undirectedLabel->setPosition(20.f, 205.f);
+	mDirect.pack(undirectedLabel);
+
+	auto undirectedButton = std::make_shared<GUI::Button>(
+	    GUI::Button::Checkbox, *getContext().fonts, *getContext().textures, *getContext().colors);
+	undirectedButton->setToggle(true);
+	undirectedButton->setCallback([this]() { mGraph.setDirected(false); });
+	undirectedButton->setPosition(150.f, 210.f);
+	mDirect.pack(undirectedButton);
+
+	auto directedLabel = std::make_shared<GUI::Label>(GUI::Label::Main, "Directed",
+	                                                  *getContext().fonts, *getContext().colors);
+	directedLabel->setPosition(200.f, 205.f);
+	mDirect.pack(directedLabel);
+
+	auto directedButton = std::make_shared<GUI::Button>(
+	    GUI::Button::Checkbox, *getContext().fonts, *getContext().textures, *getContext().colors);
+	directedButton->setToggle(true);
+	directedButton->setCallback([this]() { mGraph.setDirected(true); });
+	directedButton->setPosition(310.f, 210.f);
+	mDirect.pack(directedButton);
+
+	mDirect.activateChild(undirectedButton);
+
+	auto unweightedLabel = std::make_shared<GUI::Label>(GUI::Label::Main, "Unweighted",
+	                                                    *getContext().fonts, *getContext().colors);
+	unweightedLabel->setPosition(20.f, 265.f);
+	mWeight.pack(unweightedLabel);
+
+	auto unweightedButton = std::make_shared<GUI::Button>(
+	    GUI::Button::Checkbox, *getContext().fonts, *getContext().textures, *getContext().colors);
+	unweightedButton->setToggle(true);
+	unweightedButton->setCallback([this]() { mGraph.setWeighted(false); });
+	unweightedButton->setPosition(150.f, 270.f);
+	mWeight.pack(unweightedButton);
+
+	auto weightedLabel = std::make_shared<GUI::Label>(GUI::Label::Main, "Weighted",
+	                                                  *getContext().fonts, *getContext().colors);
+	weightedLabel->setPosition(200.f, 265.f);
+	mWeight.pack(weightedLabel);
+
+	auto weightedButton = std::make_shared<GUI::Button>(
+	    GUI::Button::Checkbox, *getContext().fonts, *getContext().textures, *getContext().colors);
+	weightedButton->setToggle(true);
+	weightedButton->setCallback([this]() { mGraph.setWeighted(true); });
+	weightedButton->setPosition(310.f, 270.f);
+	mWeight.pack(weightedButton);
+
+	mWeight.activateChild(weightedButton);
 }
 
 void GraphState::initCreate() {
@@ -112,17 +169,23 @@ void GraphState::initSpanning() {
 void GraphState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mGraph);
+	getContext().window->draw(mDirect);
+	getContext().window->draw(mWeight);
 }
 
 bool GraphState::update(sf::Time dt) {
 	bool result = true;
 	result |= VisualState::update(dt);
 	mGraph.update(dt);
+	mDirect.update(dt);
+	mWeight.update(dt);
 	return result;
 }
 
 bool GraphState::handleEvent(const sf::Event& event) {
 	VisualState::handleEvent(event);
+	mDirect.handleEvent(event);
+	mWeight.handleEvent(event);
 	return false;
 }
 
