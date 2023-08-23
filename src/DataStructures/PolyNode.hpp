@@ -39,7 +39,7 @@ class PolyNode : public SceneNode {
 	void setRadius(const float& radius);
 	void resetDataScale();
 
-	void addEdgeOut(PolyNode* to, int type = Edge::Undirected);
+	void addEdgeOut(PolyNode* to, int type = 0);
 	void addEdgeIn(const Edge::Ptr& edge);
 	void removeEdgeOut(PolyNode* to);
 	void removeEdgeIn(const Edge::Ptr& edge);

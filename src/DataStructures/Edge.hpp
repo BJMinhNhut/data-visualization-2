@@ -23,8 +23,7 @@ class Edge : public sf::Transformable, public sf::Drawable, private sf::NonCopya
 	enum EdgeType {
 		Hidden = 1 << 0,
 		Directed = 1 << 1,
-		Undirected = 1 << 2,
-		Weighted = 1 << 3,
+		Weighted = 1 << 2,
 	};
 
    public:

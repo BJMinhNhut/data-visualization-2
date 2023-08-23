@@ -41,7 +41,8 @@ void Edge::update(sf::Time dt) {
 }
 
 void Edge::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	if (mType & Undirected) {
+	if (mType & Directed) {
+	} else {
 		target.draw(mLine, states);
 	}
 	if (mType & Weighted) {
@@ -67,7 +68,10 @@ sf::Vector2f Edge::getWeightPosition() {
 	float x = (delta.x) / 2.f, y = (delta.y) / 2.f;
 	sf::Vector2f mid(x, y);
 	sf::Vector2f norm = sf::Vector2f(-y, x) / Utility::getNorm(mid) * OFF_SET;
-	return mid + norm;
+	sf::Vector2f position(mid + norm);
+	position.x = std::round(position.x);
+	position.y = std::round(position.y);
+	return position;
 }
 
 void Edge::setColor(Colors::ID color) {
