@@ -24,6 +24,7 @@ PolyNode::PolyNode(const FontHolder& fonts, const ColorHolder& colors)
 	mPolygon.setFillColor(colors.get(Colors::UIPrimary));
 	mPolygon.setOutlineColor(colors.get(Colors::UIBorder));
 	mPolygon.setOutlineThickness(2.f);
+	mPolygon.rotate(45);
 	Utility::centerOrigin(mPolygon);
 }
 

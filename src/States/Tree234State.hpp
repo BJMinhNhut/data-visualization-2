@@ -5,6 +5,7 @@
 #ifndef DATAVISUALIZATION2_TREE234STATE_HPP
 #define DATAVISUALIZATION2_TREE234STATE_HPP
 
+#include "DataStructures/Tree234/Tree234.hpp"
 #include "GUI/InputNum.hpp"
 #include "VisualState.hpp"
 
@@ -37,6 +38,7 @@ class Tree234State : public VisualState {
 		NumOptions,
 	};
 	std::vector<GUI::InputNum::Ptr> Inputs;
+	Tree234 mTree;
 };
 
 #endif  //DATAVISUALIZATION2_TREE234STATE_HPP

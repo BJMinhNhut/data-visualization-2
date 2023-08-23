@@ -8,11 +8,10 @@
 
 Tree234State::Tree234State(StateStack& stack, State::Context context)
     : VisualState(stack, context, "2-3-4 Tree"),
-      Inputs(NumOptions)
-//      mTree(*getContext().fonts, *getContext().colors)
-{
-	//	mTree.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 180.f,
-	//	                        AVLNode::Transition::None);
+      Inputs(NumOptions),
+      mTree(*getContext().fonts, *getContext().colors) {
+	mTree.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 180.f,
+	                        Tree234::Transition::None);
 	initOptions();
 	initCreate();
 	initInsert();
@@ -140,18 +139,23 @@ void Tree234State::initDelete() {
 
 void Tree234State::draw() {
 	VisualState::draw();
-	//	getContext().window->draw(mTree);
+	getContext().window->draw(mTree);
 }
 
 bool Tree234State::update(sf::Time dt) {
 	bool result = true;
 	result |= VisualState::update(dt);
-	//	mTree.update(dt);
+	mTree.update(dt);
 	return result;
 }
 
 bool Tree234State::handleEvent(const sf::Event& event) {
 	VisualState::handleEvent(event);
+
+	if (event.type == sf::Event::KeyReleased) {
+		if (event.key.code == sf::Keyboard::Space)
+			mTree.insert(1);
+	}
 	return false;
 }
 
