@@ -39,6 +39,7 @@ class GraphState : public VisualState {
 	};
 	Graph mGraph;
 	GUI::Container mDirect, mWeight;
+	GUI::InputNum::Ptr DijkstraInput;
 };
 
 #endif  //DATAVISUALIZATION2_GRAPHSTATE_HPP
