@@ -68,6 +68,8 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/DataStructures/Graph/DisjointSet.hpp
         src/DataStructures/Graph/Dijkstra.cpp
         src/DataStructures/Graph/Dijkstra.hpp
+        src/States/Tree234State.cpp
+        src/States/Tree234State.hpp
 )
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)

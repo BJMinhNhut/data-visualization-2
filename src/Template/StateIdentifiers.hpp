@@ -15,6 +15,7 @@ enum ID {
 	VisualTemplate,
 	VisualHash,
 	VisualAVL,
+	Visual234,
 	VisualMaxHeap,
 	VisualMinHeap,
 	VisualTrie,
