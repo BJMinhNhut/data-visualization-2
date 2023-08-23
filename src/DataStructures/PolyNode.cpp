@@ -161,8 +161,20 @@ void PolyNode::highlightEdge(PolyNode* to, bool highlight) {
 				edge->setColor(Colors::Text);
 			else
 				edge->setColor(Colors::DimBorder);
-			break;
+			return;
 		}
+
+	for (auto& edge : inEdges) {
+		if (edge->getFrom() == to) {
+			if (highlight)
+				edge->setColor(Colors::Text);
+			else
+				edge->setColor(Colors::DimBorder);
+			return;
+		}
+	}
+
+	assert(false);
 }
 
 void PolyNode::clearEdgeHighlights() {
