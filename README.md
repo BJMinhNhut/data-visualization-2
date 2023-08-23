@@ -59,11 +59,11 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Insert
   - [x] Delete
   - [x] Search
-- [ ] Graph
+- [x] Graph
   - [x] Create (from a matrix)
   - [x] Connected components
-  - [ ] Minimum spanning tree
-  - [ ] Dijkstra
+  - [x] Minimum spanning tree
+  - [x] Dijkstra
 
 ## Documentation
 Overleaf: https://www.overleaf.com/read/gfbrjjnzgkbm
