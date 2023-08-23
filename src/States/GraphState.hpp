@@ -26,6 +26,7 @@ class GraphState : public VisualState {
 	void initCreate();
 	void initComponent();
 	void initSpanning();
+	void initDijkstra();
 
    private:
 	enum Option {

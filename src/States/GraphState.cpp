@@ -15,6 +15,7 @@ GraphState::GraphState(StateStack& stack, State::Context context)
 	initCreate();
 	initComponent();
 	initSpanning();
+	initDijkstra();
 }
 
 void GraphState::initOptions() {
@@ -182,6 +183,15 @@ void GraphState::initSpanning() {
 	});
 }
 
+void GraphState::initDijkstra() {
+	mActionsHub.addOption(Dijkstra, "Dijkstra", [&]() {
+		mActionsHub.setCurrentOption(Dijkstra);
+		mPlayer.reset();
+		mPlayer.callInfo(
+		    "Find single shortest paths from a node of the graph to the others using Dijkstra.");
+	});
+}
+
 void GraphState::draw() {
 	VisualState::draw();
 	getContext().window->draw(mGraph);
@@ -213,6 +223,8 @@ std::pair<std::vector<Animation>, std::string> GraphState::getSteps(unsigned int
 				return mGraph.CCAnimation();
 			case Spanning:
 				return mGraph.MSTAnimation();
+			case Dijkstra:
+				return mGraph.DijkstraAnimation(0);
 			default:
 				return VisualState::getSteps(option);
 		}

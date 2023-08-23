@@ -3,6 +3,7 @@
 //
 
 #include "Graph.hpp"
+#include "Dijkstra.hpp"
 #include "DisjointSet.hpp"
 #include "Template/Random.hpp"
 #include "Template/Utility.hpp"
@@ -146,9 +147,8 @@ void Graph::addEdge(int from, int to, int weight) {
 		mNodes[from]->setEdgeWeight(mNodes[to], weight);
 		mNodes[from]->makeAdjacent(mNodes[to]);
 		mNodes[to]->makeAdjacent(mNodes[from]);
+		mEdges.emplace_back(from, to, weight);
 	}
-
-	mEdges.emplace_back(from, to, weight);
 }
 
 void Graph::setDirected(bool isDirected) {
@@ -250,6 +250,45 @@ std::pair<std::vector<Animation>, std::string> Graph::MSTAnimation() {
 		    }
 		    for (auto& edge : usedEdges) {
 			    mNodes[edge.from]->highlightEdge(mNodes[edge.to]);
+		    }
+	    },
+	    [&]() { clearHighlight(); }));
+
+	return std::make_pair(list, "");
+}
+
+std::pair<std::vector<Animation>, std::string> Graph::DijkstraAnimation(int start) {
+	std::vector<Animation> list;
+
+	Dijkstra dijkstra((int)mNodes.size(), start);
+	for (auto [from, to, weight] : mEdges) {
+		if (!(mCurrentOptions & Edge::Weighted))
+			weight = 1;
+		dijkstra.addEdge(from, to, weight);
+		if (!(mCurrentOptions & Edge::Directed))
+			dijkstra.addEdge(to, from, weight);
+		//		std::cout << from << ' ' << to << ' ' << weight << '\n';
+	}
+
+	dijkstra.run();
+
+	list.push_back(Animation(
+	    {},
+	    "Single shortest paths from " + std::to_string(start) +
+	        " using Dijkstra. Complexity O(ElogV).",
+	    [&, dijkstra]() {
+		    for (auto& edge : mEdges) {
+			    mNodes[edge.from]->highlightEdge(mNodes[edge.to], false);
+		    }
+		    for (int i = 0; i < mNodes.size(); ++i) {
+			    int dist = dijkstra.getDistance(i);
+			    if (dist < Dijkstra::INF)
+				    mNodes[i]->setLabel(dist);
+			    else
+				    mNodes[i]->setLabel("inf");
+			    int j = dijkstra.getTraverse(i);
+			    if (j != -1)
+				    mNodes[j]->highlightEdge(mNodes[i], true);
 		    }
 	    },
 	    [&]() { clearHighlight(); }));

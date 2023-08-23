@@ -39,6 +39,7 @@ class Graph : public SceneNode {
 
 	std::pair<std::vector<Animation>, std::string> CCAnimation();
 	std::pair<std::vector<Animation>, std::string> MSTAnimation();
+	std::pair<std::vector<Animation>, std::string> DijkstraAnimation(int start);
 
 	int getNumNodes() const;
 	int getNumEdges() const;
