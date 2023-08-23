@@ -30,25 +30,27 @@ Edge::Edge(PolyNode* from, PolyNode* to, int type, const FontHolder& fonts,
 
 void Edge::update(sf::Time dt) {
 	if (mUpdate) {
-		sf::RectangleShape newLine =
-		    getLineShape(mTo->getWorldPosition() - mFrom->getWorldPosition());
-		newLine.setFillColor(mLine.getFillColor());
-		mLine = newLine;
-		mText.setFillColor(mLine.getFillColor());
-		mText.setPosition(getWeightPosition());
+		sf::Color color = mLine.getFillColor();
+		mLine = getLineShape(mTo->getWorldPosition() - mFrom->getWorldPosition());
+		mLine.setFillColor(color);
+		if (mType & Edge::Directed) {
+			mArrow = getArrowShape(mTo->getWorldPosition() - mFrom->getWorldPosition());
+			mArrow.setFillColor(color);
+		}
+		if (mType & Edge::Weighted) {
+			mText.setFillColor(color);
+			mText.setPosition(getWeightPosition());
+		}
 		mUpdate = false;
 	}
 }
 
 void Edge::draw(sf::RenderTarget& target, sf::RenderStates states) const {
-	if (mType & Directed) {
-	} else {
-		target.draw(mLine, states);
-	}
-	if (mType & Weighted) {
-		//		std::cout << mText.getPosition().x << ' ' << mText.getPosition().y << '\n';
+	target.draw(mLine, states);
+	if (mType & Directed)
+		target.draw(mArrow, states);
+	if (mType & Weighted)
 		target.draw(mText, states);
-	}
 }
 
 sf::RectangleShape Edge::getLineShape(sf::Vector2f line) {
@@ -60,6 +62,21 @@ sf::RectangleShape Edge::getLineShape(sf::Vector2f line) {
 	float angle = atan2(line.y, line.x) / Constants::PI * 180.f;
 	rect.rotate(angle);
 	return rect;
+}
+
+sf::ConvexShape Edge::getArrowShape(sf::Vector2f line) {
+	float lineLength = sqrt(line.x * line.x + line.y * line.y) - mTo->getRadius();
+	static const float ARROW_EDGE = 10.f;
+	float arrowLength = sqrt(3.f) / 2.f * ARROW_EDGE;
+
+	sf::ConvexShape arrowTip(3);
+	arrowTip.setPoint(0, sf::Vector2f(lineLength - arrowLength, ARROW_EDGE / 2.f));
+	arrowTip.setPoint(1, sf::Vector2f(lineLength, 0.f));
+	arrowTip.setPoint(2, sf::Vector2f(lineLength - arrowLength, -ARROW_EDGE / 2.f));
+
+	float angle = atan2(line.y, line.x) / Constants::PI * 180.f;
+	arrowTip.rotate(angle);
+	return arrowTip;
 }
 
 sf::Vector2f Edge::getWeightPosition() {

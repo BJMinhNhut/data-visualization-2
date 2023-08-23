@@ -56,7 +56,7 @@ int PolyNode::getIntData() const {
 }
 
 float PolyNode::getRadius() const {
-	return mPolygon.getRadius();
+	return mPolygon.getRadius() + mPolygon.getOutlineThickness();
 }
 
 void PolyNode::setData(const std::string& data) {

@@ -9,11 +9,12 @@
 #include "Template/ResourceIdentifiers.hpp"
 #include "Template/SceneNode.hpp"
 
+#include <SFML/Graphics/ConvexShape.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Transformable.hpp>
-#include "SFML/System/NonCopyable.hpp"
+#include <SFML/System/NonCopyable.hpp>
 
 class PolyNode;
 
@@ -45,6 +46,7 @@ class Edge : public sf::Transformable, public sf::Drawable, private sf::NonCopya
 	void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	sf::RectangleShape getLineShape(sf::Vector2f line);
+	sf::ConvexShape getArrowShape(sf::Vector2f line);
 	sf::Vector2f getWeightPosition();
 
    private:
@@ -55,6 +57,7 @@ class Edge : public sf::Transformable, public sf::Drawable, private sf::NonCopya
 	sf::Text mText;
 
 	sf::RectangleShape mLine;
+	sf::ConvexShape mArrow;
 	int mType;
 	bool mUpdate;
 };
