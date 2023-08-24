@@ -8,6 +8,8 @@
 #include "../PolyNode.hpp"
 #include "Template/SceneNode.hpp"
 
+#include <SFML/Graphics/RectangleShape.hpp>
+
 class Node234 : public SceneNode {
    public:
 	static const int MAX_DATA;
@@ -43,7 +45,10 @@ class Node234 : public SceneNode {
 	void insert(int id, int value);
 	void align();
 
-	//	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+	void updateCurrent(sf::Time dt) override;
+	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+	static sf::RectangleShape getLineShape(sf::Vector2f line);
 
    private:
 	const FontHolder& mFonts;
@@ -55,6 +60,7 @@ class Node234 : public SceneNode {
 	Node234* mParent;
 	std::vector<Node234*> mChildren;
 	std::vector<PolyNode*> mData;
+	std::vector<sf::RectangleShape> mEdges;
 };
 
 #endif  //DATAVISUALIZATION2_NODE234_HPP

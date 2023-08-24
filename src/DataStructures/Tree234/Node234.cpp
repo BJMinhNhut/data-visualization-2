@@ -3,10 +3,12 @@
 //
 
 #include "Node234.hpp"
+#include "Template/Constants.hpp"
 
 #include <SFML/Graphics/RenderStates.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
+#include <cmath>
 #include <iostream>
 
 const int Node234::MAX_DATA = 3;
@@ -166,5 +168,37 @@ void Node234::align() {
 	for (auto& node : mData) {
 		node->setTargetPosition(delta, 0.f, None);
 		delta += 2.f * NODE_RADIUS;
+	}
+}
+
+sf::RectangleShape Node234::getLineShape(sf::Vector2f line) {
+	static float THICKNESS = 2.f;
+	float lineLength = std::sqrt(line.x * line.x + line.y * line.y);
+	sf::RectangleShape rect(sf::Vector2f(lineLength, THICKNESS));
+	sf::FloatRect bounds = rect.getLocalBounds();
+	rect.setOrigin(0, std::floor(bounds.top + bounds.height / 2.f));
+
+	float angle = std::atan2(line.y, line.x) / Constants::PI * 180.f;
+	rect.rotate(angle);
+	return rect;
+}
+
+void Node234::updateCurrent(sf::Time dt) {
+	std::vector<sf::RectangleShape>().swap(mEdges);
+	float delta = -(float)mData.size() * NODE_RADIUS;
+	for (int i = 0; i < mChildren.size(); ++i) {
+		if (mChildren[i] == nullptr)
+			break;
+		mEdges.push_back(getLineShape(mChildren[i]->getWorldPosition() - getWorldPosition() +
+		                              sf::Vector2f(-delta, -30.f)));
+		mEdges[i].setPosition(delta, 15.f);
+		mEdges[i].setFillColor(mColors.get(Colors::UIBorder));
+		delta += 2.f * NODE_RADIUS;
+	}
+}
+
+void Node234::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const {
+	for (auto& edge : mEdges) {
+		target.draw(edge, states);
 	}
 }
