@@ -16,6 +16,7 @@ class Tree234 : public SceneNode {
 	Tree234(const FontHolder& fonts, const ColorHolder& colors);
 	void insert(const int& value);
 	void clear();
+	void loadFromFile(const std::string& fileDir);
 	void randomize();
 
 	int getSize() const;

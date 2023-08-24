@@ -5,6 +5,7 @@
 #include "Tree234.hpp"
 #include "Template/Random.hpp"
 
+#include <fstream>
 #include <iostream>
 #include <queue>
 
@@ -17,6 +18,26 @@ Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
 
 void Tree234::randomize() {
 	loadArray(Random::getArray(1, MAX_SIZE, Node234::MIN_VALUE, Node234::MAX_VALUE));
+}
+
+void Tree234::loadFromFile(const std::string& fileDir) {
+	std::ifstream fileStream(fileDir);
+	std::vector<int> elements;
+	std::string token;
+	int value;
+	while (fileStream >> token && elements.size() < MAX_SIZE) {
+		try {
+			value = std::stoi(token);
+			if (value < Node234::MIN_VALUE || value > Node234::MAX_VALUE)
+				throw std::exception();
+			std::cout << "Token [" << token << "] read\n";
+			elements.push_back(value);
+		} catch (std::exception& e) {
+			std::cerr << "Token [" << token << "] is not convertible\n";
+		}
+	}
+	fileStream.close();
+	loadArray(elements);
 }
 
 void Tree234::insert(const int& value) {

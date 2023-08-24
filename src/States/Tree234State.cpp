@@ -24,20 +24,20 @@ void Tree234State::initOptions() {
 		mActionsHub.setCurrentOption(Create);
 		//		mTree.flush();
 		mPlayer.reset();
-		mPlayer.callInfo("Init a new AVL tree");
+		mPlayer.callInfo("Init a new 2-3-4 tree");
 	});
 	mActionsHub.addOption(Insert, "Insert", [&]() {
 		mActionsHub.setCurrentOption(Insert);
 		//		mTree.flush();
 		mPlayer.reset();
-		mPlayer.callInfo("Insert a new value to AVL tree");
+		mPlayer.callInfo("Insert a new value to 2-3-4 tree");
 		Inputs[Insert]->randomizeValue();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
 		//		mTree.flush();
 		mPlayer.reset();
-		mPlayer.callInfo("Delete a value from AVL tree");
+		mPlayer.callInfo("Delete a value from 2-3-4 tree");
 		//		if (mTree.getSize() > 0)
 		//			Inputs[Delete]->setValue(mTree.getRandomElement());
 		//		else
@@ -47,7 +47,7 @@ void Tree234State::initOptions() {
 		mActionsHub.setCurrentOption(Search);
 		//		mTree.flush();
 		mPlayer.reset();
-		mPlayer.callInfo("Search for a value in AVL tree");
+		mPlayer.callInfo("Search for a value in 2-3-4 tree");
 		//		if (mTree.getSize() > 0)
 		//			Inputs[Search]->setValue(mTree.getRandomElement());
 		//		else
@@ -60,8 +60,8 @@ void Tree234State::initCreate() {
 	auto emptyButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                 *getContext().textures, *getContext().colors);
 	emptyButton->setCallback([&]() {
-		//		mTree.clear();
-		//		mPlayer.callInfo("Created an empty AVL tree.");
+		mTree.clear();
+		mPlayer.callInfo("Created an empty 2-3-4 tree.");
 	});
 	emptyButton->setPosition(250.f, 590.f - 60.f);
 	emptyButton->setText("Empty");
@@ -70,9 +70,9 @@ void Tree234State::initCreate() {
 	auto randomButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                  *getContext().textures, *getContext().colors);
 	randomButton->setCallback([&]() {
-		//		mTree.randomize();
-		//		mPlayer.callInfo("Created an AVL tree with random elements, size = " +
-		//		                 std::to_string(mTree.getSize()));
+		mTree.randomize();
+		mPlayer.callInfo("Created a 2-3-4 tree with random elements, size = " +
+		                 std::to_string(mTree.getSize()));
 	});
 	randomButton->setPosition(250.f, 590.f);
 	randomButton->setText("Random");
@@ -81,11 +81,11 @@ void Tree234State::initCreate() {
 	auto fileButton = std::make_shared<GUI::Button>(GUI::Button::Small, *getContext().fonts,
 	                                                *getContext().textures, *getContext().colors);
 	fileButton->setCallback([&]() {
-		//		std::string fileDir;
-		//		if (selectedTextFile(fileDir))
-		//			mTree.loadFromFile(fileDir);
-		//		mPlayer.callInfo("Created an AVL tree with elements loaded from file, size = " +
-		//		                 std::to_string(mTree.getSize()));
+		std::string fileDir;
+		if (selectedTextFile(fileDir))
+			mTree.loadFromFile(fileDir);
+		mPlayer.callInfo("Created an AVL tree with elements loaded from file, size = " +
+		                 std::to_string(mTree.getSize()));
 	});
 	fileButton->setPosition(250.f, 590.f + 60.f);
 	fileButton->setText("Load file");
