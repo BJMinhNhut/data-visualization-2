@@ -26,11 +26,10 @@ Node234::Node234(const FontHolder& fonts, const ColorHolder& colors)
       mDepth(0) {}
 
 void Node234::insert(int value) {
-	int position = (int)mData.size();
+	int position = 0;
 	for (int i = 0; i < mData.size(); ++i) {
-		if (mData[i]->getIntData() < value) {
+		if (mData[i]->getIntData() <= value) {
 			position = i + 1;
-			break;
 		}
 	}
 	insert(position, value);
@@ -67,6 +66,7 @@ void Node234::split(int& pivot, Node234*& left, Node234*& right) {
 void Node234::insertSplit(int id, int pivot, Node234* left, Node234* right) {
 	int low = id > 0 ? mData[id - 1]->getIntData() : -1;
 	int high = id < mData.size() ? mData[id]->getIntData() : MAX_VALUE + 1;
+
 	assert(low <= pivot && pivot <= high);
 	mChildren[id] = nullptr;
 	mChildren.insert(mChildren.begin() + id, nullptr);
@@ -107,12 +107,13 @@ bool Node234::overflow() const {
 }
 
 Node234* Node234::findChild(int value) const {
+	Node234* child = mChildren[0];
 	for (int i = 0; i < mData.size(); ++i) {
-		if (i + 1 == mData.size() || mData[i + 1]->getIntData() > value)
-			return mChildren[i + 1];
+		if (mData[i]->getIntData() <= value)
+			child = mChildren[i + 1];
 	}
-	assert(false);
-	return nullptr;
+	assert(child != nullptr);
+	return child;
 }
 
 const std::vector<Node234*>& Node234::getChildList() const {
@@ -126,6 +127,11 @@ int Node234::getChildID(Node234* node) const {
 	}
 	assert(false);
 	return -1;
+}
+
+int Node234::get(int id) const {
+	assert(id < mData.size() && id >= 0);
+	return mData[id]->getIntData();
 }
 
 float Node234::getWidth() const {

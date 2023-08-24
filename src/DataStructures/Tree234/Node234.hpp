@@ -34,6 +34,7 @@ class Node234 : public SceneNode {
 	Node234* findChild(int value) const;  // Return the child whose range contains "value"
 	const std::vector<Node234*>& getChildList() const;
 	int getChildID(Node234* node) const;
+	int get(int id) const;
 	float getWidth() const;
 	int getDepth() const;
 

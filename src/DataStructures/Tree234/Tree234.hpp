@@ -15,10 +15,15 @@ class Tree234 : public SceneNode {
    public:
 	Tree234(const FontHolder& fonts, const ColorHolder& colors);
 	void insert(const int& value);
+	void clear();
+	void randomize();
 
    private:
 	Node234* split(Node234* node);  // split the node, return the root of the split node
 	void align();
+	void clear(Node234* node);
+	//	void clearHighlight(AVLNode* root);
+	void loadArray(const std::vector<int>& array);
 
    private:
 	const ColorHolder& mColors;

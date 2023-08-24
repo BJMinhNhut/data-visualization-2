@@ -3,12 +3,21 @@
 //
 
 #include "Tree234.hpp"
+#include "Template/Random.hpp"
 
 #include <iostream>
-#include <stack>
+#include <queue>
+
+const int Tree234::MAX_SIZE = 50;
 
 Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
-    : mFonts(fonts), mColors(colors), mRoot(nullptr) {}
+    : mFonts(fonts), mColors(colors), mRoot(nullptr) {
+	//	randomize();
+}
+
+void Tree234::randomize() {
+	//	loadArray(Random::getArray(1, MAX_SIZE, Node234::MIN_VALUE, Node234::MAX_VALUE));
+}
 
 void Tree234::insert(const int& value) {
 	if (mRoot == nullptr) {
@@ -19,8 +28,11 @@ void Tree234::insert(const int& value) {
 	}
 	Node234* cur = mRoot;
 	while (cur != nullptr) {
-		if (cur->overflow())
+		if (cur->overflow()) {
 			cur = split(cur);
+			std::cout << "Split, new root; " << cur->get(0) << '\n';
+		}
+
 		if (cur->isLeaf())
 			break;
 		else {
@@ -30,6 +42,11 @@ void Tree234::insert(const int& value) {
 	assert(cur != nullptr);
 	cur->insert(value);
 	align();
+}
+
+void Tree234::clear() {
+	clear(mRoot);
+	mRoot = nullptr;
 }
 
 Node234* Tree234::split(Node234* node) {
@@ -61,21 +78,24 @@ void Tree234::align() {
 	std::vector<std::vector<Node234*>> layers;
 
 	// DFS
-	std::stack<Node234*> mStack;
-	mStack.push(mRoot);
+	std::queue<Node234*> mQueue;
+	mQueue.push(mRoot);
 	mRoot->setDepth(0);
-	while (!mStack.empty()) {
-		Node234* cur = mStack.top();
-		mStack.pop();
+	while (!mQueue.empty()) {
+		Node234* cur = mQueue.front();
+		mQueue.pop();
 		if (layers.size() < cur->getDepth() + 1)
 			layers.emplace_back();
 		layers[cur->getDepth()].push_back(cur);
+		//		std::cout << "*" << cur->get(0) << '\n';
 		for (auto& node : cur->getChildList()) {
 			if (node == nullptr)
 				break;
-			mStack.push(node);
+			//			std::cout << node->get(0) << ' ';
+			mQueue.push(node);
 			node->setDepth(cur->getDepth() + 1);
 		}
+		//		std::cout << '\n';
 	}
 
 	// left-aligned layout
@@ -101,5 +121,22 @@ void Tree234::align() {
 		for (auto& node : layers[depth]) {
 			node->setTargetPosition(node->getTargetPosition() + delta, Smooth);
 		}
+	}
+}
+
+void Tree234::clear(Node234* node) {
+	if (node == nullptr)
+		return;
+	for (auto& child : node->getChildList()) {
+		clear(child);
+	}
+	detachChild(*node);
+}
+
+void Tree234::loadArray(const std::vector<int>& array) {
+	clear();
+	for (int value : array) {
+		std::cout << "Inserting: " << value << '\n';
+		insert(value);
 	}
 }

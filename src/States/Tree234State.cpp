@@ -151,10 +151,10 @@ bool Tree234State::update(sf::Time dt) {
 
 bool Tree234State::handleEvent(const sf::Event& event) {
 	VisualState::handleEvent(event);
-
+	static int cnt = 0;
 	if (event.type == sf::Event::KeyReleased) {
 		if (event.key.code == sf::Keyboard::Space)
-			mTree.insert(1);
+			mTree.insert(Random::getInt(0, 99));
 	}
 	return false;
 }
