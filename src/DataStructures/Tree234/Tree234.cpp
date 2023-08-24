@@ -8,15 +8,15 @@
 #include <iostream>
 #include <queue>
 
-const int Tree234::MAX_SIZE = 50;
+const int Tree234::MAX_SIZE = 40;
 
 Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
     : mFonts(fonts), mColors(colors), mRoot(nullptr) {
-	//	randomize();
+	randomize();
 }
 
 void Tree234::randomize() {
-	//	loadArray(Random::getArray(1, MAX_SIZE, Node234::MIN_VALUE, Node234::MAX_VALUE));
+	loadArray(Random::getArray(1, MAX_SIZE, Node234::MIN_VALUE, Node234::MAX_VALUE));
 }
 
 void Tree234::insert(const int& value) {
@@ -26,11 +26,12 @@ void Tree234::insert(const int& value) {
 		attachChild(Ptr(mRoot));
 		return;
 	}
+	assert(getSize() < 40);
 	Node234* cur = mRoot;
 	while (cur != nullptr) {
 		if (cur->overflow()) {
 			cur = split(cur);
-			std::cout << "Split, new root; " << cur->get(0) << '\n';
+			//			std::cout << "Split, new root; " << cur->get(0) << '\n';
 		}
 
 		if (cur->isLeaf())
@@ -47,6 +48,12 @@ void Tree234::insert(const int& value) {
 void Tree234::clear() {
 	clear(mRoot);
 	mRoot = nullptr;
+}
+
+int Tree234::getSize() const {
+	if (mRoot == nullptr)
+		return 0;
+	return mRoot->count();
 }
 
 Node234* Tree234::split(Node234* node) {

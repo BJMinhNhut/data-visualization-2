@@ -18,6 +18,8 @@ class Tree234 : public SceneNode {
 	void clear();
 	void randomize();
 
+	int getSize() const;
+
    private:
 	Node234* split(Node234* node);  // split the node, return the root of the split node
 	void align();

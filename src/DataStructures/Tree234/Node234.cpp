@@ -14,7 +14,7 @@ const int Node234::MAX_CHILD = 4;
 const int Node234::MIN_VALUE = 0;
 const int Node234::MAX_VALUE = 99;
 const float Node234::NODE_RADIUS = 16.f;
-const sf::Vector2f Node234::OFFSET(20.f, 90.f);
+const sf::Vector2f Node234::OFFSET(10.f, 100.f);
 
 Node234::Node234(const FontHolder& fonts, const ColorHolder& colors)
     : mChildren(MAX_CHILD, nullptr),
@@ -140,6 +140,16 @@ float Node234::getWidth() const {
 
 int Node234::getDepth() const {
 	return mDepth;
+}
+
+int Node234::count() const {
+	int ans = (int)mData.size();
+	for (auto& child : mChildren) {
+		if (child == nullptr)
+			break;
+		ans += child->count();
+	}
+	return ans;
 }
 
 void Node234::insert(int id, int value) {

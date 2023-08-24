@@ -37,6 +37,7 @@ class Node234 : public SceneNode {
 	int get(int id) const;
 	float getWidth() const;
 	int getDepth() const;
+	int count() const;
 
    private:
 	void insert(int id, int value);
