@@ -154,6 +154,10 @@ int Node234::count() const {
 	return ans;
 }
 
+int Node234::numData() const {
+	return mData.size();
+}
+
 void Node234::insert(int id, int value) {
 	auto* newNode = new PolyNode(mFonts, mColors);
 	newNode->setData(value);

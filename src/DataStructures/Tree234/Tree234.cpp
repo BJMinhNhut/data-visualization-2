@@ -128,23 +128,50 @@ void Tree234::align() {
 
 	// left-aligned layout
 	int leaf = (int)layers.size() - 1;
-	for (int depth = leaf; depth >= 0; --depth) {
-		float leftBound = 0.f;
-		for (int i = 0; i < layers[depth].size(); ++i) {
-			if (i > 0)
-				leftBound += Node234::OFFSET.x;
+	float leftBound = 0.f;
+	for (int i = 0; i < layers[leaf].size(); ++i) {
+		if (i > 0)
+			leftBound += Node234::OFFSET.x;
 
-			layers[depth][i]->calcWidth();
-			layers[depth][i]->setTargetPosition(
-			    sf::Vector2f(leftBound + layers[depth][i]->getWidth() / 2.f,
-			                 Node234::OFFSET.y * (float)depth),
-			    Smooth);
-			leftBound += layers[depth][i]->getWidth();
+		layers[leaf][i]->calcWidth();
+		sf::Vector2f position;
+		position = sf::Vector2f(leftBound + layers[leaf][i]->getWidth() / 2.f,
+		                        Node234::OFFSET.y * (float)leaf);
+
+		layers[leaf][i]->setTargetPosition(position, Smooth);
+		leftBound += layers[leaf][i]->getWidth();
+	}
+	for (int depth = leaf - 1; depth >= 0; --depth) {
+		for (Node234* node : layers[depth]) {
+
+			sf::Vector2f position(0.f, Node234::OFFSET.y * (float)depth);
+
+			const std::vector<Node234*>& children = node->getChildList();
+			switch (node->numData()) {
+				case 0:
+				case 1:
+					position.x =
+					    (children[0]->getTargetPosition().x + children[1]->getTargetPosition().x) /
+					    2.f;
+					break;
+				case 2:
+					position.x = children[1]->getTargetPosition().x;
+					break;
+				case 3:
+					position.x =
+					    (children[1]->getTargetPosition().x + children[2]->getTargetPosition().x) /
+					    2.f;
+					break;
+				default:
+					assert(false);
+			}
+
+			node->setTargetPosition(position, Smooth);
 		}
 	}
 
 	// centralize nodes
-	sf::Vector2f delta(-mRoot->getWidth() / 2.f, 0.f);
+	sf::Vector2f delta(-leftBound / 2.f, 0.f);
 	for (int depth = leaf; depth >= 0; --depth) {
 		for (auto& node : layers[depth]) {
 			node->setTargetPosition(node->getTargetPosition() + delta, Smooth);
@@ -163,8 +190,6 @@ void Tree234::clear(Node234* node) {
 
 void Tree234::loadArray(const std::vector<int>& array) {
 	clear();
-	for (int value : array) {
-		std::cout << "Inserting: " << value << '\n';
+	for (int value : array)
 		insert(value);
-	}
 }

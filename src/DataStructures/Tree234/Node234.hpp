@@ -37,6 +37,7 @@ class Node234 : public SceneNode {
 	const std::vector<Node234*>& getChildList() const;
 	int getChildID(Node234* node) const;
 	int get(int id) const;
+	int numData() const;
 	float getWidth() const;
 	int getDepth() const;
 	int count() const;
