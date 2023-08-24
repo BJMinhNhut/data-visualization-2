@@ -17,6 +17,7 @@ class Node234 : public SceneNode {
 	static const int MIN_VALUE;
 	static const int MAX_VALUE;
 	static const float NODE_RADIUS;
+	static const int ALL_DATA;
 	static const sf::Vector2f OFFSET;
 
    public:
@@ -29,6 +30,7 @@ class Node234 : public SceneNode {
 	void insertSplit(int id, int pivot, Node234* left, Node234* right);
 	void calcWidth();
 	void setDepth(int depth);
+	void highlight(int mask);
 
 	bool isLeaf() const;
 	bool overflow() const;
@@ -41,6 +43,7 @@ class Node234 : public SceneNode {
 	float getWidth() const;
 	int getDepth() const;
 	int count() const;
+	int findID(int value) const;
 
    private:
 	void insert(int id, int value);

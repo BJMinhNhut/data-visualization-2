@@ -16,6 +16,7 @@ const int Node234::MAX_CHILD = 4;
 const int Node234::MIN_VALUE = 0;
 const int Node234::MAX_VALUE = 99;
 const float Node234::NODE_RADIUS = 16.f;
+const int Node234::ALL_DATA = 7;
 const sf::Vector2f Node234::OFFSET(10.f, 100.f);
 
 Node234::Node234(const FontHolder& fonts, const ColorHolder& colors)
@@ -79,6 +80,16 @@ void Node234::insertSplit(int id, int pivot, Node234* left, Node234* right) {
 
 void Node234::setDepth(int depth) {
 	mDepth = depth;
+}
+
+void Node234::highlight(int mask) {
+	assert(mask <= (1 << MAX_DATA) && mask >= 0);
+	for (int i = 0; i < mData.size(); ++i) {
+		if ((mask >> i) & 1)
+			mData[i]->highlight(PolyNode::Primary);
+		else
+			mData[i]->highlight(PolyNode::None);
+	}
 }
 
 void Node234::calcWidth() {
@@ -152,6 +163,14 @@ int Node234::count() const {
 		ans += child->count();
 	}
 	return ans;
+}
+
+int Node234::findID(int value) const {
+	for (int i = 0; i < mData.size(); ++i) {
+		if (mData[i]->getIntData() == value)
+			return i;
+	}
+	return -1;
 }
 
 int Node234::numData() const {

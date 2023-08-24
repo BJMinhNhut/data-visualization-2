@@ -11,6 +11,7 @@ namespace Code234 {
 const std::string Insert();
 const std::string Delete();
 const std::string Search(
+    "if this == null, return NOT_FOUND\n"
     "i = this.upper_bound(value)-1\n"
     "if i >= 0 && value == this.data[i]\n"
     "   return FOUND\n"

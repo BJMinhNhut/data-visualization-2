@@ -3,6 +3,7 @@
 //
 
 #include "Tree234.hpp"
+#include "Code234.hpp"
 #include "Template/Random.hpp"
 
 #include <fstream>
@@ -71,10 +72,90 @@ void Tree234::clear() {
 	mRoot = nullptr;
 }
 
+void Tree234::clearHighlight() {
+	clearHighlight(mRoot);
+}
+
 int Tree234::getSize() const {
 	if (mRoot == nullptr)
 		return 0;
 	return mRoot->count();
+}
+
+int Tree234::getRandomElement() const {
+	assert(mRoot != nullptr);
+	std::vector<int> candidates;
+
+	std::queue<Node234*> mQueue;
+	mQueue.push(mRoot);
+	while (!mQueue.empty()) {
+		Node234* cur = mQueue.front();
+		mQueue.pop();
+		for (int i = 0; i < cur->numData(); ++i)
+			candidates.push_back(cur->get(i));
+		for (Node234* child : cur->getChildList()) {
+			if (child != nullptr)
+				mQueue.push(child);
+		}
+	}
+	return candidates[Random::getInt(0, (int)candidates.size() - 1)];
+}
+
+std::pair<std::vector<Animation>, std::string> Tree234::searchAnimation(const int& value) {
+	const std::string code = Code234::Search;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Search for " + std::to_string(value) + " in 2-3-4 tree"));
+
+	Node234* cur = mRoot;
+	Node234* last = nullptr;
+	while (cur != nullptr) {
+		int id = cur->findID(value);
+		if (id != -1) {
+			list.push_back(Animation(
+			    {1, 2, 3},
+			    "Current node contains " + std::to_string(value) +
+			        ", stop searching. Complexity O(logn).",
+			    [&, cur, last, id]() {
+				    cur->highlight(1 << id);
+				    if (last)
+					    last->highlight(0);
+			    },
+			    [&, cur, last]() {
+				    cur->highlight(0);
+				    if (last)
+					    last->highlight(Node234::ALL_DATA);
+			    }));
+			return std::make_pair(list, code);
+		} else {
+			list.push_back(Animation(
+			    {1, 4},
+			    "Current node doesn't contain " + std::to_string(value) +
+			        ". Go to the suitable child.",
+			    [&, cur, last]() {
+				    cur->highlight(Node234::ALL_DATA);
+				    if (last)
+					    last->highlight(0);
+			    },
+			    [&, cur, last]() {
+				    cur->highlight(0);
+				    if (last)
+					    last->highlight(Node234::ALL_DATA);
+			    }));
+			if (cur->isLeaf())
+				break;
+			last = cur;
+			cur = cur->findChild(value);
+		}
+	}
+	list.push_back(Animation(
+	    {0}, "Null node reached, hence " + std::to_string(value) + " is NOT_FOUND\n",
+	    [&]() { clearHighlight(); },
+	    [&, cur]() {
+		    if (cur)
+			    cur->highlight(Node234::ALL_DATA);
+	    }));
+
+	return std::make_pair(list, code);
 }
 
 Node234* Tree234::split(Node234* node) {
@@ -186,6 +267,15 @@ void Tree234::clear(Node234* node) {
 		clear(child);
 	}
 	detachChild(*node);
+}
+
+void Tree234::clearHighlight(Node234* node) {
+	if (node == nullptr)
+		return;
+	for (auto& child : node->getChildList()) {
+		clearHighlight(child);
+	}
+	node->highlight(0);
 }
 
 void Tree234::loadArray(const std::vector<int>& array) {

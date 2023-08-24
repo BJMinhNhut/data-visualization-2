@@ -48,10 +48,10 @@ void Tree234State::initOptions() {
 		//		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Search for a value in 2-3-4 tree");
-		//		if (mTree.getSize() > 0)
-		//			Inputs[Search]->setValue(mTree.getRandomElement());
-		//		else
-		//			Inputs[Search]->randomizeValue();
+		if (mTree.getSize() > 0)
+			Inputs[Search]->setValue(mTree.getRandomElement());
+		else
+			Inputs[Search]->randomizeValue();
 	});
 }
 
@@ -118,7 +118,7 @@ void Tree234State::initSearch() {
 	Inputs[Search] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
 	                                                 *getContext().colors);
 	Inputs[Search]->setPosition(250.f, 590.f);
-	//	Inputs[Search]->setRange(AVLTree::MIN_VALUE, AVLTree::MAX_VALUE);
+	Inputs[Search]->setRange(Node234::MIN_VALUE, Node234::MAX_VALUE);
 	mActionsHub.packOptionGUI(Search, Inputs[Search]);
 }
 
@@ -161,26 +161,26 @@ bool Tree234State::handleEvent(const sf::Event& event) {
 
 std::pair<std::vector<Animation>, std::string> Tree234State::getSteps(unsigned int option) {
 	try {
-		//		mTree.clearHighlight();
-		//		switch (option) {
-		//			case Insert:
-		//				if (Inputs[Insert]->validate() != GUI::InputNum::Success)
-		//					throw std::out_of_range("Value must be in range " +
-		//					                        Inputs[Insert]->getStringRange());
-		//				return mTree.insertAnimation(Inputs[Insert]->getValue());
-		//			case Delete:
-		//				if (Inputs[Delete]->validate() != GUI::InputNum::Success)
-		//					throw std::out_of_range("Value must be in range " +
-		//					                        Inputs[Delete]->getStringRange());
-		//				return mTree.deleteAnimation(Inputs[Delete]->getValue());
-		//			case Search:
-		//				if (Inputs[Search]->validate() != GUI::InputNum::Success)
-		//					throw std::out_of_range("Value must be in range " +
-		//					                        Inputs[Search]->getStringRange());
-		//				return mTree.searchAnimation(Inputs[Search]->getValue());
-		//			default:
-		//				return VisualState::getSteps(option);
-		//		}
+		mTree.clearHighlight();
+		switch (option) {
+				//					case Insert:
+				//						if (Inputs[Insert]->validate() != GUI::InputNum::Success)
+				//							throw std::out_of_range("Value must be in range " +
+				//							                        Inputs[Insert]->getStringRange());
+				//						return mTree.insertAnimation(Inputs[Insert]->getValue());
+				//					case Delete:
+				//						if (Inputs[Delete]->validate() != GUI::InputNum::Success)
+				//							throw std::out_of_range("Value must be in range " +
+				//							                        Inputs[Delete]->getStringRange());
+				//						return mTree.deleteAnimation(Inputs[Delete]->getValue());
+			case Search:
+				if (Inputs[Search]->validate() != GUI::InputNum::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Search]->getStringRange());
+				return mTree.searchAnimation(Inputs[Search]->getValue());
+			default:
+				return VisualState::getSteps(option);
+		}
 	} catch (const std::exception& err) {
 		mPlayer.callError(err.what());
 	}
