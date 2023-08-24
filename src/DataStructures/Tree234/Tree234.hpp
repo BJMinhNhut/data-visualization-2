@@ -17,6 +17,9 @@ class Tree234 : public SceneNode {
 	void insert(const int& value);
 
    private:
+	Node234* insertBST(const int& value);
+
+   private:
 	const ColorHolder& mColors;
 	const FontHolder& mFonts;
 

@@ -20,6 +20,10 @@ class Node234 : public SceneNode {
 	Node234(const FontHolder& fonts, const ColorHolder& colors);
 
 	void insert(int value);
+	void setChild(int id, Node234* child);
+
+	bool isLeaf() const;
+	Node234* findChild(int value) const;  // Return the child whose range contains "value"
 
    private:
 	void align();
@@ -30,7 +34,7 @@ class Node234 : public SceneNode {
 	const FontHolder& mFonts;
 	const ColorHolder& mColors;
 
-	std::vector<Node234> mChildren;
+	std::vector<Node234*> mChildren;
 	std::vector<PolyNode*> mData;
 };
 
