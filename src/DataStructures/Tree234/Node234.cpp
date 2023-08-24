@@ -14,9 +14,16 @@ const int Node234::MAX_CHILD = 4;
 const int Node234::MIN_VALUE = 0;
 const int Node234::MAX_VALUE = 99;
 const float Node234::NODE_RADIUS = 16.f;
+const sf::Vector2f Node234::OFFSET(20.f, 90.f);
 
 Node234::Node234(const FontHolder& fonts, const ColorHolder& colors)
-    : mChildren(MAX_CHILD, nullptr), mData(), mFonts(fonts), mColors(colors), mParent(nullptr) {}
+    : mChildren(MAX_CHILD, nullptr),
+      mData(),
+      mFonts(fonts),
+      mColors(colors),
+      mParent(nullptr),
+      mWidth(0.f),
+      mDepth(0) {}
 
 void Node234::insert(int value) {
 	int position = (int)mData.size();
@@ -68,6 +75,25 @@ void Node234::insertSplit(int id, int pivot, Node234* left, Node234* right) {
 	insert(id, pivot);
 }
 
+void Node234::setDepth(int depth) {
+	mDepth = depth;
+}
+
+void Node234::calcWidth() {
+	if (isLeaf()) {
+		mWidth = NODE_RADIUS * 2.f * (float)mData.size();
+	} else {
+		mWidth = 0.f;
+		for (int i = 0; i < mChildren.size(); ++i) {
+			if (mChildren[i] == nullptr)
+				break;
+			mWidth += mChildren[i]->getWidth();
+			if (i > 0)
+				mWidth += OFFSET.x;
+		}
+	}
+}
+
 Node234* Node234::getParent() const {
 	return mParent;
 }
@@ -89,6 +115,10 @@ Node234* Node234::findChild(int value) const {
 	return nullptr;
 }
 
+const std::vector<Node234*>& Node234::getChildList() const {
+	return mChildren;
+}
+
 int Node234::getChildID(Node234* node) const {
 	for (int i = 0; i < mChildren.size(); ++i) {
 		if (mChildren[i] == node)
@@ -96,6 +126,14 @@ int Node234::getChildID(Node234* node) const {
 	}
 	assert(false);
 	return -1;
+}
+
+float Node234::getWidth() const {
+	return mWidth;
+}
+
+int Node234::getDepth() const {
+	return mDepth;
 }
 
 void Node234::insert(int id, int value) {
