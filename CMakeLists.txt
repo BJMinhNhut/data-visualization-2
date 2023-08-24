@@ -74,6 +74,7 @@ add_executable(DataVisualization2 src/Main.cpp src/Template/Application.cpp src/
         src/DataStructures/Tree234/Node234.hpp
         src/DataStructures/Tree234/Tree234.cpp
         src/DataStructures/Tree234/Tree234.hpp
+        src/DataStructures/Tree234/Code234.hpp
 )
 
 target_link_libraries(DataVisualization2 PRIVATE sfml-graphics)
