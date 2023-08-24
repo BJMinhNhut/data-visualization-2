@@ -16,13 +16,9 @@ const int Node234::MAX_VALUE = 99;
 const float Node234::NODE_RADIUS = 16.f;
 
 Node234::Node234(const FontHolder& fonts, const ColorHolder& colors)
-    : mChildren(MAX_CHILD, nullptr), mData(), mFonts(fonts), mColors(colors) {}
+    : mChildren(MAX_CHILD, nullptr), mData(), mFonts(fonts), mColors(colors), mParent(nullptr) {}
 
 void Node234::insert(int value) {
-	auto* newNode = new PolyNode(mFonts, mColors);
-	newNode->setData(value);
-	newNode->setPoint(4);
-	attachChild(Ptr(newNode));
 	int position = (int)mData.size();
 	for (int i = 0; i < mData.size(); ++i) {
 		if (mData[i]->getIntData() < value) {
@@ -30,17 +26,58 @@ void Node234::insert(int value) {
 			break;
 		}
 	}
-	mData.insert(mData.begin() + position, newNode);
-	align();
+	insert(position, value);
 }
 
 void Node234::setChild(int id, Node234* child) {
 	assert(mChildren[id] == nullptr);
 	mChildren[id] = child;
+
+	if (child == nullptr)
+		return;
+	child->setParent(this);
+}
+
+void Node234::setParent(Node234* parent) {
+	mParent = parent;
+}
+
+void Node234::split(int& pivot, Node234*& left, Node234*& right) {
+	assert(overflow());
+	pivot = mData[1]->getIntData();
+
+	left = new Node234(mFonts, mColors);
+	left->insert(mData[0]->getIntData());
+	left->setChild(0, mChildren[0]);
+	left->setChild(1, mChildren[1]);
+
+	right = new Node234(mFonts, mColors);
+	right->insert(mData[2]->getIntData());
+	right->setChild(0, mChildren[2]);
+	right->setChild(1, mChildren[3]);
+}
+
+void Node234::insertSplit(int id, int pivot, Node234* left, Node234* right) {
+	int low = id > 0 ? mData[id - 1]->getIntData() : -1;
+	int high = id < mData.size() ? mData[id]->getIntData() : MAX_VALUE + 1;
+	assert(low <= pivot && pivot <= high);
+	mChildren[id] = nullptr;
+	mChildren.insert(mChildren.begin() + id, nullptr);
+	setChild(id, left);
+	setChild(id + 1, right);
+	insert(id, pivot);
+}
+
+Node234* Node234::getParent() const {
+	return mParent;
 }
 
 bool Node234::isLeaf() const {
 	return mChildren[0] == nullptr;
+}
+
+bool Node234::overflow() const {
+	return mData.size() == MAX_DATA;
 }
 
 Node234* Node234::findChild(int value) const {
@@ -50,6 +87,24 @@ Node234* Node234::findChild(int value) const {
 	}
 	assert(false);
 	return nullptr;
+}
+
+int Node234::getChildID(Node234* node) const {
+	for (int i = 0; i < mChildren.size(); ++i) {
+		if (mChildren[i] == node)
+			return i;
+	}
+	assert(false);
+	return -1;
+}
+
+void Node234::insert(int id, int value) {
+	auto* newNode = new PolyNode(mFonts, mColors);
+	newNode->setData(value);
+	newNode->setPoint(4);
+	attachChild(Ptr(newNode));
+	mData.insert(mData.begin() + id, newNode);
+	align();
 }
 
 void Node234::align() {

@@ -17,7 +17,7 @@ class Tree234 : public SceneNode {
 	void insert(const int& value);
 
    private:
-	Node234* insertBST(const int& value);
+	Node234* split(Node234* node);  // split the node, return the root of the split node
 
    private:
 	const ColorHolder& mColors;
