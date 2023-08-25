@@ -47,18 +47,20 @@ class Player : public sf::Drawable, public sf::Transformable, public sf::NonCopy
 	void play();
 	void increaseSpeed();
 	void decreaseSpeed();
+	void hideAdjustButtons();
 
 	bool hasAnimation() const;
 	bool isPlaying() const;
 
    private:
 	// GUI
-	GUI::Container mGUIContainer;
+	GUI::Container mGUIContainer, mAdjust;
 	GUI::Console::Ptr mConsole;
 	GUI::CodeBlock::Ptr mCodeBlock;
 	GUI::Label::Ptr mSpeed;
 	std::vector<GUI::Container> ControllerGUI;
 	std::vector<GUI::Button::Ptr> playButtons;
+	bool drawAdjust;
 
 	// Animation
 	AnimationList mAnimationList;

@@ -14,6 +14,9 @@ namespace Random {
 
     std::vector<int> getArray(int minLength, int maxLength, int minVal, int maxVal);
 
-};  // namespace Random
+    void shuffle(std::vector<std::pair<int, int>>& list);
+    void shuffle(std::vector<int>& list);
+
+    };  // namespace Random
 
 #endif //DATAVISUALIZATION2_RANDOM_HPP

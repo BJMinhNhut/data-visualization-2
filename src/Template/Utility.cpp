@@ -44,6 +44,7 @@ namespace Utility {
         colors.load(Colors::UIPrimary, Constants::WhiteUI);
         colors.load(Colors::UISecondary, Constants::WhiteDisplay);
         colors.load(Colors::UIBorder, Constants::GrayBorder);
+	    colors.load(Colors::DimBorder, Constants::DimLightBorder);
 	    colors.load(Colors::Highlight, Constants::OrangeLight);
 	    colors.load(Colors::DimHighlight, Constants::YellowLight);
 	    colors.load(Colors::Red, Constants::RedDark);
@@ -57,6 +58,7 @@ namespace Utility {
         colors.load(Colors::UIPrimary, Constants::BlackUI);
         colors.load(Colors::UISecondary, Constants::BlackDisplay);
         colors.load(Colors::UIBorder, Constants::BlueGrayBorder);
+	    colors.load(Colors::DimBorder, Constants::DimDarkBorder);
 	    colors.load(Colors::Highlight, Constants::TealLight);
 	    colors.load(Colors::DimHighlight, Constants::TealDark);
 	    colors.load(Colors::Red, Constants::RedLight);
@@ -70,6 +72,14 @@ namespace Utility {
         }
         return true;
     }
-}
+
+    float getNorm(sf::Vector2f vector) {
+	    return (float)sqrt(vector.x * vector.x + vector.y * vector.y);
+    }
+
+    float getNormSqr(sf::Vector2f vector) {
+	    return vector.x * vector.x + vector.y * vector.y;
+    }
+    }
 
 

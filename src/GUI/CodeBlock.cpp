@@ -18,8 +18,8 @@ namespace GUI {
               highlightList(),
               highlightColor(colors.get(Colors::Highlight)) {
         mText.setFillColor(colors.get(Colors::Text));
-        mText.setPosition(15.f, 10.f);
-        mText.setLineSpacing(1.5f);
+	    mText.setPosition(10.f, 10.f);
+	    mText.setLineSpacing(1.5f);
     }
 
     void CodeBlock::loadCode(const std::string &code) {

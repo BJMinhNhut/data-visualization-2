@@ -22,13 +22,13 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
 - [x] Themes
   - [x] Light theme
   - [x] Dark theme
-- [ ] Code highlight
+- [x] Code highlight
   - [x] Hash table
   - [x] AVL tree
-  - [ ] 2-3-4 tree
+  - [x] 2-3-4 tree
   - [x] Min/Max MaxHeap
   - [x] Trie
-  - [ ] Graph
+  - [x] Graph
 
 ### Data structures
 
@@ -42,12 +42,11 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Insert
   - [x] Delete
   - [x] Search
-- [ ] 2-3-4 tree
-  - [ ] Create
-  - [ ] Insert
-  - [ ] Update
-  - [ ] Delete
-  - [ ] Search
+- [x] 2-3-4 tree
+  - [x] Create
+  - [x] Insert
+  - [x] Delete
+  - [x] Search
 - [x] Min/Max MaxHeap
   - [x] Create
   - [x] Push
@@ -59,13 +58,10 @@ AVL tree, 2-3 tree, 2-3-4 tree, heap, trie, and graph.
   - [x] Insert
   - [x] Delete
   - [x] Search
-- [ ] Graph
-  - [ ] Create (from a matrix)
-  - [ ] Connected components
-  - [ ] Minimum spanning tree
-  - [ ] Dijkstra
-
-## Documentation
-Overleaf: https://www.overleaf.com/read/gfbrjjnzgkbm
+- [x] Graph
+  - [x] Create (from a matrix)
+  - [x] Connected components
+  - [x] Minimum spanning tree
+  - [x] Dijkstra
 
 

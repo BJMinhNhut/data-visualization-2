@@ -16,6 +16,7 @@ PolyNode::PolyNode(const FontHolder& fonts, const ColorHolder& colors)
     : mText("", fonts.get(Fonts::Mono), 18u),
       mPolygon(22.f),
       mColors(colors),
+      mFonts(fonts),
       mLabel("", fonts.get(Fonts::Mono), 16u) {
 	mText.setFillColor(colors.get(Colors::Text));
 	mLabel.setFillColor(colors.get(Colors::Blue));
@@ -23,6 +24,7 @@ PolyNode::PolyNode(const FontHolder& fonts, const ColorHolder& colors)
 	mPolygon.setFillColor(colors.get(Colors::UIPrimary));
 	mPolygon.setOutlineColor(colors.get(Colors::UIBorder));
 	mPolygon.setOutlineThickness(2.f);
+	mPolygon.rotate(45);
 	Utility::centerOrigin(mPolygon);
 }
 
@@ -55,7 +57,7 @@ int PolyNode::getIntData() const {
 }
 
 float PolyNode::getRadius() const {
-	return mPolygon.getRadius();
+	return mPolygon.getRadius() + mPolygon.getOutlineThickness();
 }
 
 void PolyNode::setData(const std::string& data) {
@@ -68,6 +70,11 @@ void PolyNode::setData(const int& data) {
 	mText.setString(std::to_string(data));
 	mText.setScale(0.f, 0.f);
 	Utility::centerOrigin(mText);
+}
+
+void PolyNode::setRadius(const float& radius) {
+	mPolygon.setRadius(radius);
+	Utility::centerOrigin(mPolygon);
 }
 
 void PolyNode::swapData(PolyNode* node) {
@@ -110,8 +117,8 @@ void PolyNode::resetDataScale() {
 	mText.setScale(1.f, 1.f);
 }
 
-void PolyNode::addEdgeOut(PolyNode* to) {
-	auto edge = std::make_shared<Edge>(this, to, Edge::EdgeType::Undirected, mColors);
+void PolyNode::addEdgeOut(PolyNode* to, int type) {
+	auto edge = std::make_shared<Edge>(this, to, type, mFonts, mColors);
 	outEdges.push_back(edge);
 	to->addEdgeIn(edge);
 }
@@ -146,6 +153,51 @@ void PolyNode::removeAllEdges() {
 		edge->getTo()->removeEdgeIn(edge);
 	std::vector<Edge::Ptr>().swap(inEdges);
 	std::vector<Edge::Ptr>().swap(outEdges);
+}
+
+void PolyNode::highlightEdge(PolyNode* to, bool highlight) {
+	for (auto& edge : outEdges)
+		if (edge->getTo() == to) {
+			if (highlight)
+				edge->setColor(Colors::Text);
+			else
+				edge->setColor(Colors::DimBorder);
+			return;
+		}
+
+	for (auto& edge : inEdges) {
+		if (edge->getFrom() == to) {
+			if (highlight)
+				edge->setColor(Colors::Text);
+			else
+				edge->setColor(Colors::DimBorder);
+			return;
+		}
+	}
+
+	assert(false);
+}
+
+void PolyNode::clearEdgeHighlights() {
+	for (auto& edge : outEdges) {
+		edge->setColor(Colors::UIBorder);
+	}
+}
+
+void PolyNode::setEdgeWeight(PolyNode* to, int weight) {
+	for (auto& edge : outEdges)
+		if (edge->getTo() == to) {
+			edge->setWeight(weight);
+			break;
+		}
+}
+
+void PolyNode::setEdgeType(PolyNode* to, int type) {
+	for (auto& edge : outEdges)
+		if (edge->getTo() == to) {
+			edge->setType(type);
+			break;
+		}
 }
 
 void PolyNode::setPosition(float pX, float pY) {

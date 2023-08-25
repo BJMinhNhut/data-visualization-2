@@ -12,8 +12,8 @@
 #include <cmath>
 #include <iostream>
 
-const std::vector<std::pair<std::string, float>> Player::mSpeedMap({{"x0.25", 0.25f},
-                                                                    {"x0.5", 0.1f},
+const std::vector<std::pair<std::string, float>> Player::mSpeedMap({{"x0.25", 0.5f},
+                                                                    {"x0.5", 1.f},
                                                                     {"x1.0", 2.f},
                                                                     {"x2.0", 4.f},
                                                                     {"x5.0", 10.f},
@@ -22,6 +22,8 @@ const std::vector<std::pair<std::string, float>> Player::mSpeedMap({{"x0.25", 0.
 Player::Player(const TextureHolder& textures, const FontHolder& fonts, const ColorHolder& colors,
                const std::function<void()>& playCallback)
     : mGUIContainer(),
+      mAdjust(),
+      drawAdjust(true),
       mSpeedID(2),
       ControllerGUI(numStates),
       playButtons(numStates),
@@ -80,24 +82,24 @@ Player::Player(const TextureHolder& textures, const FontHolder& fonts, const Col
 	auto front = std::make_shared<GUI::Button>(GUI::Button::DoubleArrow, fonts, textures, colors);
 	front->setPosition(PLAYER_CENTER + sf::Vector2f(-90.f, 0.f));
 	front->setCallback([&]() { mAnimationList.goToFront(); });
-	mGUIContainer.pack(front);
+	mAdjust.pack(front);
 
 	auto previous = std::make_shared<GUI::Button>(GUI::Button::Arrow, fonts, textures, colors);
 	previous->setPosition(PLAYER_CENTER + sf::Vector2f(-52.f, 0.f));
 	previous->setRotation(180);
 	previous->setCallback([&]() { mAnimationList.playPrevious(); });
-	mGUIContainer.pack(previous);
+	mAdjust.pack(previous);
 
 	auto next = std::make_shared<GUI::Button>(GUI::Button::Arrow, fonts, textures, colors);
 	next->setPosition(PLAYER_CENTER + sf::Vector2f(52.f, 0.f));
 	next->setCallback([&]() { mAnimationList.playNext(); });
-	mGUIContainer.pack(next);
+	mAdjust.pack(next);
 
 	auto back = std::make_shared<GUI::Button>(GUI::Button::DoubleArrow, fonts, textures, colors);
 	back->setPosition(PLAYER_CENTER + sf::Vector2f(90.f, 0.f));
 	back->setRotation(180);
 	back->setCallback([&]() { mAnimationList.goToBack(); });
-	mGUIContainer.pack(back);
+	mAdjust.pack(back);
 
 	// Speed
 	mSpeed =
@@ -180,6 +182,10 @@ void Player::decreaseSpeed() {
 	}
 }
 
+void Player::hideAdjustButtons() {
+	drawAdjust = false;
+}
+
 bool Player::hasAnimation() const {
 	return mAnimationList.getSize() > 0;
 }
@@ -192,17 +198,27 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 	states.transform *= getTransform();
 	target.draw(mGUIContainer, states);
 	target.draw(ControllerGUI[getCurrentState()], states);
+	if (drawAdjust)
+		target.draw(mAdjust, states);
 }
 
 void Player::update(sf::Time dt) {
 	mGUIContainer.update(dt);
-	ControllerGUI[getCurrentState()].update(dt);
 	mAnimationList.update(dt);
+	if (drawAdjust)
+		mAdjust.update(dt);
+	else {
+		if (mAnimationList.isFinished())
+			mAnimationList.clear();
+	}
+	ControllerGUI[getCurrentState()].update(dt);
 }
 
 void Player::handleEvent(const sf::Event& event) {
 	mGUIContainer.handleEvent(event);
 	ControllerGUI[getCurrentState()].handleEvent(event);
+	if (drawAdjust)
+		mAdjust.handleEvent(event);
 
 	if (event.type == sf::Event::KeyReleased) {
 		if (event.key.code == sf::Keyboard::Enter) {

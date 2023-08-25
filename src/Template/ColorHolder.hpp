@@ -18,6 +18,7 @@ enum ID {
 	UIPrimary,
 	UISecondary,
 	UIBorder,
+	DimBorder,
 	Blue,
 	Red,
 	Highlight,
