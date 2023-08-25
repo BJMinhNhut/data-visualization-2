@@ -214,7 +214,7 @@ Node234* Node234::findChild(int value) const {
 		if (mData[i]->getIntData() <= value)
 			child = mChildren[i + 1];
 	}
-	assert(child != nullptr);
+	//	assert(child != nullptr);
 	return child;
 }
 

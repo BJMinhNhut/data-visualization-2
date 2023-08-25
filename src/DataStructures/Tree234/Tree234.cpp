@@ -17,12 +17,6 @@ Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
 	randomize();
 }
 
-#ifdef SFML_DEBUG
-void Tree234::testFeature() {
-	mergeDown(mRoot, 1);
-}
-#endif
-
 void Tree234::randomize() {
 	loadArray(Random::getArray(1, MAX_SIZE, Node234::MIN_VALUE, Node234::MAX_VALUE));
 }
@@ -90,9 +84,12 @@ void Tree234::deleteCase1Animation(Node234* node, int value, std::vector<Animati
 	    [&, value, node]() {
 		    std::cout << "case 1\n";
 		    assert(node->isLeaf());
-		    assert(node->numData() > 1);
 		    assert(node->findID(value) != -1);
 		    node->leafRemove(value);
+		    if (node == mRoot) {
+			    detachChild(*node);
+			    mRoot = nullptr;
+		    }
 		    align();
 	    }));
 }
@@ -231,6 +228,11 @@ void Tree234::deleteCase3Animation(Node234*& node, int value, std::vector<Animat
 	// Case 3
 	std::cout << "Case 3 " << node->get(0) << ' ' << value << '\n';
 	Node234* mChild = node->findChild(value);
+
+	if (mChild == nullptr) {
+		node = nullptr;
+		return;
+	}
 
 	int id = node->getChildID(mChild);
 
@@ -419,16 +421,18 @@ std::pair<std::vector<Animation>, std::string> Tree234::deleteAnimation(const in
 			deleteCase3Animation(cur, tempValue, list);
 		} else if (cur->isLeaf()) {
 			deleteCase1Animation(cur, tempValue, list);
-			break;
+			list.push_back(
+			    Animation({}, "Finished delete " + std::to_string(value) + ". Complexity O(logn).",
+			              [&]() { clearHighlight(); }));
+			return std::make_pair(list, code);
 		} else {
 			deleteCase2Animation(cur, tempValue, list);
 			cur = cur->findChild(tempValue);
 		}
 	}
-
-	list.push_back(Animation({},
-	                         "Finished delete " + std::to_string(value) + ". Complexity O(logn).",
-	                         [&]() { clearHighlight(); }));
+	list.push_back(
+	    Animation({}, "Null node reached, hence " + std::to_string(value) + " is NOT_FOUND\n",
+	              [&]() { clearHighlight(); }));
 
 	return std::make_pair(list, code);
 }

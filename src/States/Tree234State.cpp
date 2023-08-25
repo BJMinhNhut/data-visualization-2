@@ -148,13 +148,6 @@ bool Tree234State::update(sf::Time dt) {
 
 bool Tree234State::handleEvent(const sf::Event& event) {
 	VisualState::handleEvent(event);
-
-#ifdef SFML_DEBUG
-	if (event.type == sf::Event::KeyReleased) {
-		if (event.key.code == sf::Keyboard::Space)
-			mTree.testFeature();
-	}
-#endif
 	return false;
 }
 

@@ -29,10 +29,6 @@ class Tree234 : public SceneNode {
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
 	std::pair<std::vector<Animation>, std::string> deleteAnimation(const int& value);
 
-#ifdef SFML_DEBUG
-	void testFeature();
-#endif
-
    private:
 	void align();
 	void clear(Node234* node);
