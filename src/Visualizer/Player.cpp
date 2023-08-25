@@ -204,10 +204,14 @@ void Player::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 
 void Player::update(sf::Time dt) {
 	mGUIContainer.update(dt);
-	ControllerGUI[getCurrentState()].update(dt);
 	mAnimationList.update(dt);
 	if (drawAdjust)
 		mAdjust.update(dt);
+	else {
+		if (mAnimationList.isFinished())
+			mAnimationList.clear();
+	}
+	ControllerGUI[getCurrentState()].update(dt);
 }
 
 void Player::handleEvent(const sf::Event& event) {
