@@ -16,6 +16,7 @@ class Tree234 : public SceneNode {
    public:
 	Tree234(const FontHolder& fonts, const ColorHolder& colors);
 	void insert(const int& value);
+	void remove(const int& value);
 	void clear();
 	void clearHighlight();
 	void loadFromFile(const std::string& fileDir);
@@ -26,6 +27,11 @@ class Tree234 : public SceneNode {
 
 	std::pair<std::vector<Animation>, std::string> searchAnimation(const int& value);
 	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
+	std::pair<std::vector<Animation>, std::string> deleteAnimation(const int& value);
+
+#ifdef SFML_DEBUG
+	void testFeature();
+#endif
 
    private:
 	Node234* split(Node234* node);  // split the node, return the root of the split node
@@ -34,7 +40,13 @@ class Tree234 : public SceneNode {
 	void clearHighlight(Node234* node);
 	void loadArray(const std::vector<int>& array);
 
+	void deleteCase1(Node234* node, int value);
+	Node234* deleteCase2(Node234* node, int value);
+	Node234* deleteCase3(Node234* node, int value);
+
 	Node234* searchNode(int value, int depth);
+
+	Node234* mergeDown(Node234* node, int id);
 
    private:
 	const ColorHolder& mColors;

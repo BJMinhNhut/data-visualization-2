@@ -13,7 +13,7 @@ const std::string Insert(
     "if isLeaf(this), this.insert(v)\n"
     "i = this.upper_bound(value)-1\n"
     "Go to this.child[i+1]");
-const std::string Delete();
+const std::string Delete(" ");
 const std::string Search(
     "if this == null, return NOT_FOUND\n"
     "i = this.upper_bound(value)-1\n"

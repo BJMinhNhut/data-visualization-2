@@ -17,6 +17,12 @@ Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
 	randomize();
 }
 
+#ifdef SFML_DEBUG
+void Tree234::testFeature() {
+	mergeDown(mRoot, 0);
+}
+#endif
+
 void Tree234::randomize() {
 	loadArray(Random::getArray(1, MAX_SIZE, Node234::MIN_VALUE, Node234::MAX_VALUE));
 }
@@ -65,6 +71,73 @@ void Tree234::insert(const int& value) {
 	assert(cur != nullptr);
 	cur->insert(value);
 	align();
+}
+
+void Tree234::deleteCase1(Node234* node, int value) {
+	assert(node->isLeaf());
+	assert(node->numData() > 1);
+	assert(node->findID(value) != -1);
+	node->leafRemove(value);
+}
+
+Node234* Tree234::deleteCase2(Node234* node, int value) {
+	const std::vector<Node234*>& mChildren = node->getChildList();
+	int id = node->findID(value);
+	assert(id != -1);
+	Node234* mLeft = mChildren[id];
+	Node234* mRight = mChildren[id + 1];
+
+	assert(mLeft);
+	assert(mRight);
+
+	if (mLeft->numData() > 1) {
+		// Case 2.1
+
+	} else if (mRight->numData() > 1) {
+		// Case 2.2
+	} else {
+		// Case 2.3
+		return mergeDown(node, id);
+	}
+	return nullptr;
+}
+
+Node234* Tree234::deleteCase3(Node234* node, int value) {
+	// Case 3
+	Node234 *mChild, *mSibling;  // Get child (the one traverse to), and its sibling
+	                             //	if (deleteNode->get(0) <= value) {
+	                             //		mChild = deleteNode->getChildList()[1];
+	                             //		mSibling = deleteNode->getChildList()[0];
+	                             //	} else {
+	                             //		mChild = deleteNode->getChildList()[0];
+	                             //		mSibling = deleteNode->getChildList()[1];
+	                             //	}
+	                             //
+	                             //	if (mChild->numData() == 1) {
+	                             //		if (mSibling->numData() == 1) {
+	                             //			// Case 3.1
+	                             //			merge(deleteNode);
+	                             //		} else {
+	                             //			// Case 3.2
+	                             //			rotate(deleteNode);
+	                             //		}
+	                             //	}
+	return nullptr;
+}
+
+void Tree234::remove(const int& value) {
+	Node234* cur = mRoot;
+	while (cur != nullptr) {
+		if (cur->findID(value) == -1) {
+			cur = deleteCase3(cur, value);
+		} else {
+			if (cur->isLeaf()) {
+				deleteCase1(cur, value);
+				break;
+			} else
+				cur = deleteCase2(cur, value);
+		}
+	}
 }
 
 void Tree234::clear() {
@@ -170,6 +243,63 @@ std::pair<std::vector<Animation>, std::string> Tree234::insertAnimation(const in
 	return std::make_pair(list, code);
 }
 
+std::pair<std::vector<Animation>, std::string> Tree234::deleteAnimation(const int& value) {
+	const std::string code = Code234::Delete;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Delete " + std::to_string(value) + " in 2-3-4 tree"));
+
+	Node234* cur = mRoot;
+	Node234* last = nullptr;
+	while (cur != nullptr) {
+		int id = cur->findID(value);
+		if (id != -1) {
+			list.push_back(Animation(
+			    {1, 2, 3},
+			    "Current node contains " + std::to_string(value) +
+			        ", stop searching. Complexity O(logn).",
+			    [&, cur, last, id]() {
+				    cur->highlight(1 << id);
+				    if (last)
+					    last->highlight(0);
+			    },
+			    [&, cur, last]() {
+				    cur->highlight(0);
+				    if (last)
+					    last->highlight(Node234::ALL_DATA);
+			    }));
+			return std::make_pair(list, code);
+		} else {
+			list.push_back(Animation(
+			    {1, 4},
+			    "Current node doesn't contain " + std::to_string(value) +
+			        ". Go to the suitable child.",
+			    [&, cur, last]() {
+				    cur->highlight(Node234::ALL_DATA);
+				    if (last)
+					    last->highlight(0);
+			    },
+			    [&, cur, last]() {
+				    cur->highlight(0);
+				    if (last)
+					    last->highlight(Node234::ALL_DATA);
+			    }));
+			if (cur->isLeaf())
+				break;
+			last = cur;
+			cur = cur->findChild(value);
+		}
+	}
+	list.push_back(Animation(
+	    {0}, "Null node reached, hence " + std::to_string(value) + " is NOT_FOUND\n",
+	    [&]() { clearHighlight(); },
+	    [&, cur]() {
+		    if (cur)
+			    cur->highlight(Node234::ALL_DATA);
+	    }));
+
+	return std::make_pair(list, code);
+}
+
 std::pair<std::vector<Animation>, std::string> Tree234::searchAnimation(const int& value) {
 	const std::string code = Code234::Search;
 	std::vector<Animation> list;
@@ -245,7 +375,16 @@ Node234* Tree234::split(Node234* node) {
 		attachChild(Ptr(root));
 		mRoot = root;
 	}
+
 	root->insertSplit(id, pivot, mLeft, mRight);
+
+	mLeft->setPosition(root->getPosition());
+	mRight->setPosition(root->getPosition());
+	if (root->numData() > 1) {
+		mLeft->move(0.f, Node234::OFFSET.y);
+		mRight->move(0.f, Node234::OFFSET.y);
+	}
+
 	detachChild(*node);
 	return root;
 }
@@ -360,4 +499,19 @@ Node234* Tree234::searchNode(int value, int depth) {
 		cur = cur->findChild(value);
 	}
 	return cur;
+}
+
+Node234* Tree234::mergeDown(Node234* node, int id) {
+	Node234* freedChild = node->mergeDown(id);
+	detachChild(*freedChild);
+	Node234* nextTraverse = nullptr;
+	if (node->numData() == 0) {
+		assert(node == mRoot);
+		mRoot = mRoot->getChild(0);
+		detachChild(*node);
+		nextTraverse = mRoot;
+	} else
+		nextTraverse = node->getChild(0);
+	align();
+	return nextTraverse;
 }

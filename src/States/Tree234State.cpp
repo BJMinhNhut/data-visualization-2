@@ -23,30 +23,26 @@ Tree234State::Tree234State(StateStack& stack, State::Context context)
 void Tree234State::initOptions() {
 	mActionsHub.addOption(Create, "Create", [&]() {
 		mActionsHub.setCurrentOption(Create);
-		//		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Init a new 2-3-4 tree");
 	});
 	mActionsHub.addOption(Insert, "Insert", [&]() {
 		mActionsHub.setCurrentOption(Insert);
-		//		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Insert a new value to 2-3-4 tree");
 		Inputs[Insert]->randomizeValue();
 	});
 	mActionsHub.addOption(Delete, "Delete", [&]() {
 		mActionsHub.setCurrentOption(Delete);
-		//		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Delete a value from 2-3-4 tree");
-		//		if (mTree.getSize() > 0)
-		//			Inputs[Delete]->setValue(mTree.getRandomElement());
-		//		else
-		//			Inputs[Delete]->randomizeValue();
+		if (mTree.getSize() > 0)
+			Inputs[Delete]->setValue(mTree.getRandomElement());
+		else
+			Inputs[Delete]->randomizeValue();
 	});
 	mActionsHub.addOption(Search, "Search", [&]() {
 		mActionsHub.setCurrentOption(Search);
-		//		mTree.flush();
 		mPlayer.reset();
 		mPlayer.callInfo("Search for a value in 2-3-4 tree");
 		if (mTree.getSize() > 0)
@@ -134,7 +130,7 @@ void Tree234State::initDelete() {
 	Inputs[Delete] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
 	                                                 *getContext().colors);
 	Inputs[Delete]->setPosition(250.f, 590.f);
-	//	Inputs[Delete]->setRange(AVLTree::MIN_VALUE, AVLTree::MAX_VALUE);
+	Inputs[Delete]->setRange(Node234::MIN_VALUE, Node234::MAX_VALUE);
 	mActionsHub.packOptionGUI(Delete, Inputs[Delete]);
 }
 
@@ -152,11 +148,13 @@ bool Tree234State::update(sf::Time dt) {
 
 bool Tree234State::handleEvent(const sf::Event& event) {
 	VisualState::handleEvent(event);
-	static int cnt = 0;
+
+#ifdef SFML_DEBUG
 	if (event.type == sf::Event::KeyReleased) {
 		if (event.key.code == sf::Keyboard::Space)
-			mTree.insert(Random::getInt(0, 99));
+			mTree.testFeature();
 	}
+#endif
 	return false;
 }
 
@@ -169,11 +167,11 @@ std::pair<std::vector<Animation>, std::string> Tree234State::getSteps(unsigned i
 					throw std::out_of_range("Value must be in range " +
 					                        Inputs[Insert]->getStringRange());
 				return mTree.insertAnimation(Inputs[Insert]->getValue());
-				//					case Delete:
-				//						if (Inputs[Delete]->validate() != GUI::InputNum::Success)
-				//							throw std::out_of_range("Value must be in range " +
-				//							                        Inputs[Delete]->getStringRange());
-				//						return mTree.deleteAnimation(Inputs[Delete]->getValue());
+			case Delete:
+				if (Inputs[Delete]->validate() != GUI::InputNum::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Delete]->getStringRange());
+				return mTree.deleteAnimation(Inputs[Delete]->getValue());
 			case Search:
 				if (Inputs[Search]->validate() != GUI::InputNum::Success)
 					throw std::out_of_range("Value must be in range " +

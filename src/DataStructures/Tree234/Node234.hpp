@@ -31,11 +31,15 @@ class Node234 : public SceneNode {
 	void calcWidth();
 	void setDepth(int depth);
 	void highlight(int mask);
+	void leafRemove(int value);
+	void clearChild(int id);
+	Node234* mergeDown(int id);  // return the freed child
 
 	bool isLeaf() const;
 	bool overflow() const;
 	Node234* getParent() const;
 	Node234* findChild(int value) const;  // Return the child whose range contains "value"
+	Node234* getChild(int id) const;      // return child[id] pointer
 	const std::vector<Node234*>& getChildList() const;
 	int getChildID(Node234* node) const;
 	int get(int id) const;

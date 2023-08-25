@@ -45,7 +45,6 @@ void Node234::setChild(int id, Node234* child) {
 	if (child == nullptr)
 		return;
 	child->setParent(this);
-	child->setPosition(getTargetPosition());
 }
 
 void Node234::setParent(Node234* parent) {
@@ -93,6 +92,51 @@ void Node234::highlight(int mask) {
 	}
 }
 
+void Node234::leafRemove(int value) {
+	assert(isLeaf());
+	for (auto itr = mData.begin(); itr != mData.end(); ++itr) {
+		if ((*itr)->getIntData() == value) {
+			detachChild(*(*itr));
+			mData.erase(itr);
+			align();
+			break;
+		}
+	}
+}
+
+Node234* Node234::mergeDown(int id) {
+	assert(id < mData.size());
+	assert(mChildren[id]->numData() == 1);
+	assert(mChildren[id + 1]->numData() == 1);
+	Node234* deleteChild = mChildren[id + 1];
+
+	// push data to left child
+	mChildren[id]->insert(mData[id]->getIntData());
+	mChildren[id]->insert(mChildren[id + 1]->get(0));
+
+	// push right's children to left
+	mChildren[id]->setChild(2, mChildren[id + 1]->getChild(0));
+	mChildren[id]->setChild(3, mChildren[id + 1]->getChild(1));
+
+	// erase id+1 child
+	mChildren.erase(mChildren.begin() + id + 1);
+	mChildren.push_back(nullptr);
+
+	// erase id data
+	detachChild(*mData[id]);
+	mData.erase(mData.begin() + id);
+	align();
+
+	// set position to the parent
+	mChildren[id]->setTargetPosition(getPosition(), None);
+
+	return deleteChild;
+}
+
+void Node234::clearChild(int id) {
+	mChildren[id] = nullptr;
+}
+
 void Node234::calcWidth() {
 	if (isLeaf()) {
 		mWidth = NODE_RADIUS * 2.f * (float)mData.size();
@@ -128,6 +172,10 @@ Node234* Node234::findChild(int value) const {
 	}
 	assert(child != nullptr);
 	return child;
+}
+
+Node234* Node234::getChild(int id) const {
+	return mChildren[id];
 }
 
 const std::vector<Node234*>& Node234::getChildList() const {
