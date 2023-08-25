@@ -19,7 +19,7 @@ Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
 
 #ifdef SFML_DEBUG
 void Tree234::testFeature() {
-	rotateRight(mRoot, 0);
+	mergeDown(mRoot, 1);
 }
 #endif
 
@@ -77,6 +77,7 @@ void Tree234::deleteCase1(Node234* node, int value) {
 	assert(node->isLeaf());
 	assert(node->numData() > 1);
 	assert(node->findID(value) != -1);
+	std::cout << "case 1\n";
 	node->leafRemove(value);
 	align();
 }
@@ -90,27 +91,32 @@ Node234* Tree234::deleteCase2(Node234* node, int& value) {
 
 	assert(mLeft);
 	assert(mRight);
+	std::cout << "Case 2 \n";
 
 	if (mLeft->numData() > 1) {
 		// Case 2.1
+		std::cout << "  v2.1 - pred\n";
 		Node234* pred = mLeft->findMax();
 		value = pred->get(pred->numData() - 1);  // new value to search & delete recursively
 		node->setData(id, value);
 		return mLeft;
 	} else if (mRight->numData() > 1) {
 		// Case 2.2
+		std::cout << "  2.2 - succ\n";
 		Node234* succ = mRight->findMin();
 		value = succ->get(0);
 		node->setData(id, value);
 		return mRight;
 	} else {
 		// Case 2.3
+		std::cout << "  2.3 - merge\n";
 		return mergeDown(node, id);
 	}
 }
 
 Node234* Tree234::deleteCase3(Node234* node, int value) {
 	// Case 3
+	std::cout << "Case 3 " << node->get(0) << ' ' << value << '\n';
 	Node234* mChild = node->findChild(value);
 
 	int id = node->getChildID(mChild);
@@ -123,9 +129,11 @@ Node234* Tree234::deleteCase3(Node234* node, int value) {
 
 			if (mSibling->numData() == 1) {
 				// Case 3.1
+				std::cout << "  3.1 - merge\n";
 				return mergeDown(node, (sibID == id - 1) ? id - 1 : id);
 			} else {
 				// Case 3.2
+				std::cout << "  3.2 - rotate\n";
 				if (sibID == id - 1)
 					rotateRight(node, id - 1);
 				else
@@ -141,6 +149,7 @@ Node234* Tree234::deleteCase3(Node234* node, int value) {
 void Tree234::remove(int value) {
 	Node234* cur = mRoot;
 	while (cur != nullptr) {
+		std::cout << "cur " << cur->getString() << '\n';
 		if (cur->findID(value) == -1) {
 			cur = deleteCase3(cur, value);
 		} else {
@@ -405,11 +414,13 @@ Node234* Tree234::split(Node234* node) {
 }
 
 void Tree234::rotateLeft(Node234* node, int id) {
+	std::cout << "rotate left " << id << '\n';
 	node->rotateLeft(id);
 	align();
 }
 
 void Tree234::rotateRight(Node234* node, int id) {
+	std::cout << "rotate right " << id << '\n';
 	node->rotateRight(id);
 	align();
 }
@@ -527,16 +538,17 @@ Node234* Tree234::searchNode(int value, int depth) {
 }
 
 Node234* Tree234::mergeDown(Node234* node, int id) {
+	std::cout << "  merge " << node->getString() << ' ' << id << '\n';
 	Node234* freedChild = node->mergeDown(id);
 	detachChild(*freedChild);
 	Node234* nextTraverse = nullptr;
 	if (node->numData() == 0) {
 		assert(node == mRoot);
-		mRoot = mRoot->getChild(0);
+		mRoot = mRoot->getChild(id);
 		detachChild(*node);
 		nextTraverse = mRoot;
 	} else
-		nextTraverse = node->getChild(0);
+		nextTraverse = node->getChild(id);
 	align();
 	return nextTraverse;
 }

@@ -114,6 +114,8 @@ Node234* Node234::mergeDown(int id) {
 	mChildren[id]->insert(mData[id]->getIntData());
 	mChildren[id]->insert(mChildren[id + 1]->get(0));
 
+	assert(mChildren[id]->numData() == 3);
+
 	// push right's children to left
 	mChildren[id]->setChild(2, mChildren[id + 1]->getChild(0));
 	mChildren[id]->setChild(3, mChildren[id + 1]->getChild(1));
@@ -281,6 +283,16 @@ int Node234::findID(int value) const {
 
 int Node234::numData() const {
 	return mData.size();
+}
+
+std::string Node234::getString() const {
+	std::string str;
+	for (auto node : mData) {
+		if (!str.empty())
+			str += '/';
+		str += node->getData();
+	}
+	return str;
 }
 
 void Node234::insert(int id, int value) {

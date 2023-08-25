@@ -45,6 +45,7 @@ class Node234 : public SceneNode {
 	Node234* getChild(int id) const;      // return child[id] pointer
 	Node234* findMin() const;             // left most node of subtree
 	Node234* findMax() const;             // right most node of subtree
+	std::string getString() const;
 
 	const std::vector<Node234*>& getChildList() const;
 	int getChildID(Node234* node) const;
