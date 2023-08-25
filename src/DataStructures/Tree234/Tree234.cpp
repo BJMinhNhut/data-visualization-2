@@ -78,9 +78,10 @@ void Tree234::deleteCase1(Node234* node, int value) {
 	assert(node->numData() > 1);
 	assert(node->findID(value) != -1);
 	node->leafRemove(value);
+	align();
 }
 
-Node234* Tree234::deleteCase2(Node234* node, int value) {
+Node234* Tree234::deleteCase2(Node234* node, int& value) {
 	const std::vector<Node234*>& mChildren = node->getChildList();
 	int id = node->findID(value);
 	assert(id != -1);
@@ -93,23 +94,25 @@ Node234* Tree234::deleteCase2(Node234* node, int value) {
 	if (mLeft->numData() > 1) {
 		// Case 2.1
 		Node234* pred = mLeft->findMax();
-		node->setData(id, pred->get(pred->numData() - 1));
+		value = pred->get(pred->numData() - 1);  // new value to search & delete recursively
+		node->setData(id, value);
 		return mLeft;
 	} else if (mRight->numData() > 1) {
 		// Case 2.2
 		Node234* succ = mRight->findMin();
-		node->setData(id, succ->get(0));
+		value = succ->get(0);
+		node->setData(id, value);
 		return mRight;
 	} else {
 		// Case 2.3
 		return mergeDown(node, id);
 	}
-	return nullptr;
 }
 
 Node234* Tree234::deleteCase3(Node234* node, int value) {
 	// Case 3
 	Node234* mChild = node->findChild(value);
+
 	int id = node->getChildID(mChild);
 
 	if (mChild->numData() == 1) {
@@ -120,22 +123,22 @@ Node234* Tree234::deleteCase3(Node234* node, int value) {
 
 			if (mSibling->numData() == 1) {
 				// Case 3.1
-				assert(node->numData() > 1);
-				mergeDown(node, (sibID == id - 1) ? id - 1 : id);
+				return mergeDown(node, (sibID == id - 1) ? id - 1 : id);
 			} else {
 				// Case 3.2
 				if (sibID == id - 1)
-					rotateLeft(node, id - 1);
+					rotateRight(node, id - 1);
 				else
-					rotateRight(node, id);
+					rotateLeft(node, id);
 			}
+			break;
 		}
 	}
 
 	return node->findChild(value);
 }
 
-void Tree234::remove(const int& value) {
+void Tree234::remove(int value) {
 	Node234* cur = mRoot;
 	while (cur != nullptr) {
 		if (cur->findID(value) == -1) {

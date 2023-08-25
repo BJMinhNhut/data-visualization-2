@@ -16,7 +16,7 @@ class Tree234 : public SceneNode {
    public:
 	Tree234(const FontHolder& fonts, const ColorHolder& colors);
 	void insert(const int& value);
-	void remove(const int& value);
+	void remove(int value);
 	void clear();
 	void clearHighlight();
 	void loadFromFile(const std::string& fileDir);
@@ -40,7 +40,7 @@ class Tree234 : public SceneNode {
 	void loadArray(const std::vector<int>& array);
 
 	void deleteCase1(Node234* node, int value);
-	Node234* deleteCase2(Node234* node, int value);
+	Node234* deleteCase2(Node234* node, int& value);
 	Node234* deleteCase3(Node234* node, int value);
 
 	Node234* searchNode(int value, int depth);
