@@ -10,7 +10,7 @@
 #include <iostream>
 #include <queue>
 
-const int Tree234::MAX_SIZE = 40;
+const int Tree234::MAX_SIZE = 50;
 
 Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
     : mFonts(fonts), mColors(colors), mRoot(nullptr) {
@@ -48,7 +48,7 @@ void Tree234::insert(const int& value) {
 		attachChild(Ptr(mRoot));
 		return;
 	}
-	assert(getSize() < 40);
+	assert(getSize() < MAX_SIZE);
 	Node234* cur = mRoot;
 	while (cur != nullptr) {
 		if (cur->overflow()) {
@@ -104,6 +104,10 @@ int Tree234::getRandomElement() const {
 std::pair<std::vector<Animation>, std::string> Tree234::insertAnimation(const int& value) {
 	const std::string code = Code234::Insert;
 	std::vector<Animation> list;
+
+	if (getSize() == MAX_SIZE)
+		throw std::logic_error("Tree size limit reached!");
+
 	list.push_back(Animation({}, "Insert " + std::to_string(value) + " to 2-3-4 tree"));
 
 	if (mRoot == nullptr) {
