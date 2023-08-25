@@ -29,6 +29,7 @@ class Node234 : public SceneNode {
 	void split(int& pivot, Node234*& left, Node234*& right);
 	void insertSplit(int id, int pivot, Node234* left, Node234* right);
 	void calcWidth();
+	void setData(int id, int value);
 	void setDepth(int depth);
 	void highlight(int mask);
 	void leafRemove(int value);
@@ -40,6 +41,9 @@ class Node234 : public SceneNode {
 	Node234* getParent() const;
 	Node234* findChild(int value) const;  // Return the child whose range contains "value"
 	Node234* getChild(int id) const;      // return child[id] pointer
+	Node234* findMin() const;             // left most node of subtree
+	Node234* findMax() const;             // right most node of subtree
+
 	const std::vector<Node234*>& getChildList() const;
 	int getChildID(Node234* node) const;
 	int get(int id) const;

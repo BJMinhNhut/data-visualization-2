@@ -10,7 +10,7 @@
 #include <iostream>
 #include <queue>
 
-const int Tree234::MAX_SIZE = 50;
+const int Tree234::MAX_SIZE = 45;
 
 Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
     : mFonts(fonts), mColors(colors), mRoot(nullptr) {
@@ -92,9 +92,14 @@ Node234* Tree234::deleteCase2(Node234* node, int value) {
 
 	if (mLeft->numData() > 1) {
 		// Case 2.1
-
+		Node234* pred = mLeft->findMax();
+		node->setData(id, pred->get(pred->numData() - 1));
+		return mLeft;
 	} else if (mRight->numData() > 1) {
 		// Case 2.2
+		Node234* succ = mRight->findMin();
+		node->setData(id, succ->get(0));
+		return mRight;
 	} else {
 		// Case 2.3
 		return mergeDown(node, id);

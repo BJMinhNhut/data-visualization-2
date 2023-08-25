@@ -152,6 +152,15 @@ void Node234::calcWidth() {
 	}
 }
 
+void Node234::setData(int id, int value) {
+	assert(id < mData.size() && id >= 0);
+	int low = id > 0 ? mData[id - 1]->getIntData() : -1;
+	int high = id + 1 < mData.size() ? mData[id + 1]->getIntData() : MAX_VALUE + 1;
+
+	assert(low <= value && value <= high);
+	mData[id]->setData(value);
+}
+
 Node234* Node234::getParent() const {
 	return mParent;
 }
@@ -176,6 +185,20 @@ Node234* Node234::findChild(int value) const {
 
 Node234* Node234::getChild(int id) const {
 	return mChildren[id];
+}
+
+Node234* Node234::findMin() const {
+	auto* minNode = const_cast<Node234*>(this);
+	while (!minNode->isLeaf())
+		minNode = minNode->getChild(0);
+	return minNode;
+}
+
+Node234* Node234::findMax() const {
+	auto* minNode = const_cast<Node234*>(this);
+	while (!minNode->isLeaf())
+		minNode = minNode->getChild(minNode->numData());
+	return minNode;
 }
 
 const std::vector<Node234*>& Node234::getChildList() const {
