@@ -106,6 +106,16 @@ std::pair<std::vector<Animation>, std::string> Tree234::insertAnimation(const in
 	std::vector<Animation> list;
 	list.push_back(Animation({}, "Insert " + std::to_string(value) + " to 2-3-4 tree"));
 
+	if (mRoot == nullptr) {
+		const std::string altCode = "root = new Node(v)";
+		list.push_back(Animation({0}, "Tree is empty, create new root", [&, value]() {
+			mRoot = new Node234(mFonts, mColors);
+			mRoot->insert(value);
+			attachChild(Ptr(mRoot));
+		}));
+		return std::make_pair(list, altCode);
+	}
+
 	Node234* cur = mRoot;
 	int depth = 0;
 	while (cur != nullptr) {
