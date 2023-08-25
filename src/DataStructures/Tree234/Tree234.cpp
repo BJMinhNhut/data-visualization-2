@@ -82,6 +82,21 @@ void Tree234::deleteCase1(Node234* node, int value) {
 	align();
 }
 
+void Tree234::deleteCase1Animation(Node234* node, int value, std::vector<Animation>& list) {
+
+	list.push_back(Animation(
+	    {0, 1},
+	    std::to_string(value) + " exist in current node, node is leaf, so just delete the value.",
+	    [&, value, node]() {
+		    std::cout << "case 1\n";
+		    assert(node->isLeaf());
+		    assert(node->numData() > 1);
+		    assert(node->findID(value) != -1);
+		    node->leafRemove(value);
+		    align();
+	    }));
+}
+
 Node234* Tree234::deleteCase2(Node234* node, int& value) {
 	const std::vector<Node234*>& mChildren = node->getChildList();
 	int id = node->findID(value);
@@ -111,6 +126,73 @@ Node234* Tree234::deleteCase2(Node234* node, int& value) {
 		// Case 2.3
 		std::cout << "  2.3 - merge\n";
 		return mergeDown(node, id);
+	}
+}
+
+void Tree234::deleteCase2Animation(Node234* node, int& value, std::vector<Animation>& list) {
+	const std::vector<Node234*>& mChildren = node->getChildList();
+	int id = node->findID(value);
+	assert(id != -1);
+	Node234* mLeft = mChildren[id];
+	Node234* mRight = mChildren[id + 1];
+
+	assert(mLeft);
+	assert(mRight);
+	std::cout << "Case 2 \n";
+
+	if (mLeft->numData() > 1) {
+		// Case 2.1
+
+		list.push_back(Animation(
+		    {0, 2, 3, 4},
+		    "Left child has extra key, find predecessor from left child, and swap it with current "
+		    "key.",
+		    [&, value, node, mLeft]() {
+			    std::cout << "  v2.1 - pred\n";
+			    clearHighlight();
+			    int id = node->findID(value);
+			    Node234* pred = mLeft->findMax();
+			    int newValue =
+			        pred->get(pred->numData() - 1);  // new value to search & delete recursively
+			    node->setData(id, newValue);
+			    node->highlight(1 << id);
+			    pred->highlight(1 << (pred->numData() - 1));
+		    }));
+		Node234* pred = mLeft->findMax();
+		value = pred->get(pred->numData() - 1);
+
+	} else if (mRight->numData() > 1) {
+		// Case 2.2
+
+		list.push_back(Animation(
+		    {0, 2, 3, 4},
+		    "Left child has extra key, find predecessor from left child, and swap it with current "
+		    "key.",
+		    [&, value, node, mRight]() {
+			    std::cout << "  2.2 - succ\n";
+			    clearHighlight();
+			    int id = node->findID(value);
+			    Node234* succ = mRight->findMin();
+			    int newValue = succ->get(0);
+			    node->setData(id, newValue);
+			    node->highlight(1 << id);
+			    succ->highlight(1 << 0);
+		    }));
+
+		Node234* succ = mRight->findMin();
+		value = succ->get(0);
+	} else {
+		// Case 2.3
+
+		list.push_back(Animation(
+		    {0, 5}, "Both children have only 1 key each, so merge current key to two of them.",
+		    [&, node, value]() {
+			    std::cout << "  2.3 - merge\n";
+			    clearHighlight();
+			    int id = node->findID(value);
+			    Node234* tempNode = mergeDown(node, id);
+			    tempNode->highlight(Node234::ALL_DATA);
+		    }));
 	}
 }
 
@@ -144,6 +226,60 @@ Node234* Tree234::deleteCase3(Node234* node, int value) {
 	}
 
 	return node->findChild(value);
+}
+void Tree234::deleteCase3Animation(Node234*& node, int value, std::vector<Animation>& list) {
+	// Case 3
+	std::cout << "Case 3 " << node->get(0) << ' ' << value << '\n';
+	Node234* mChild = node->findChild(value);
+
+	int id = node->getChildID(mChild);
+
+	if (mChild->numData() == 1) {
+		for (int sibID = id - 1; sibID <= id + 1; sibID += 2) {
+			if (sibID < 0 || sibID > node->numData())
+				continue;
+			Node234* mSibling = node->getChild(sibID);
+
+			if (mSibling->numData() == 1) {
+				// Case 3.1
+
+				int mID = (sibID == id - 1) ? id - 1 : id;
+				list.push_back(
+				    Animation({8}, "Both sibling and child has 1 key, merge them with parent data.",
+				              [&, mID, node]() {
+					              std::cout << "  3.1 - merge\n";
+					              clearHighlight();
+					              Node234* temp = mergeDown(node, mID);
+					              temp->highlight(Node234::ALL_DATA);
+				              }));
+				node = node->getChild(mID);
+				return;
+			} else {
+				// Case 3.2
+
+				if (sibID == id - 1) {
+					list.push_back(Animation({6, 7}, "Left sibling has extra keys, rotate right.",
+					                         [&, id, node]() {
+						                         std::cout << "  3.2 - rotate\n";
+						                         clearHighlight();
+						                         rotateRight(node, id - 1);
+						                         node->highlight(Node234::ALL_DATA);
+					                         }));
+				} else {
+					list.push_back(Animation({6, 7}, "Right sibling has extra keys, rotate left.",
+					                         [&, id, node]() {
+						                         std::cout << "  3.2 - rotate\n";
+						                         clearHighlight();
+						                         rotateLeft(node, id);
+						                         node->highlight(Node234::ALL_DATA);
+					                         }));
+				}
+				node = node->findChild(value);
+				return;
+			}
+		}
+	}
+	node = node->findChild(value);
 }
 
 void Tree234::remove(int value) {
@@ -270,56 +406,29 @@ std::pair<std::vector<Animation>, std::string> Tree234::deleteAnimation(const in
 	std::vector<Animation> list;
 	list.push_back(Animation({}, "Delete " + std::to_string(value) + " in 2-3-4 tree"));
 
-	//	Node234* cur = mRoot;
-	//	Node234* last = nullptr;
-	//	while (cur != nullptr) {
-	//		int id = cur->findID(value);
-	//		if (id != -1) {
-	//			list.push_back(Animation(
-	//			    {1, 2, 3},
-	//			    "Current node contains " + std::to_string(value) +
-	//			        ", stop searching. Complexity O(logn).",
-	//			    [&, cur, last, id]() {
-	//				    cur->highlight(1 << id);
-	//				    if (last)
-	//					    last->highlight(0);
-	//			    },
-	//			    [&, cur, last]() {
-	//				    cur->highlight(0);
-	//				    if (last)
-	//					    last->highlight(Node234::ALL_DATA);
-	//			    }));
-	//			return std::make_pair(list, code);
-	//		} else {
-	//			list.push_back(Animation(
-	//			    {1, 4},
-	//			    "Current node doesn't contain " + std::to_string(value) +
-	//			        ". Go to the suitable child.",
-	//			    [&, cur, last]() {
-	//				    cur->highlight(Node234::ALL_DATA);
-	//				    if (last)
-	//					    last->highlight(0);
-	//			    },
-	//			    [&, cur, last]() {
-	//				    cur->highlight(0);
-	//				    if (last)
-	//					    last->highlight(Node234::ALL_DATA);
-	//			    }));
-	//			if (cur->isLeaf())
-	//				break;
-	//			last = cur;
-	//			cur = cur->findChild(value);
-	//		}
-	//	}
-	//	list.push_back(Animation(
-	//	    {0}, "Null node reached, hence " + std::to_string(value) + " is NOT_FOUND\n",
-	//	    [&]() { clearHighlight(); },
-	//	    [&, cur]() {
-	//		    if (cur)
-	//			    cur->highlight(Node234::ALL_DATA);
-	//	    }));
+	Node234* cur = mRoot;
 
-	list.push_back(Animation({}, "Yolo", [&, value]() { remove(value); }));
+	int tempValue = value;
+	while (cur != nullptr) {
+		list.push_back(Animation({0}, "Searching for " + std::to_string(tempValue), [&, cur]() {
+			clearHighlight();
+			cur->highlight(Node234::ALL_DATA);
+		}));
+
+		if (cur->findID(tempValue) == -1) {
+			deleteCase3Animation(cur, tempValue, list);
+		} else if (cur->isLeaf()) {
+			deleteCase1Animation(cur, tempValue, list);
+			break;
+		} else {
+			deleteCase2Animation(cur, tempValue, list);
+			cur = cur->findChild(tempValue);
+		}
+	}
+
+	list.push_back(Animation({},
+	                         "Finished delete " + std::to_string(value) + ". Complexity O(logn).",
+	                         [&]() { clearHighlight(); }));
 
 	return std::make_pair(list, code);
 }

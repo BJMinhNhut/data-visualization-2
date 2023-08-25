@@ -42,6 +42,9 @@ class Tree234 : public SceneNode {
 	void deleteCase1(Node234* node, int value);
 	Node234* deleteCase2(Node234* node, int& value);
 	Node234* deleteCase3(Node234* node, int value);
+	void deleteCase1Animation(Node234* node, int value, std::vector<Animation>& list);
+	void deleteCase2Animation(Node234* node, int& value, std::vector<Animation>& list);
+	void deleteCase3Animation(Node234*& node, int value, std::vector<Animation>& list);
 
 	Node234* searchNode(int value, int depth);
 
