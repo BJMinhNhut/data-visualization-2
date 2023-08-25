@@ -15,7 +15,7 @@
 
 const int Graph::MAX_SIZE = 24;
 const int Graph::MAX_EDGES = 100;
-const int Graph::MAX_WEIGHT = 50;
+const int Graph::MAX_WEIGHT = 99;
 const int Graph::UPDATE_LOOPS = 8000;
 const float Graph::FORCE_EPSILON = 1e-3;
 const float Graph::COOL_DOWN = 0.9995f;
