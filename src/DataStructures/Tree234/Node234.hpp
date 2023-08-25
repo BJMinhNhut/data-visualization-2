@@ -35,6 +35,8 @@ class Node234 : public SceneNode {
 	void leafRemove(int value);
 	void clearChild(int id);
 	Node234* mergeDown(int id);  // return the freed child
+	void rotateLeft(int id);
+	void rotateRight(int id);
 
 	bool isLeaf() const;
 	bool overflow() const;
@@ -56,6 +58,8 @@ class Node234 : public SceneNode {
    private:
 	void insert(int id, int value);
 	void align();
+	void popFront();
+	void popBack();
 
 	void updateCurrent(sf::Time dt) override;
 	void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;

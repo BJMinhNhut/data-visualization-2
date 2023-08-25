@@ -19,7 +19,7 @@ Tree234::Tree234(const FontHolder& fonts, const ColorHolder& colors)
 
 #ifdef SFML_DEBUG
 void Tree234::testFeature() {
-	mergeDown(mRoot, 0);
+	rotateRight(mRoot, 0);
 }
 #endif
 
@@ -109,25 +109,29 @@ Node234* Tree234::deleteCase2(Node234* node, int value) {
 
 Node234* Tree234::deleteCase3(Node234* node, int value) {
 	// Case 3
-	Node234 *mChild, *mSibling;
-	// Get child (the one traverse to), and its sibling
-	//	if (deleteNode->get(0) <= value) {
-	//		mChild = deleteNode->getChildList()[1];
-	//		mSibling = deleteNode->getChildList()[0];
-	//	} else {
-	//		mChild = deleteNode->getChildList()[0];
-	//		mSibling = deleteNode->getChildList()[1];
-	//	}
-	//
-	//	if (mChild->numData() == 1) {
-	//		if (mSibling->numData() == 1) {
-	//			// Case 3.1
-	//			merge(deleteNode);
-	//		} else {
-	//			// Case 3.2
-	//			rotate(deleteNode);
-	//		}
-	//	}
+	Node234* mChild = node->findChild(value);
+	int id = node->getChildID(mChild);
+
+	if (mChild->numData() == 1) {
+		for (int sibID = id - 1; sibID <= id + 1; sibID += 2) {
+			if (sibID < 0 || sibID > node->numData())
+				continue;
+			Node234* mSibling = node->getChild(sibID);
+
+			if (mSibling->numData() == 1) {
+				// Case 3.1
+				assert(node->numData() > 1);
+				mergeDown(node, (sibID == id - 1) ? id - 1 : id);
+			} else {
+				// Case 3.2
+				if (sibID == id - 1)
+					rotateLeft(node, id - 1);
+				else
+					rotateRight(node, id);
+			}
+		}
+	}
+
 	return node->findChild(value);
 }
 
@@ -395,6 +399,16 @@ Node234* Tree234::split(Node234* node) {
 
 	detachChild(*node);
 	return root;
+}
+
+void Tree234::rotateLeft(Node234* node, int id) {
+	node->rotateLeft(id);
+	align();
+}
+
+void Tree234::rotateRight(Node234* node, int id) {
+	node->rotateRight(id);
+	align();
 }
 
 void Tree234::align() {

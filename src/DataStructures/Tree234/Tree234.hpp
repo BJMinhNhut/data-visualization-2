@@ -34,7 +34,6 @@ class Tree234 : public SceneNode {
 #endif
 
    private:
-	Node234* split(Node234* node);  // split the node, return the root of the split node
 	void align();
 	void clear(Node234* node);
 	void clearHighlight(Node234* node);
@@ -46,7 +45,15 @@ class Tree234 : public SceneNode {
 
 	Node234* searchNode(int value, int depth);
 
+	// merge the data[i] down to 2 2-node children, return the merged node
 	Node234* mergeDown(Node234* node, int id);
+
+	// split the node, return the root of the split node
+	Node234* split(Node234* node);
+
+	//	// rotate data[id] with 2 children
+	void rotateRight(Node234* node, int id);
+	void rotateLeft(Node234* node, int id);
 
    private:
 	const ColorHolder& mColors;

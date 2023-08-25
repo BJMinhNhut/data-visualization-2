@@ -161,6 +161,39 @@ void Node234::setData(int id, int value) {
 	mData[id]->setData(value);
 }
 
+void Node234::rotateLeft(int id) {
+	assert(id >= 0 && id < mData.size());
+	Node234* mLeft = mChildren[id];
+	Node234* mRight = mChildren[id + 1];
+	assert(mLeft->numData() == 1);
+	assert(mRight->numData() > 1);
+
+	mLeft->insert(1, mData[id]->getIntData());
+	mLeft->setChild(2, mRight->getChild(0));
+
+	mData[id]->setData(mRight->get(0));
+
+	mRight->popFront();
+}
+
+void Node234::rotateRight(int id) {
+	assert(id >= 0 && id < mData.size());
+	Node234* mLeft = mChildren[id];
+	Node234* mRight = mChildren[id + 1];
+	assert(mLeft->numData() > 1);
+	assert(mRight->numData() == 1);
+
+	mRight->insert(0, mData[id]->getIntData());
+	mRight->mChildren[2] = mRight->mChildren[1];
+	mRight->mChildren[1] = mRight->mChildren[0];
+	mRight->mChildren[0] = nullptr;
+	mRight->setChild(0, mLeft->getChild(mLeft->numData()));
+
+	mData[id]->setData(mLeft->get(mLeft->numData() - 1));
+
+	mLeft->popBack();
+}
+
 Node234* Node234::getParent() const {
 	return mParent;
 }
@@ -184,6 +217,7 @@ Node234* Node234::findChild(int value) const {
 }
 
 Node234* Node234::getChild(int id) const {
+	assert(id < mChildren.size() && id >= 0);
 	return mChildren[id];
 }
 
@@ -264,6 +298,23 @@ void Node234::align() {
 		node->setTargetPosition(delta, 0.f, Smooth);
 		delta += 2.f * NODE_RADIUS;
 	}
+}
+
+void Node234::popFront() {
+	assert(!mData.empty());
+	detachChild(*mData[0]);
+	mData.erase(mData.begin());
+	mChildren.erase(mChildren.begin());
+	mChildren.push_back(nullptr);
+	align();
+}
+
+void Node234::popBack() {
+	assert(!mData.empty());
+	detachChild(*mData.back());
+	mChildren[numData()] = nullptr;
+	mData.pop_back();
+	align();
 }
 
 sf::RectangleShape Node234::getLineShape(sf::Vector2f line) {
