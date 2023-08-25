@@ -101,6 +101,61 @@ int Tree234::getRandomElement() const {
 	return candidates[Random::getInt(0, (int)candidates.size() - 1)];
 }
 
+std::pair<std::vector<Animation>, std::string> Tree234::insertAnimation(const int& value) {
+	const std::string code = Code234::Insert;
+	std::vector<Animation> list;
+	list.push_back(Animation({}, "Insert " + std::to_string(value) + " to 2-3-4 tree"));
+
+	Node234* cur = mRoot;
+	int depth = 0;
+	while (cur != nullptr) {
+		if (cur->overflow()) {
+			list.push_back(
+			    Animation({0}, "Node contains too much data, split it.", [&, value, depth]() {
+				    clearHighlight();
+				    Node234* node = searchNode(value, depth);
+				    node->highlight(Node234::ALL_DATA);
+			    }));
+			list.push_back(
+			    Animation({0}, "Node contains too much data, split it.", [&, value, depth]() {
+				    clearHighlight();
+				    Node234* node = split(searchNode(value, depth));
+				    node->highlight(Node234::ALL_DATA);
+				    align();
+			    }));
+			if (cur == mRoot)
+				depth++;
+			list.push_back(Animation({2, 3}, "Node is not leaf, go to child.", [&, value, depth]() {
+				clearHighlight();
+				Node234* node = searchNode(value, depth);
+				node->highlight(Node234::ALL_DATA);
+			}));
+		}
+		if (cur->isLeaf()) {
+			list.push_back(Animation({1}, "Node is leaf, insert " + std::to_string(value),
+			                         [&, value, depth]() {
+				                         clearHighlight();
+				                         Node234* node = searchNode(value, depth);
+				                         node->insert(value);
+				                         align();
+				                         node->highlight(Node234::ALL_DATA);
+			                         }));
+			break;
+		} else {
+			list.push_back(Animation({2, 3}, "Node is not leaf, go to child.", [&, value, depth]() {
+				clearHighlight();
+				Node234* node = searchNode(value, depth);
+				node->highlight(Node234::ALL_DATA);
+			}));
+			depth++;
+			cur = cur->findChild(value);
+		}
+	}
+	list.push_back(Animation({}, "Finish insertion. Complexity O(logn).", [&]() {}));
+
+	return std::make_pair(list, code);
+}
+
 std::pair<std::vector<Animation>, std::string> Tree234::searchAnimation(const int& value) {
 	const std::string code = Code234::Search;
 	std::vector<Animation> list;
@@ -282,4 +337,13 @@ void Tree234::loadArray(const std::vector<int>& array) {
 	clear();
 	for (int value : array)
 		insert(value);
+}
+
+Node234* Tree234::searchNode(int value, int depth) {
+	Node234* cur = mRoot;
+	for (int i = 0; i < depth; ++i) {
+		assert(cur != nullptr);
+		cur = cur->findChild(value);
+	}
+	return cur;
 }

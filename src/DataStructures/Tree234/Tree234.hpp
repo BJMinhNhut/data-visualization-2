@@ -25,6 +25,7 @@ class Tree234 : public SceneNode {
 	int getRandomElement() const;
 
 	std::pair<std::vector<Animation>, std::string> searchAnimation(const int& value);
+	std::pair<std::vector<Animation>, std::string> insertAnimation(const int& value);
 
    private:
 	Node234* split(Node234* node);  // split the node, return the root of the split node
@@ -32,6 +33,8 @@ class Tree234 : public SceneNode {
 	void clear(Node234* node);
 	void clearHighlight(Node234* node);
 	void loadArray(const std::vector<int>& array);
+
+	Node234* searchNode(int value, int depth);
 
    private:
 	const ColorHolder& mColors;

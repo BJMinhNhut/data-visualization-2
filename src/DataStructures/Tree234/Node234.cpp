@@ -45,6 +45,7 @@ void Node234::setChild(int id, Node234* child) {
 	if (child == nullptr)
 		return;
 	child->setParent(this);
+	child->setPosition(getTargetPosition());
 }
 
 void Node234::setParent(Node234* parent) {

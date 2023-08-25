@@ -103,7 +103,7 @@ void Tree234State::initInsert() {
 	Inputs[Insert] = std::make_shared<GUI::InputNum>(*getContext().fonts, *getContext().textures,
 	                                                 *getContext().colors);
 	Inputs[Insert]->setPosition(250.f, 590.f);
-	//	Inputs[Insert]->setRange(AVLTree::MIN_VALUE, AVLTree::MAX_VALUE);
+	Inputs[Insert]->setRange(Node234::MIN_VALUE, Node234::MAX_VALUE);
 	mActionsHub.packOptionGUI(Insert, Inputs[Insert]);
 }
 
@@ -163,11 +163,11 @@ std::pair<std::vector<Animation>, std::string> Tree234State::getSteps(unsigned i
 	try {
 		mTree.clearHighlight();
 		switch (option) {
-				//					case Insert:
-				//						if (Inputs[Insert]->validate() != GUI::InputNum::Success)
-				//							throw std::out_of_range("Value must be in range " +
-				//							                        Inputs[Insert]->getStringRange());
-				//						return mTree.insertAnimation(Inputs[Insert]->getValue());
+			case Insert:
+				if (Inputs[Insert]->validate() != GUI::InputNum::Success)
+					throw std::out_of_range("Value must be in range " +
+					                        Inputs[Insert]->getStringRange());
+				return mTree.insertAnimation(Inputs[Insert]->getValue());
 				//					case Delete:
 				//						if (Inputs[Delete]->validate() != GUI::InputNum::Success)
 				//							throw std::out_of_range("Value must be in range " +
