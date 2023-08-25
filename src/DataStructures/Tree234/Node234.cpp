@@ -261,7 +261,7 @@ void Node234::insert(int id, int value) {
 void Node234::align() {
 	float delta = -((float)mData.size() - 1.f) * NODE_RADIUS;
 	for (auto& node : mData) {
-		node->setTargetPosition(delta, 0.f, None);
+		node->setTargetPosition(delta, 0.f, Smooth);
 		delta += 2.f * NODE_RADIUS;
 	}
 }
