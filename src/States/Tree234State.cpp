@@ -12,6 +12,7 @@ Tree234State::Tree234State(StateStack& stack, State::Context context)
       mTree(*getContext().fonts, *getContext().colors) {
 	mTree.setTargetPosition(context.window->getSize().x / 2.f + 200.f, 180.f,
 	                        Tree234::Transition::None);
+	mPlayer.hideAdjustButtons();
 	initOptions();
 	initCreate();
 	initInsert();
