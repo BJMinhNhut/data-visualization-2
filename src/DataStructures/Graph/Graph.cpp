@@ -11,7 +11,7 @@
 #include <cmath>
 #include <fstream>
 #include <iostream>
-#include <sstream>
+#include <numeric>
 
 const int Graph::MAX_SIZE = 24;
 const int Graph::MAX_EDGES = 100;
